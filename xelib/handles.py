@@ -23,6 +23,7 @@ def release_handles(handles):
                              f'of handles (should be a list of int); thus this '
                              f'is not valid input')
 
+
 @contextmanager
 def manage(handles):
     '''

@@ -1,6 +1,7 @@
 from ctypes import c_bool, c_double, c_int, c_ubyte, c_uint, c_wchar_p, POINTER
 from enum import Enum, unique
 
+
 def params(**params_types):
     '''
     A function that returns the dictionary of parameters given, makes following
@@ -8,12 +9,14 @@ def params(**params_types):
     '''
     return params_types
 
+
 def ret(return_type=None):
     '''
     A function that returns the thing given and defaults to None, makes the
     following code look a bit better on the eyes.
     '''
     return return_type
+
 
 @unique
 class DelphiTypes(Enum):
@@ -31,6 +34,7 @@ class DelphiTypes(Enum):
     PInteger = POINTER(c_int)
     PWordBool = POINTER(c_bool)
     PWideChar = c_wchar_p
+
 
 class XEditLibSignatures(Enum):
     '''
@@ -293,7 +297,7 @@ def generate_python_from_pascal(pascal_paste):
                 try:
                     before, after = param_def.split(':')
                     param_names = [name.strip()
-                                for name in before.strip().split(',')]
+                                   for name in before.strip().split(',')]
                     param_type = after.strip()
                     for param_name in param_names:
                         parameters[param_name] = param_type

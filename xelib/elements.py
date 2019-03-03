@@ -1,21 +1,28 @@
 from xelib.lib import raw_api
 from xelib.handles import handle_managed
-from xelib.helpers import XelibError, get_array, get_string
+from xelib.helpers import XelibError, get_array, get_string, get_handle
 
 # ================
 # element value method wrappers
 # ================
 
+
 def name(id_):
     return get_string_value(id_, 'Name')
+
 
 def long_name(id_):
     return get_string_value(id_, 'LongName')
 
+
 def display_name(id_):
     return get_string_value(id_, 'DisplayName')
 
-# ToImplement: PlacementName
+
+def placement_name(id_):
+    with get_links_to(id_, 'NAME') as rec:
+        return rec > 0 and f'Places {name(rec)}'
+
 
 def path(id_):
     return get_string(
@@ -26,29 +33,38 @@ def path(id_):
 # elements handling methods
 # ================
 
+
 def has_element(id_, path=''):
     raise NotImplementedError
+
 
 def get_element(id_, path=''):
     raise NotImplementedError
 
+
 def get_element_ex(id_, path=''):
     raise NotImplementedError
+
 
 def add_element(id_, path=''):
     raise NotImplementedError
 
+
 def add_element_value(id_, path, value):
     raise NotImplementedError
+
 
 def remove_element(id_, path=''):
     raise NotImplementedError
 
+
 def remove_element_ex(id_, path=''):
     raise NotImplementedError
 
+
 def set_element(id1, id2):
     raise NotImplementedError
+
 
 @handle_managed
 def get_elements(id_=0, path='', sort=False, filter=False):
@@ -57,9 +73,26 @@ def get_elements(id_=0, path='', sort=False, filter=False):
         error_msg=f'Failed to get child elements at '
                   f'{element_context(id_, path)}')
 
+
+def get_def_names(id_):
+    raise NotImplementedError
+
+
+def get_add_list(id):
+    raise NotImplementedError
+
+
+@handle_managed
+def get_links_to(id_, path=''):
+    return get_handle(
+        lambda res: raw_api.GetLinksTo(id_, path, res))
+
+
 # ================
 # Helpers
 # ================
+
+
 def safe_element_path(id_):
     '''
     Safely return a representative string of the given element path; protects

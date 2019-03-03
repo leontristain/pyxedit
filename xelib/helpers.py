@@ -132,8 +132,4 @@ def get_array(callback, method=raw_api.GetResultArray, error_msg=''):
                          f'length `{repr(len_)}`')
 
 
-def get_string_value(id_, method, error_msg=''):
-    '''
-    Retrieve a string value from an element given via its id
-    '''
-    return get_string(lambda len_: method(id_, len_), error_msg=error_msg)
+
