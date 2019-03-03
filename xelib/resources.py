@@ -1,5 +1,11 @@
 from enum import Enum, unique
 
+from xelib.lib import raw_api
+from xelib.helpers import (get_string,
+                           get_string_array,
+                           get_image_data,
+                           validate)
+
 
 @unique
 class ArchiveTypes(Enum):
@@ -12,27 +18,33 @@ class ArchiveTypes(Enum):
 
 
 def extract_container(name, dst, replace):
-    raise NotImplementedError
+    return raw_api.ExtractContainer(name, dst, replace)
 
 
 def extract_file(name, src, dst):
-    raise NotImplementedError
+    return raw_api.ExtractFile(name, src, dst)
 
 
 def get_container_files(name, folder):
-    raise NotImplementedError
+    return get_string_array(
+        lambda len_: raw_api.GetContainerFiles(name, folder, len_),
+        error_msg=f'Failed to get files in container {name}')
 
 
 def get_file_container(file_path):
-    raise NotImplementedError
+    return get_string(
+        lambda len_: raw_api.GetFileContainer(file_path, len_),
+        error_msg=f'Failed to get file container for {file_path}')
 
 
 def get_loaded_containers():
-    raise NotImplementedError
+    return get_string_array(
+        lambda len_: raw_api.GetLoadedContainers(len_),
+        error_msg=f'Failed to get loaded containers')
 
 
-def load_container():
-    raise NotImplementedError
+def load_container(file_path):
+    return raw_api.LoadContainer(file_path)
 
 
 def build_archive(name,
@@ -43,8 +55,19 @@ def build_archive(name,
                   share=False,
                   af='',
                   ff=''):
-    raise NotImplementedError
+    validate(raw_api.BuildArchive(name,
+                                  folder,
+                                  file_paths,
+                                  archive_type,
+                                  compress,
+                                  share,
+                                  af,
+                                  ff),
+             f'Failed to build archive {name}')
 
 
 def get_texture_data(resource_name):
-    raise NotImplementedError
+    return get_image_data(
+        lambda width, height:
+            raw_api.GetTextureData(resource_name, width, height),
+        error_msg=f'Failed to get texture data for {resource_name}')
