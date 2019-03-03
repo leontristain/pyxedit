@@ -1,3 +1,13 @@
+from xelib.elements import (get_uint_value,
+                            set_uint_value,
+                            name,
+                            get_value,
+                            set_value,
+                            has_element,
+                            add_element,
+                            get_flag,
+                            set_flag)
+
 
 # ================
 # file value methods
@@ -5,39 +15,44 @@
 
 
 def get_next_object_id(id_):
-    raise NotImplementedError
+    return get_uint_value(id_, 'File Header\\HEDR\\Next Object ID')
 
 
 def set_next_object_id(id_, next_object_id):
-    raise NotImplementedError
+    set_uint_value(id_, 'File Header\\HEDR\\Next Object ID', next_object_id)
 
 
 def get_file_name(id_):
-    raise NotImplementedError
+    return name(id_)
 
 
 def get_file_author(id_):
-    raise NotImplementedError
+    return get_value(id_, 'File Header\\CNAM')
 
 
 def set_file_author(id_, author):
-    raise NotImplementedError
+    return set_value(id_, 'File Header\\CNAM', author)
 
 
 def get_file_description(id_):
-    raise NotImplementedError
+    return get_value(id_, 'File Header\\SNAM')
 
 
 def set_file_description(id_, description):
-    raise NotImplementedError
+    if not has_element(id_, 'File Header\\SNAM'):
+        add_element(id_, 'File Header\\SNAM')
+    set_value(id_, 'File Header\\SNAM', description)
 
 
 def get_is_esm(id_):
-    raise NotImplementedError
+    return get_flag(id_, 'File Header\\Record Header\\Record Flags', 'ESM')
 
 
-def set_is_esm(id_):
-    raise NotImplementedError
+def set_is_esm(id_, state):
+    return set_flag(id_,
+                    'File Header\\Record Header\\Record Flags',
+                    'ESM',
+                    state)
 
 
 # ================
