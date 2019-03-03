@@ -6,22 +6,21 @@ from xelib.helpers import XelibError
 
 
 def release_handles(handles):
-    if isinstance(handles, Iterable):
-        if isinstance(handles, int):
-            release(handles)
-        elif isinstance(handles, Iterable):
-            for handle in handles:
-                if isinstance(handle, int):
-                    release(handle)
-                else:
-                    raise XelibError(f'tried to release handle {handle}; this '
-                                     f'is not a valid handle id since it is '
-                                     f'not an integer')
-        else:
-            raise XelibError(f'tried to release item {handle}; this is neither '
-                             f'a single handle (should be an int) nor a list '
-                             f'of handles (should be a list of int); thus this '
-                             f'is not valid input')
+    if isinstance(handles, int):
+        release(handles)
+    elif isinstance(handles, Iterable):
+        for handle in handles:
+            if isinstance(handle, int):
+                release(handle)
+            else:
+                raise XelibError(f'tried to release handle {handle}; this '
+                                    f'is not a valid handle id since it is '
+                                    f'not an integer')
+    else:
+        raise XelibError(f'tried to release item {handle}; this is neither '
+                            f'a single handle (should be an int) nor a list '
+                            f'of handles (should be a list of int); thus this '
+                            f'is not valid input')
 
 
 @contextmanager
