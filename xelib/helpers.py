@@ -10,15 +10,15 @@ class XelibError(Exception):
     pass
 
 
-def validate(result, error_msg):
+def validate(result, error_msg, ex=True):
     '''
     If result is false, raise XelibError with given message
     '''
-    if not result:
+    if not result and ex:
         raise XelibError(error_msg)
 
 
-def get_string(callback, method=raw_api.GetResultString, error_msg=''):
+def get_string(callback, method=raw_api.GetResultString, error_msg='', ex=True):
     '''
     Helper for retrieving the string result of a callback function.
 
@@ -40,7 +40,7 @@ def get_string(callback, method=raw_api.GetResultString, error_msg=''):
 
     # run the callback, pass len_ into it by reference
     result = callback(ctypes.byref(len_))
-    if not result:
+    if not result and ex:
         raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                          f'parameter {repr(len_)} failed')
 
@@ -64,7 +64,7 @@ def get_string(callback, method=raw_api.GetResultString, error_msg=''):
                          f'length `{repr(len_)}`')
 
 
-def get_handle(callback, error_msg=''):
+def get_handle(callback, error_msg='', ex=True):
     '''
     A 'handle' is a Cardinal value, which maps to c_uint. Methods that 'gets
     a handle' tend to want us to pass a c_uint by reference for it to put the
@@ -73,58 +73,53 @@ def get_handle(callback, error_msg=''):
     error_prefix = f'{error_msg}: ' if error_msg else ''
 
     res = ctypes.c_uint()
-    if callback(ctypes.byref(res)):
-        return res.value
-    else:
+    if not callback(ctypes.byref(res)) and ex:
         raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                          f'parameter {repr(res)} failed')
+    return res.value
 
 
-def get_integer(callback, error_msg=''):
+def get_integer(callback, error_msg='', ex=True):
     error_prefix = f'{error_msg}: ' if error_msg else ''
 
     res = ctypes.c_int()
-    if callback(ctypes.byref(res)):
-        return res.value
-    else:
+    if not callback(ctypes.byref(res)) and ex:
         raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                          f'parameter {repr(res)} failed')
+    return res.value
 
 
-def get_unsigned_integer(callback, error_msg=''):
+def get_unsigned_integer(callback, error_msg='', ex=True):
     error_prefix = f'{error_msg}: ' if error_msg else ''
 
     res = ctypes.c_uint()
-    if callback(ctypes.byref(res)):
-        return res.value
-    else:
+    if not callback(ctypes.byref(res)) and ex:
         raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                          f'parameter {repr(res)} failed')
+    return res.value
 
 
-def get_bool(callback, error_msg=''):
+def get_bool(callback, error_msg='', ex=True):
     error_prefix = f'{error_msg}: ' if error_msg else ''
 
     res = ctypes.c_bool()
-    if callback(ctypes.byref(res)):
-        return res.value
-    else:
+    if not callback(ctypes.byref(res)) and ex:
         raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                          f'parameter {repr(res)} failed')
+    return res.value
 
 
-def get_double(callback, error_msg=''):
+def get_double(callback, error_msg='', ex=True):
     error_prefix = f'{error_msg}: ' if error_msg else ''
 
     res = ctypes.c_double()
-    if callback(ctypes.byref(res)):
-        return res.value
-    else:
+    if not callback(ctypes.byref(res)) and ex:
         raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                          f'parameter {repr(res)} failed')
+    return res.value
 
 
-def get_byte(callback, error_msg=''):
+def get_byte(callback, error_msg='', ex=True):
     '''
     A 'Byte' maps to c_ubyte. Methods that 'gets a byte' tend to want us to pass
     a c_ubyte by reference for it to put the byte data there. This helper
@@ -133,14 +128,13 @@ def get_byte(callback, error_msg=''):
     error_prefix = f'{error_msg}: ' if error_msg else ''
 
     res = ctypes.c_ubyte()
-    if callback(ctypes.byref(res)):
-        return res.value
-    else:
+    if not callback(ctypes.byref(res)) and ex:
         raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                          f'parameter {repr(res)} failed')
+    return res.value
 
 
-def get_array(callback, method=raw_api.GetResultArray, error_msg=''):
+def get_array(callback, method=raw_api.GetResultArray, error_msg='', ex=True):
     '''
     Gets an array, similar pattern to how strings are gotten
     '''
@@ -151,7 +145,7 @@ def get_array(callback, method=raw_api.GetResultArray, error_msg=''):
 
     # run the callback, pass len_ into it by reference
     result = callback(ctypes.byref(len_))
-    if not result:
+    if not result and ex:
         raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                          f'parameter {repr(len_)} failed')
 
@@ -176,16 +170,28 @@ def get_array(callback, method=raw_api.GetResultArray, error_msg=''):
                          f'length `{repr(len_)}`')
 
 
-def get_string_array(callback, method=raw_api.GetResultString, error_msg=''):
-    return get_string(callback, method=method, error_msg=error_msg).splitlines()
+def get_string_array(callback,
+                     method=raw_api.GetResultString,
+                     error_msg='',
+                     ex=True):
+    return get_string(callback,
+                      method=method,
+                      error_msg=error_msg,
+                      ex=ex).splitlines()
 
 
 def get_image_data(callback, error_msg=''):
     raise NotImplementedError
 
 
-def get_dictionary(callback, method=raw_api.GetResultString, error_msg=''):
-    pairs = get_string_array(callback, method=method, error_msg=error_msg)
+def get_dictionary(callback,
+                   method=raw_api.GetResultString,
+                   error_msg='',
+                   ex=True):
+    pairs = get_string_array(callback,
+                             method=method,
+                             error_msg=error_msg,
+                             ex=ex)
     dictionary = {}
     for pair in pairs:
         key, value = pair.split('=', 1)

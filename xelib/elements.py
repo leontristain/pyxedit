@@ -147,18 +147,12 @@ def sort_key(id_):
         error_msg=f'SortKey failed on {id_}')
 
 
-def get_value(id_, path=''):
+def get_value(id_, path='', ex=False):
     return get_string(
         lambda len_: raw_api.GetValue(id_, path, len_),
         error_msg=f'Failed to get element value at '
-                  f'{element_context(id_, path)}')
-
-
-def get_value_ex(id_, path=''):
-    raise NotImplementedError(
-        "purposely not supporting 'ex' methods until I figure out why they're"
-        "even needed; they seem to be ones that throw exceptions, but why"
-        "shouldn't we want everything to behave in the same way?")
+                  f'{element_context(id_, path)}',
+        ex=ex)
 
 
 def set_value(id_, value, path=''):
@@ -166,17 +160,11 @@ def set_value(id_, value, path=''):
              f'Failed to set element value at {element_context(id_, path)}')
 
 
-def get_int_value(id_, path=''):
+def get_int_value(id_, path='', ex=False):
     return get_integer(
         lambda res: raw_api.GetIntValue(id_, path, res),
-        error_msg=f'Failed to get int value at {element_context(id_, path)}')
-
-
-def get_int_value_ex(id_, path=''):
-    raise NotImplementedError(
-        "purposely not supporting 'ex' methods until I figure out why they're"
-        "even needed; they seem to be ones that throw exceptions, but why"
-        "shouldn't we want everything to behave in the same way?")
+        error_msg=f'Failed to get int value at {element_context(id_, path)}',
+        ex=ex)
 
 
 def set_int_value(id_, value, path=''):
@@ -184,17 +172,11 @@ def set_int_value(id_, value, path=''):
              f'Failed to set int value at {element_context(id_, path)}')
 
 
-def get_uint_value(id_, path=''):
+def get_uint_value(id_, path='', ex=False):
     return get_unsigned_integer(
         lambda res: raw_api.GetUIntValue(id_, path, res),
-        error_msg=f'Failed to get uint value at {element_context(id_, path)}')
-
-
-def get_uint_value_ex(id_, path=''):
-    raise NotImplementedError(
-        "purposely not supporting 'ex' methods until I figure out why they're"
-        "even needed; they seem to be ones that throw exceptions, but why"
-        "shouldn't we want everything to behave in the same way?")
+        error_msg=f'Failed to get uint value at {element_context(id_, path)}',
+        ex=ex)
 
 
 def set_uint_value(id_, value, path=''):
@@ -202,17 +184,11 @@ def set_uint_value(id_, value, path=''):
              f'Failed to set uint value at {element_context(id_, path)}')
 
 
-def get_float_value(id_, path=''):
+def get_float_value(id_, path='', ex=False):
     return get_double(
         lambda res: raw_api.GetFloatValue(id_, path, res),
-        error_msg=f'Failed to get float value at {element_context(id_, path)}')
-
-
-def get_float_value_ex(id_, path=''):
-    raise NotImplementedError(
-        "purposely not supporting 'ex' methods until I figure out why they're"
-        "even needed; they seem to be ones that throw exceptions, but why"
-        "shouldn't we want everything to behave in the same way?")
+        error_msg=f'Failed to get float value at {element_context(id_, path)}',
+        ex=ex)
 
 
 def set_float_value(id_, value, path=''):
@@ -289,17 +265,11 @@ def has_element(id_, path=''):
 
 
 @handle_managed
-def get_element(id_, path=''):
+def get_element(id_, path='', ex=False):
     return get_handle(
         lambda res: raw_api.GetElement(id_, path, res),
-        error_msg=f'Failed to get element at {element_context(id_, path)}')
-
-
-def get_element_ex(id_, path=''):
-    raise NotImplementedError(
-        "purposely not supporting 'ex' methods until I figure out why they're"
-        "even needed; they seem to be ones that throw exceptions, but why"
-        "shouldn't we want everything to behave in the same way?")
+        error_msg=f'Failed to get element at {element_context(id_, path)}',
+        ex=ex)
 
 
 @handle_managed
@@ -318,16 +288,10 @@ def add_element_value(id_, path, value):
                   f'{element_context(id_, path)}, with value: {value}')
 
 
-def remove_element(id_, path=''):
+def remove_element(id_, path='', ex=False):
     validate(raw_api.RemoveElement(id_, path),
-             f'Failed to remove element at {element_context(id_, path)}')
-
-
-def remove_element_ex(id_, path=''):
-    raise NotImplementedError(
-        "purposely not supporting 'ex' methods until I figure out why they're"
-        "even needed; they seem to be ones that throw exceptions, but why"
-        "shouldn't we want everything to behave in the same way?")
+             f'Failed to remove element at {element_context(id_, path)}',
+             ex=ex)
 
 
 def remove_element_or_parent(id_):
@@ -362,10 +326,11 @@ def get_add_list(id_):
 
 
 @handle_managed
-def get_links_to(id_, path=''):
+def get_links_to(id_, path='', ex=False):
     return get_handle(
         lambda res: raw_api.GetLinksTo(id_, path, res),
-        error_msg=f'Failed to get reference at {element_context(id_, path)}')
+        error_msg=f'Failed to get reference at {element_context(id_, path)}',
+        ex=ex)
 
 
 def set_links_to(id_, id2, path=''):
@@ -373,25 +338,12 @@ def set_links_to(id_, id2, path=''):
              f'Failed to set reference at {element_context(id_, path)}')
 
 
-def get_links_to_ex(id_, path=''):
-    raise NotImplementedError(
-        "purposely not supporting 'ex' methods until I figure out why they're"
-        "even needed; they seem to be ones that throw exceptions, but why"
-        "shouldn't we want everything to behave in the same way?")
-
-
 @handle_managed
-def get_container(id_):
+def get_container(id_, ex=False):
     return get_handle(
         lambda res: raw_api.GetContainer(id_, res),
-        error_msg=f'Failed to get container for {element_context(id_)}')
-
-
-def get_container_ex(id_):
-    raise NotImplementedError(
-        "purposely not supporting 'ex' methods until I figure out why they're"
-        "even needed; they seem to be ones that throw exceptions, but why"
-        "shouldn't we want everything to behave in the same way?")
+        error_msg=f'Failed to get container for {element_context(id_)}',
+        ex=ex)
 
 
 @handle_managed
