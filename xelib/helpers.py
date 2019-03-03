@@ -1,7 +1,6 @@
 import ctypes
 
 from xelib.lib import raw_api
-from xelib.element_values import path
 
 
 class XelibError(Exception):
@@ -9,25 +8,6 @@ class XelibError(Exception):
     An exception object for use by xelib
     '''
     pass
-
-
-def safe_element_path(id_):
-    '''
-    Safely return a representative string of the given element path; protects
-    from api errors (as this is typically used in output strings which may
-    include error message strings)
-    '''
-    try:
-        return path(id_)
-    except XelibError:
-        return str(id_)
-
-
-def element_context(id_, path=None):
-    if path:
-        return f'{safe_element_path(id_)}, "{path}"'
-    else:
-        return safe_element_path(id_)
 
 
 def validate(result, error_msg):

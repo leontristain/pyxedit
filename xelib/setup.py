@@ -2,11 +2,11 @@ from collections import namedtuple
 from enum import Enum, unique
 
 from xelib.lib import raw_api
-from xelib.element_values import name
-from xelib.elements import get_elements
+from xelib.elements import (name,
+                            element_context,
+                            get_elements)
 from xelib.handles import handle_managed
-from xelib.helpers import (element_context,
-                           get_byte,
+from xelib.helpers import (get_byte,
                            get_handle,
                            get_string,
                            validate)
