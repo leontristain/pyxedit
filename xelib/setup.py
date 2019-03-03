@@ -2,6 +2,9 @@ from collections import namedtuple
 from enum import Enum, unique
 
 from xelib.lib import raw_api
+from xelib.element_values import name
+from xelib.elements import get_elements
+from xelib.handles import handle_managed
 from xelib.helpers import (element_context,
                            get_byte,
                            get_handle,
@@ -68,6 +71,7 @@ def load_plugin(file_name):
     validate(raw_api.LoadPlugin(file_name), f'Failed to load {file_name}')
 
 
+@handle_managed
 def load_plugin_header(file_name):
     return get_handle(
         lambda res: raw_api.LoadPluginHeader(file_name, res),
@@ -91,4 +95,11 @@ def get_loader_status():
 
 
 def get_loaded_file_names(exclude_hardcoded=True):
-    pass
+    with get_elements() as elements:
+        file_names = []
+        for file_ in elements:
+            file_name = name(file_)
+            if exclude_hardcoded and file_name.endswith('.Hardcoded.dat'):
+                continue
+            file_names.append(file_name)
+        return file_names

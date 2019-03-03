@@ -116,6 +116,42 @@ def get_handle(callback, error_msg=''):
                          f'parameter {repr(res)} failed')
 
 
+def get_array(callback, method=raw_api.GetResultArray, error_msg=''):
+    '''
+    Gets an array, similar pattern to how strings are gotten
+    '''
+    error_prefix = f'{error_msg}: ' if error_msg else ''
+
+    # need a c_int to pass by reference to the given callback
+    len_ = ctypes.c_int()
+
+    # run the callback, pass len_ into it by reference
+    result = callback(ctypes.byref(len_))
+    if not result:
+        raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                         f'parameter {repr(len_)} failed')
+
+    # len_ should now contain the array length; if it does not look like the
+    # length of a nonempty array, just return an empty array
+    if len_.value < 1:
+        return []
+    
+    # otherwise, we will need a c_uint (Cardinal) buffer for the array to be
+    # copied into, this buffer needs to be exactly the size of the expected
+    # array
+    buffer = (ctypes.c_uint * len_.value)()
+
+    # run the array getter method to copy array of the given length to the
+    # given buffer, return with a converted list of python ints; or error
+    # if resulting boolean value indicates failure
+    if method(buffer, len_):
+        return [int(value) for value in buffer]
+    else:
+        raise XelibError(f'{error_prefix}Failed to retrieve array via method '
+                         f'{repr(method)}, buffer `{repr(buffer)}`, and '
+                         f'length `{repr(len_)}`')
+
+
 def get_string_value(id_, method, error_msg=''):
     '''
     Retrieve a string value from an element given via its id
