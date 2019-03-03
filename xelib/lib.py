@@ -1,6 +1,7 @@
+from pathlib import Path
 import ctypes
 
-from pyxeditlib.definitions import DelphiTypes, XEditLibSignatures
+from xelib.definitions import DelphiTypes, XEditLibSignatures
 
 
 def load_lib(dll_path):
@@ -18,3 +19,7 @@ def load_lib(dll_path):
         except AttributeError:
             print(f'WARNING: missing function {method_name}')
     return lib
+
+
+DLL_PATH = Path(__file__).parent / '../XEditLib/XEditLib.dll'
+raw_api = load_lib(DLL_PATH)
