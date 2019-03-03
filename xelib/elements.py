@@ -1,15 +1,92 @@
+from enum import Enum, unique
+
 from xelib.lib import raw_api
 from xelib.handles import handle_managed
 from xelib.helpers import (XelibError,
                            get_array,
                            get_bool,
+                           get_byte,
                            get_double,
                            get_dictionary,
                            get_handle,
                            get_integer,
                            get_string,
+                           get_string_array,
                            get_unsigned_integer,
                            validate)
+
+
+@unique
+class ElementTypes(Enum):
+    etFile = 'etFile'
+    etMainRecord = 'etMainRecord'
+    etGroupRecord = 'etGroupRecord'
+    etSubRecord = 'etSubRecord'
+    etSubRecordStruct = 'etSubRecordStruct'
+    etSubRecordArray = 'etSubRecordArray'
+    etSubRecordUnion = 'etSubRecordUnion'
+    etArray = 'etArray'
+    etStruct = 'etStruct'
+    etValue = 'etValue'
+    etFlag = 'etFlag'
+    etStringListTerminator = 'etStringListTerminator'
+    etUnion = 'etUnion'
+    etStructChapter = 'etStructChapter'
+
+
+@unique
+class DefTypes(Enum):
+    dtRecord = 'dtRecord'
+    dtSubRecord = 'dtSubRecord'
+    dtSubRecordArray = 'dtSubRecordArray'
+    dtSubRecordStruct = 'dtSubRecordStruct'
+    dtSubRecordUnion = 'dtSubRecordUnion'
+    dtString = 'dtString'
+    dtLString = 'dtLString'
+    dtLenString = 'dtLenString'
+    dtByteArray = 'dtByteArray'
+    dtInteger = 'dtInteger'
+    dtIntegerFormater = 'dtIntegerFormater'
+    dtIntegerFormaterUnion = 'dtIntegerFormaterUnion'
+    dtFlag = 'dtFlag'
+    dtFloat = 'dtFloat'
+    dtArray = 'dtArray'
+    dtStruct = 'dtStruct'
+    dtUnion = 'dtUnion'
+    dtEmpty = 'dtEmpty'
+    dtStructChapter = 'dtStructChapter'
+
+
+@unique
+class SmashTypes(Enum):
+    stUnknown = 'stUnknown'
+    stRecord = 'stRecord'
+    stString = 'stString'
+    stInteger = 'stInteger'
+    stFlag = 'stFlag'
+    stFloat = 'stFloat'
+    stStruct = 'stStruct'
+    stUnsortedArray = 'stUnsortedArray'
+    stUnsortedStructArray = 'stUnsortedStructArray'
+    stSortedArray = 'stSortedArray'
+    stSortedStructArray = 'stSortedStructArray'
+    stByteArray = 'stByteArray'
+    stUnion = 'stUnion'
+
+
+@unique
+class ValueTypes(Enum):
+    vtUnknown = 'vtUnknown'
+    vtBytes = 'vtBytes'
+    vtNumber = 'vtNumber'
+    vtString = 'vtString'
+    vtText = 'vtText'
+    vtReference = 'vtReference'
+    vtFlags = 'vtFlags'
+    vtEnum = 'vtEnum'
+    vtColor = 'vtColor'
+    vtArray = 'vtArray'
+    vtStruct = 'vtStruct'
 
 
 # ================
@@ -205,35 +282,63 @@ def get_signature_name_map():
 
 
 def has_element(id_, path=''):
-    raise NotImplementedError
+    return get_bool(
+        lambda res: raw_api.HasElement(id_, path, res),
+        error_msg=f'Failed to check if element exists at '
+                  f'{element_context(id, path)}')
 
 
+@handle_managed
 def get_element(id_, path=''):
-    raise NotImplementedError
+    return get_handle(
+        lambda res: raw_api.GetElement(id_, path, res),
+        error_msg=f'Failed to get element at {element_context(id_, path)}')
 
 
 def get_element_ex(id_, path=''):
-    raise NotImplementedError
+    raise NotImplementedError(
+        "purposely not supporting 'ex' methods until I figure out why they're"
+        "even needed; they seem to be ones that throw exceptions, but why"
+        "shouldn't we want everything to behave in the same way?")
 
 
+@handle_managed
 def add_element(id_, path=''):
-    raise NotImplementedError
+    return get_handle(
+        lambda res: raw_api.AddElement(id_, path, res),
+        error_msg=f'Failed to create new element at '
+                  f'{element_context(id_, path)}')
 
 
+@handle_managed
 def add_element_value(id_, path, value):
-    raise NotImplementedError
+    return get_handle(
+        lambda res: raw_api.AddElementValue(id_, path, value, res),
+        error_msg=f'Failed to create new element at '
+                  f'{element_context(id_, path)}, with value: {value}')
 
 
 def remove_element(id_, path=''):
-    raise NotImplementedError
+    validate(raw_api.RemoveElement(id_, path),
+             f'Failed to remove element at {element_context(id_, path)}')
 
 
 def remove_element_ex(id_, path=''):
-    raise NotImplementedError
+    raise NotImplementedError(
+        "purposely not supporting 'ex' methods until I figure out why they're"
+        "even needed; they seem to be ones that throw exceptions, but why"
+        "shouldn't we want everything to behave in the same way?")
+
+
+def remove_element_or_parent(id_):
+    validate(raw_api.RemoveElementOrParent(id_),
+             f'Failed to remove element {element_context(id_)}')
 
 
 def set_element(id1, id2):
-    raise NotImplementedError
+    validate(raw_api.SetElement(id1, id2),
+             f'Failed to remove element at {element_context(id2)} to '
+             f'{element_context(id1)}')
 
 
 @handle_managed
@@ -245,17 +350,231 @@ def get_elements(id_=0, path='', sort=False, filter=False):
 
 
 def get_def_names(id_):
-    raise NotImplementedError
+    return get_string_array(
+        lambda len_: raw_api.GetDefNames(id_, len_),
+        error_msg=f'Failed to get def names for {element_context(id_)}')
 
 
-def get_add_list(id):
-    raise NotImplementedError
+def get_add_list(id_):
+    return get_string_array(
+        lambda len_: raw_api.GetAddList(id_, len_),
+        error_msg=f'Failed to get add list for {element_context(id_)}')
 
 
 @handle_managed
 def get_links_to(id_, path=''):
     return get_handle(
-        lambda res: raw_api.GetLinksTo(id_, path, res))
+        lambda res: raw_api.GetLinksTo(id_, path, res),
+        error_msg=f'Failed to get reference at {element_context(id_, path)}')
+
+
+def set_links_to(id_, id2, path=''):
+    validate(raw_api.SetLinksTo(id_, path, id2),
+             f'Failed to set reference at {element_context(id_, path)}')
+
+
+def get_links_to_ex(id_, path=''):
+    raise NotImplementedError(
+        "purposely not supporting 'ex' methods until I figure out why they're"
+        "even needed; they seem to be ones that throw exceptions, but why"
+        "shouldn't we want everything to behave in the same way?")
+
+
+@handle_managed
+def get_container(id_):
+    return get_handle(
+        lambda res: raw_api.GetContainer(id_, res),
+        error_msg=f'Failed to get container for {element_context(id_)}')
+
+
+def get_container_ex(id_):
+    raise NotImplementedError(
+        "purposely not supporting 'ex' methods until I figure out why they're"
+        "even needed; they seem to be ones that throw exceptions, but why"
+        "shouldn't we want everything to behave in the same way?")
+
+
+@handle_managed
+def get_element_file(id_):
+    return get_handle(
+        lambda res: raw_api.GetElementFile(id_, res),
+        error_msg=f'Failed to get element file for {element_context(id_)}')
+
+
+@handle_managed
+def get_element_group(id_):
+    return get_handle(
+        lambda res: raw_api.GetElementGroup(id_, res),
+        error_msg=f'Failed to get element group for: {element_context(id_)}')
+
+
+@handle_managed
+def get_element_record(id_):
+    return get_handle(
+        lambda res: raw_api.GetElementRecord(id_, res),
+        error_msg=f'Failed to get element record for: {element_context(id_)}')
+
+
+def element_count(id_):
+    return get_integer(
+        lambda res: raw_api.ElementCount(id_, res),
+        error_msg=f'Failed to get element count for {element_context(id_)}')
+
+
+def element_equals(id_, id2):
+    return get_bool(
+        lambda res: raw_api.ElementEquals(id_, id2, res),
+        error_msg=f'Failed to check element equality for '
+                  f'{element_context(id_)} and {element_context(id2)}')
+
+
+def element_matches(id_, path, value):
+    return get_bool(
+        lambda res: raw_api.ElementMatches(id_, path, value, res),
+        error_msg=f'Failed to check element matches for '
+                  f'{element_context(id_, path)},{value}')
+
+
+def has_array_item(id_, path, subpath, value):
+    return get_bool(
+        lambda res: raw_api.HasArrayItem(id_, path, subpath, value, res),
+        error_msg=f'Failed to check if array has item for '
+                  f'{array_item_context(id_, path, subpath, value)}')
+
+
+@handle_managed
+def get_array_item(id_, path, subpath, value):
+    return get_handle(
+        lambda res: raw_api.GetArrayItem(id_, path, subpath, value, res),
+        error_msg=f'Failed to get array item for '
+                  f'{array_item_context(id_, path, subpath, value)}')
+
+
+@handle_managed
+def add_array_item(id_, path, subpath, value):
+    return get_handle(
+        lambda res: raw_api.AddArrayItem(id_, path, subpath, value, res),
+        error_msg=f'Failed to add array item to '
+                  f'{array_item_context(id_, path, subpath, value)}')
+
+
+def remove_array_item(id_, path, subpath, value):
+    validate(raw_api.RemoveArrayItem(id_, path, subpath, value),
+             f'Failed to remove array item '
+             f'{array_item_context(id_, path, subpath, value)}')
+
+
+def move_array_item(id_, index):
+    validate(raw_api.MoveArrayItem(id_, index),
+             f'Failed to move array item {element_context(id_)} to {index}')
+
+
+@handle_managed
+def copy_element(id_, id2, as_new=False):
+    return get_handle(
+        lambda res: raw_api.CopyElement(id_, id2, as_new, res),
+        error_msg=f'Failed to copy element {element_context(id_)} to {id2}')
+
+
+@handle_managed
+def find_next_element(id_, search, by_path, by_value):
+    return get_handle(
+        lambda res:
+            raw_api.FindNextElement(id_, search, by_path, by_value, res),
+        error_msg=f'Failed to find next element from {id_} via '
+                  f'search={search}, by_path={by_path}, by_value={by_value}')
+
+
+@handle_managed
+def find_previous_element(id_, search, by_path, by_value):
+    return get_handle(
+        lambda res:
+            raw_api.FindPreviousElement(id_, search, by_path, by_value, res),
+        error_msg=f'Failed to find previous element from {id_} via '
+                  f'search={search}, by_path={by_path}, by_value={by_value}')
+
+
+def get_signature_allowed(id_, signature):
+    return get_bool(
+        lambda res: raw_api.GetSignatureAllowed(id_, signature, res),
+        error_msg=f'Failed to check if signature {signature} is allowed on '
+                  f'{element_context(id_)}')
+
+
+def get_allowed_signatures(id_):
+    return get_string_array(
+        lambda len_: raw_api.GetAllowedSignatures(id_, len_),
+        error_msg=f'Failed to get allowed signatures for '
+                  f'{element_context(id_)}')
+
+
+def get_is_modified(id_):
+    return get_bool(
+        lambda res: raw_api.GetIsModified(id_, res),
+        error_msg=f'Failed to get is modified for {element_context(id_)}')
+
+
+def get_is_editable(id_):
+    return get_bool(
+        lambda res: raw_api.GetIsEditable(id_, res),
+        error_msg=f'Failed to get is editable for {element_context(id_)}')
+
+
+def set_is_editable(id_, bool_):
+    validate(raw_api.SetIsEditable(id_, bool_),
+             f'Failed to set is editable for {element_context(id_)}')
+
+
+def get_is_removable(id_):
+    return get_bool(
+        lambda res: raw_api.GetIsRemovable(id_, res),
+        error_msg=f'Failed to get is removable for {element_context(id_)}')
+
+
+def get_can_add(id_):
+    return get_bool(
+        lambda res: raw_api.GetCanAdd(id_, res),
+        error_msg=f'Failed to get can add for {element_context(id_)}')
+
+
+def element_type(id_):
+    return get_byte(
+        lambda res: raw_api.ElementType(id_, res),
+        error_msg=f'Failed to get element type for {element_context(id_)}')
+
+
+def def_type(id_):
+    return get_byte(
+        lambda res: raw_api.DefType(id_, res),
+        error_msg=f'Failed to get def type for {element_context(id_)}')
+
+
+def smash_type(id_):
+    return get_byte(
+        lambda res: raw_api.SmashType(id_, res),
+        error_msg=f'Failed to get smash type for {element_context(id_)}')
+
+
+def value_type(id_):
+    return get_byte(
+        lambda res: raw_api.ValueType(id_, res),
+        error_msg=f'Failed to get value type for {element_context(id_)}')
+
+
+def is_sorted(id_):
+    return get_bool(
+        lambda res: raw_api.IsSorted(id_, res),
+        error_msg=f'Failed to get is sorted for {element_context(id_)}')
+
+
+def is_fixed(id_):
+    return get_bool(
+        lambda res: raw_api.IsFixed(id_, res),
+        error_msg=f'Failed to get is fixed for {element_context(id_)}')
+
+
+def is_flags(id_):
+    return value_type(id_) == ValueTypes.vtFlags
 
 
 # ================
@@ -284,3 +603,7 @@ def element_context(id_, path=None):
 
 def flag_context(id_, path, name):
     return f'{safe_element_path(id_)}, "{path}\\{name}"'
+
+
+def array_item_context(id_, path, subpath, value):
+    return f'{safe_element_path(id_)}, {path}, {subpath}, {value}'

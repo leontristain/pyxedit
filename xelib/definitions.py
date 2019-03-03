@@ -317,7 +317,7 @@ def generate_python_from_pascal(pascal_paste):
                 return_type += char
             else:
                 break
-        
+
         # with the parameters and the return type, we can now print out the
         # python declaration for it
         params_parts = [f"{param_name}='{param_type}'"

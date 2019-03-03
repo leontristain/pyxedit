@@ -159,7 +159,7 @@ def get_array(callback, method=raw_api.GetResultArray, error_msg=''):
     # length of a nonempty array, just return an empty array
     if len_.value < 1:
         return []
-    
+
     # otherwise, we will need a c_uint (Cardinal) buffer for the array to be
     # copied into, this buffer needs to be exactly the size of the expected
     # array
