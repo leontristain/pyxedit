@@ -18,75 +18,75 @@ from xelib.helpers import (XelibError,
 
 @unique
 class ElementTypes(Enum):
-    etFile = 'etFile'
-    etMainRecord = 'etMainRecord'
-    etGroupRecord = 'etGroupRecord'
-    etSubRecord = 'etSubRecord'
-    etSubRecordStruct = 'etSubRecordStruct'
-    etSubRecordArray = 'etSubRecordArray'
-    etSubRecordUnion = 'etSubRecordUnion'
-    etArray = 'etArray'
-    etStruct = 'etStruct'
-    etValue = 'etValue'
-    etFlag = 'etFlag'
-    etStringListTerminator = 'etStringListTerminator'
-    etUnion = 'etUnion'
-    etStructChapter = 'etStructChapter'
+    File = 'etFile'
+    MainRecord = 'etMainRecord'
+    GroupRecord = 'etGroupRecord'
+    SubRecord = 'etSubRecord'
+    SubRecordStruct = 'etSubRecordStruct'
+    SubRecordArray = 'etSubRecordArray'
+    SubRecordUnion = 'etSubRecordUnion'
+    Array = 'etArray'
+    Struct = 'etStruct'
+    Value = 'etValue'
+    Flag = 'etFlag'
+    StringListTerminator = 'etStringListTerminator'
+    Union = 'etUnion'
+    StructChapter = 'etStructChapter'
 
 
 @unique
 class DefTypes(Enum):
-    dtRecord = 'dtRecord'
-    dtSubRecord = 'dtSubRecord'
-    dtSubRecordArray = 'dtSubRecordArray'
-    dtSubRecordStruct = 'dtSubRecordStruct'
-    dtSubRecordUnion = 'dtSubRecordUnion'
-    dtString = 'dtString'
-    dtLString = 'dtLString'
-    dtLenString = 'dtLenString'
-    dtByteArray = 'dtByteArray'
-    dtInteger = 'dtInteger'
-    dtIntegerFormater = 'dtIntegerFormater'
-    dtIntegerFormaterUnion = 'dtIntegerFormaterUnion'
-    dtFlag = 'dtFlag'
-    dtFloat = 'dtFloat'
-    dtArray = 'dtArray'
-    dtStruct = 'dtStruct'
-    dtUnion = 'dtUnion'
-    dtEmpty = 'dtEmpty'
-    dtStructChapter = 'dtStructChapter'
+    Record = 'dtRecord'
+    SubRecord = 'dtSubRecord'
+    SubRecordArray = 'dtSubRecordArray'
+    SubRecordStruct = 'dtSubRecordStruct'
+    SubRecordUnion = 'dtSubRecordUnion'
+    String = 'dtString'
+    LString = 'dtLString'
+    LenString = 'dtLenString'
+    ByteArray = 'dtByteArray'
+    Integer = 'dtInteger'
+    IntegerFormater = 'dtIntegerFormater'
+    IntegerFormaterUnion = 'dtIntegerFormaterUnion'
+    Flag = 'dtFlag'
+    Float = 'dtFloat'
+    Array = 'dtArray'
+    Struct = 'dtStruct'
+    Union = 'dtUnion'
+    Empty = 'dtEmpty'
+    StructChapter = 'dtStructChapter'
 
 
 @unique
 class SmashTypes(Enum):
-    stUnknown = 'stUnknown'
-    stRecord = 'stRecord'
-    stString = 'stString'
-    stInteger = 'stInteger'
-    stFlag = 'stFlag'
-    stFloat = 'stFloat'
-    stStruct = 'stStruct'
-    stUnsortedArray = 'stUnsortedArray'
-    stUnsortedStructArray = 'stUnsortedStructArray'
-    stSortedArray = 'stSortedArray'
-    stSortedStructArray = 'stSortedStructArray'
-    stByteArray = 'stByteArray'
-    stUnion = 'stUnion'
+    Unknown = 'stUnknown'
+    Record = 'stRecord'
+    String = 'stString'
+    Integer = 'stInteger'
+    Flag = 'stFlag'
+    Float = 'stFloat'
+    Struct = 'stStruct'
+    UnsortedArray = 'stUnsortedArray'
+    UnsortedStructArray = 'stUnsortedStructArray'
+    SortedArray = 'stSortedArray'
+    SortedStructArray = 'stSortedStructArray'
+    ByteArray = 'stByteArray'
+    Union = 'stUnion'
 
 
 @unique
 class ValueTypes(Enum):
-    vtUnknown = 'vtUnknown'
-    vtBytes = 'vtBytes'
-    vtNumber = 'vtNumber'
-    vtString = 'vtString'
-    vtText = 'vtText'
-    vtReference = 'vtReference'
-    vtFlags = 'vtFlags'
-    vtEnum = 'vtEnum'
-    vtColor = 'vtColor'
-    vtArray = 'vtArray'
-    vtStruct = 'vtStruct'
+    Unknown = 'vtUnknown'
+    Bytes = 'vtBytes'
+    Number = 'vtNumber'
+    String = 'vtString'
+    Text = 'vtText'
+    Reference = 'vtReference'
+    Flags = 'vtFlags'
+    Enum = 'vtEnum'
+    Color = 'vtColor'
+    Array = 'vtArray'
+    Struct = 'vtStruct'
 
 
 # ================
@@ -574,7 +574,7 @@ def is_fixed(id_):
 
 
 def is_flags(id_):
-    return value_type(id_) == ValueTypes.vtFlags
+    return value_type(id_) == ValueTypes.Flags.value
 
 
 # ================

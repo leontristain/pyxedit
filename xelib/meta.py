@@ -24,3 +24,24 @@ def set_sort_mode(mode, reverse):
 
 def release(id_):
     validate(raw_api.Release(id_), f'Failed to release handle {id_}')
+
+
+def release_nodes(id_):
+    raise NotImplementedError
+
+
+def switch(id_, id2):
+    raise NotImplementedError
+
+
+def get_duplicate_handles(id_):
+    raise NotImplementedError
+
+
+def clean_store():
+    raise NotImplementedError
+
+
+def reset_store():
+    raise NotImplementedError
+
