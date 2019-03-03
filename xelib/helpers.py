@@ -18,22 +18,6 @@ def validate(result, error_msg):
         raise XelibError(error_msg)
 
 
-def get_byte(callback, error_msg=''):
-    '''
-    A 'Byte' maps to c_ubyte. Methods that 'gets a byte' tend to want us to pass
-    a c_ubyte by reference for it to put the byte data there. This helper
-    function takes care of this pattern.
-    '''
-    error_prefix = f'{error_msg}: ' if error_msg else ''
-
-    res = ctypes.c_ubyte()
-    if callback(ctypes.byref(res)):
-        return res.value
-    else:
-        raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
-                         f'parameter {repr(res)} failed')
-
-
 def get_string(callback, method=raw_api.GetResultString, error_msg=''):
     '''
     Helper for retrieving the string result of a callback function.
@@ -96,6 +80,66 @@ def get_handle(callback, error_msg=''):
                          f'parameter {repr(res)} failed')
 
 
+def get_integer(callback, error_msg=''):
+    error_prefix = f'{error_msg}: ' if error_msg else ''
+
+    res = ctypes.c_int()
+    if callback(ctypes.byref(res)):
+        return res.value
+    else:
+        raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                         f'parameter {repr(res)} failed')
+
+
+def get_unsigned_integer(callback, error_msg=''):
+    error_prefix = f'{error_msg}: ' if error_msg else ''
+
+    res = ctypes.c_uint()
+    if callback(ctypes.byref(res)):
+        return res.value
+    else:
+        raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                         f'parameter {repr(res)} failed')
+
+
+def get_bool(callback, error_msg=''):
+    error_prefix = f'{error_msg}: ' if error_msg else ''
+
+    res = ctypes.c_bool()
+    if callback(ctypes.byref(res)):
+        return res.value
+    else:
+        raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                         f'parameter {repr(res)} failed')
+
+
+def get_double(callback, error_msg=''):
+    error_prefix = f'{error_msg}: ' if error_msg else ''
+
+    res = ctypes.c_double()
+    if callback(ctypes.byref(res)):
+        return res.value
+    else:
+        raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                         f'parameter {repr(res)} failed')
+
+
+def get_byte(callback, error_msg=''):
+    '''
+    A 'Byte' maps to c_ubyte. Methods that 'gets a byte' tend to want us to pass
+    a c_ubyte by reference for it to put the byte data there. This helper
+    function takes care of this pattern.
+    '''
+    error_prefix = f'{error_msg}: ' if error_msg else ''
+
+    res = ctypes.c_ubyte()
+    if callback(ctypes.byref(res)):
+        return res.value
+    else:
+        raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                         f'parameter {repr(res)} failed')
+
+
 def get_array(callback, method=raw_api.GetResultArray, error_msg=''):
     '''
     Gets an array, similar pattern to how strings are gotten
@@ -132,4 +176,18 @@ def get_array(callback, method=raw_api.GetResultArray, error_msg=''):
                          f'length `{repr(len_)}`')
 
 
+def get_string_array(callback, method=raw_api.GetResultString, error_msg=''):
+    return get_string(callback, method=method, error_msg=error_msg).splitlines()
 
+
+def get_image_data(callback, error_msg=''):
+    raise NotImplementedError
+
+
+def get_dictionary(callback, method=raw_api.GetResultString, error_msg=''):
+    pairs = get_string_array(callback, method=method, error_msg=error_msg)
+    dictionary = {}
+    for pair in pairs:
+        key, value = pair.split('=', 1)
+        dictionary[key] = value
+    return dictionary
