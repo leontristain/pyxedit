@@ -1,5 +1,13 @@
 from enum import Enum, unique
 
+from xelib.elements import (get_value,
+                            get_links_to,
+                            get_element,
+                            get_float_value,
+                            set_float_value,
+                            get_flag,
+                            set_flag)
+
 
 @unique
 class ConflictThis(Enum):
@@ -41,31 +49,42 @@ class GetRefrsFlags(Enum):
 
 
 def editor_id(id_):
-    raise NotImplementedError
+    return get_value(id_, 'EDID')
 
 
 def full_name(id_):
-    raise NotImplementedError
+    return get_value(id_, 'FULL')
 
 
 def get_ref_editor_id(id_, path):
-    raise NotImplementedError
+    with get_links_to(id_, path) as linked:
+        return editor_id(linked) if linked else ''
 
 
 def translate(id_, vector):
-    raise NotImplementedError
+    position = get_element(id_, 'DATA\\Position')
+    for coord in ('X', 'Y', 'Z'):
+        translate_value = vector.get(coord)
+        if translate_value:
+            new_value = get_float_value(position, coord) + translate_value
+            set_float_value(position, 'X', new_value)
 
 
 def rotate(id_, vector):
-    raise NotImplementedError
+    rotation = get_element(id_, 'DATA\\Rotation')
+    for coord in ('X', 'Y', 'Z'):
+        rotation_value = vector.get(coord)
+        if rotation_value:
+            new_value = get_float_value(rotation, coord) + rotation_value
+            set_float_value(rotation, coord, new_value)
 
 
 def get_record_flag(id_, name):
-    raise NotImplementedError
+    return get_flag(id_, 'Record Header\\Record Flags', name)
 
 
 def set_record_flag(id_, name, state):
-    raise NotImplementedError
+    set_flag(id_, 'Record Header\\Record Flags', name, state)
 
 
 # ================
