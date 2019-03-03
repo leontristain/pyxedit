@@ -14,13 +14,13 @@ def release_handles(handles):
                 release(handle)
             else:
                 raise XelibError(f'tried to release handle {handle}; this '
-                                    f'is not a valid handle id since it is '
-                                    f'not an integer')
+                                 f'is not a valid handle id since it is '
+                                 f'not an integer')
     else:
         raise XelibError(f'tried to release item {handle}; this is neither '
-                            f'a single handle (should be an int) nor a list '
-                            f'of handles (should be a list of int); thus this '
-                            f'is not valid input')
+                         f'a single handle (should be an int) nor a list '
+                         f'of handles (should be a list of int); thus this '
+                         f'is not valid input')
 
 
 @contextmanager
