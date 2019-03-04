@@ -9,12 +9,12 @@ from xelib.helpers import (get_string,
 
 @unique
 class ArchiveTypes(Enum):
-    None_ = 'baNone'
-    TES3 = 'baTES3'
-    FO3 = 'baFO3'
-    SSE = 'baSSE'
-    FO4 = 'baFO4'
-    FO4dds = 'baFO4dds'
+    baNone = 0
+    baTES3 = 1
+    baFO3 = 2
+    baSSE = 3
+    baFO4 = 4
+    baFO4dds = 5
 
 
 def extract_container(name, dst, replace):
@@ -58,7 +58,7 @@ def build_archive(name,
     validate(raw_api.BuildArchive(name,
                                   folder,
                                   file_paths,
-                                  archive_type,
+                                  archive_type.value,
                                   compress,
                                   share,
                                   af,

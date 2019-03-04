@@ -18,75 +18,75 @@ from xelib.helpers import (XelibError,
 
 @unique
 class ElementTypes(Enum):
-    File = 'etFile'
-    MainRecord = 'etMainRecord'
-    GroupRecord = 'etGroupRecord'
-    SubRecord = 'etSubRecord'
-    SubRecordStruct = 'etSubRecordStruct'
-    SubRecordArray = 'etSubRecordArray'
-    SubRecordUnion = 'etSubRecordUnion'
-    Array = 'etArray'
-    Struct = 'etStruct'
-    Value = 'etValue'
-    Flag = 'etFlag'
-    StringListTerminator = 'etStringListTerminator'
-    Union = 'etUnion'
-    StructChapter = 'etStructChapter'
+    etFile = 0
+    etMainRecord = 1
+    etGroupRecord = 2
+    etSubRecord = 3
+    etSubRecordStruct = 4
+    etSubRecordArray = 5
+    etSubRecordUnion = 6
+    etArray = 7
+    etStruct = 8
+    etValue = 9
+    etFlag = 10
+    etStringListTerminator = 11
+    etUnion = 12
+    etStructChapter = 13
 
 
 @unique
 class DefTypes(Enum):
-    Record = 'dtRecord'
-    SubRecord = 'dtSubRecord'
-    SubRecordArray = 'dtSubRecordArray'
-    SubRecordStruct = 'dtSubRecordStruct'
-    SubRecordUnion = 'dtSubRecordUnion'
-    String = 'dtString'
-    LString = 'dtLString'
-    LenString = 'dtLenString'
-    ByteArray = 'dtByteArray'
-    Integer = 'dtInteger'
-    IntegerFormater = 'dtIntegerFormater'
-    IntegerFormaterUnion = 'dtIntegerFormaterUnion'
-    Flag = 'dtFlag'
-    Float = 'dtFloat'
-    Array = 'dtArray'
-    Struct = 'dtStruct'
-    Union = 'dtUnion'
-    Empty = 'dtEmpty'
-    StructChapter = 'dtStructChapter'
+    dtRecord = 0
+    dtSubRecord = 1
+    dtSubRecordArray = 2
+    dtSubRecordStruct = 3
+    dtSubRecordUnion = 4
+    dtString = 5
+    dtLString = 6
+    dtLenString = 7
+    dtByteArray = 8
+    dtInteger = 9
+    dtIntegerFormater = 10
+    dtIntegerFormaterUnion = 11
+    dtFlag = 12
+    dtFloat = 13
+    dtArray = 14
+    dtStruct = 15
+    dtUnion = 16
+    dtEmpty = 17
+    dtStructChapter = 18
 
 
 @unique
 class SmashTypes(Enum):
-    Unknown = 'stUnknown'
-    Record = 'stRecord'
-    String = 'stString'
-    Integer = 'stInteger'
-    Flag = 'stFlag'
-    Float = 'stFloat'
-    Struct = 'stStruct'
-    UnsortedArray = 'stUnsortedArray'
-    UnsortedStructArray = 'stUnsortedStructArray'
-    SortedArray = 'stSortedArray'
-    SortedStructArray = 'stSortedStructArray'
-    ByteArray = 'stByteArray'
-    Union = 'stUnion'
+    stUnknown = 0
+    stRecord = 1
+    stString = 2
+    stInteger = 3
+    stFlag = 4
+    stFloat = 5
+    stStruct = 6
+    stUnsortedArray = 7
+    stUnsortedStructArray = 8
+    stSortedArray = 9
+    stSortedStructArray = 10
+    stByteArray = 11
+    stUnion = 12
 
 
 @unique
 class ValueTypes(Enum):
-    Unknown = 'vtUnknown'
-    Bytes = 'vtBytes'
-    Number = 'vtNumber'
-    String = 'vtString'
-    Text = 'vtText'
-    Reference = 'vtReference'
-    Flags = 'vtFlags'
-    Enum = 'vtEnum'
-    Color = 'vtColor'
-    Array = 'vtArray'
-    Struct = 'vtStruct'
+    vtUnknown = 0
+    vtBytes = 1
+    vtNumber = 2
+    vtString = 3
+    vtText = 4
+    vtReference = 5
+    vtFlags = 6
+    vtEnum = 7
+    vtColor = 8
+    vtArray = 9
+    vtStruct = 10
 
 
 # ================
@@ -490,27 +490,27 @@ def get_can_add(id_):
 
 
 def element_type(id_):
-    return get_byte(
+    return ElementTypes(get_byte(
         lambda res: raw_api.ElementType(id_, res),
-        error_msg=f'Failed to get element type for {element_context(id_)}')
+        error_msg=f'Failed to get element type for {element_context(id_)}'))
 
 
 def def_type(id_):
-    return get_byte(
+    return DefTypes(get_byte(
         lambda res: raw_api.DefType(id_, res),
-        error_msg=f'Failed to get def type for {element_context(id_)}')
+        error_msg=f'Failed to get def type for {element_context(id_)}'))
 
 
 def smash_type(id_):
-    return get_byte(
+    return SmashTypes(get_byte(
         lambda res: raw_api.SmashType(id_, res),
-        error_msg=f'Failed to get smash type for {element_context(id_)}')
+        error_msg=f'Failed to get smash type for {element_context(id_)}'))
 
 
 def value_type(id_):
-    return get_byte(
+    return ValueTypes(get_byte(
         lambda res: raw_api.ValueType(id_, res),
-        error_msg=f'Failed to get value type for {element_context(id_)}')
+        error_msg=f'Failed to get value type for {element_context(id_)}'))
 
 
 def is_sorted(id_):
@@ -526,7 +526,7 @@ def is_fixed(id_):
 
 
 def is_flags(id_):
-    return value_type(id_) == ValueTypes.Flags.value
+    return value_type(id_) == ValueTypes.vtFlags
 
 
 # ================
