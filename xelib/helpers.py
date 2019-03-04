@@ -134,6 +134,17 @@ def get_byte(callback, error_msg='', ex=True):
     return res.value
 
 
+def get_two_bytes(callback, error_msg='', ex=True):
+    error_prefix = f'{error_msg}: ' if error_msg else ''
+
+    res1 = ctypes.c_ubyte()
+    res2 = ctypes.c_ubyte()
+    if not callback(ctypes.byref(res1), ctypes.byref(res2)) and ex:
+        raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                         f'parameters {repr(res1)}, {repr(res2)} failed')
+    return res1.value, res2.value
+
+
 def get_array(callback, method=raw_api.GetResultArray, error_msg='', ex=True):
     '''
     Gets an array, similar pattern to how strings are gotten
@@ -197,3 +208,7 @@ def get_dictionary(callback,
         key, value = pair.split('=', 1)
         dictionary[key] = value
     return dictionary
+
+
+def build_flags(opts, flags):
+    return sum(flags.get(opt, 0) for opt in opts)
