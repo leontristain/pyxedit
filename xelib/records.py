@@ -19,29 +19,29 @@ from xelib.elements import (element_context,
 
 @unique
 class ConflictThis(Enum):
-    Unknown = 'ctUnknown'
-    Ignored = 'ctIgnored'
-    NotDefined = 'ctNotDefined'
-    IdenticalToMaster = 'ctIdenticalToMaster'
-    OnlyOne = 'ctOnlyOne'
-    HiddenByModGroup = 'ctHiddenByModGroup'
-    Master = 'ctMaster'
-    ConflictBenign = 'ctConflictBenign'
-    Override = 'ctOverride'
-    IdenticalToMasterWinsConflict = 'ctIdenticalToMasterWinsConflict'
-    ConflictWins = 'ctConflictWins'
-    ConflictLoses = 'ctConflictLoses'
+    ctUnknown = 0
+    ctIgnored = 1
+    ctNotDefined = 2
+    ctIdenticalToMaster = 3
+    ctOnlyOne = 4
+    ctHiddenByModGroup = 5
+    ctMaster = 6
+    ctConflictBenign = 7
+    ctOverride = 8
+    ctIdenticalToMasterWinsConflict = 9
+    ctConflictWins = 10
+    ctConflictLoses = 11
 
 
 @unique
 class ConflictAll(Enum):
-    Unknown = 'caUnknown'
-    OnlyOne = 'caOnlyOne'
-    NoConflict = 'caNoConflict'
-    ConflictBenign = 'caConflictBenign'
-    Override = 'caOverride'
-    Conflict = 'caConflict'
-    ConflictCritical = 'caConflictCritical'
+    caUnknown = 0
+    caOnlyOne = 1
+    caNoConflict = 2
+    caConflictBenign = 3
+    caOverride = 4
+    caConflict = 5
+    caConflictCritical = 6
 
 
 @unique
@@ -235,19 +235,18 @@ def get_conflict_data(id1, id2, as_string=False, ex=False):
         error_msg=f'GetConflictData failed on {id1}, {id2}',
         ex=ex)
     if as_string:
-        raise NotImplementedError
+        return ConflictAll(conflict_all).name, ConflictThis(conflict_this).name
     else:
         return conflict_all, conflict_this
 
 
-def get_conflict_data_ex(id1, id2, as_string=False):
-    raise NotImplementedError
-
-
 def get_record_conflict_data(id_):
-    raise NotImplementedError
+    return get_conflict_data(0, id_)
 
 
 def get_node_elements(id1, id2):
-    raise NotImplementedError
+    return get_array(
+        lambda len_: raw_api.GetNodeElements(id1, id2, len_),
+        error_msg=f'GetNodeElements failed on {element_context(id1)}, '
+                  f'{element_context(id2)}')
 
