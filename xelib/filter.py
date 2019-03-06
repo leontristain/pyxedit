@@ -1,11 +1,15 @@
 from xelib.lib import raw_api
-from xelib.helpers import validate
+from xelib.helpers import verify_execution
 from xelib.elements import name
 
 
 def filter_record(id_):
-    validate(raw_api.FilterRecord(id_), f'Failed to filter record {name(id_)}')
+    verify_execution(
+        raw_api.FilterRecord(id_),
+        error_msg=f'Failed to filter record {name(id_)}')
 
 
 def reset_filter():
-    validate(raw_api.ResetFilter(), f'Failed to reset filter')
+    verify_execution(
+        raw_api.ResetFilter(),
+        error_msg=f'Failed to reset filter')

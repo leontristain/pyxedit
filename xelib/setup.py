@@ -9,7 +9,7 @@ from xelib.handles import handle_managed
 from xelib.helpers import (get_byte,
                            get_handle,
                            get_string,
-                           validate)
+                           verify_execution)
 
 GameInfo = namedtuple('GameInfo', 'name short_name mode exe_name')
 
@@ -31,7 +31,9 @@ def get_game_path(game=Games.SkyrimSE):
 
 
 def set_game_path(path):
-    validate(raw_api.SetGamePath(path), f'Failed to SetGamePath to {path}')
+    verify_execution(
+        raw_api.SetGamePath(path),
+        error_msg=f'Failed to SetGamePath to {path}')
 
 
 def get_game_language(game=Games.SkyrimSE):
@@ -42,33 +44,41 @@ def get_game_language(game=Games.SkyrimSE):
 
 
 def set_language(language):
-    validate(raw_api.SetLanguage(language),
-             f'Failed to SetLanguage to {language}')
+    verify_execution(
+        raw_api.SetLanguage(language),
+        error_msg=f'Failed to SetLanguage to {language}')
 
 
 def set_game_mode(game=Games.SkyrimSE):
-    validate(raw_api.SetGameMode(game.value.mode),
-             f'Failed to SetGameMode to game {game}; mode {game.value.mode}')
+    verify_execution(
+        raw_api.SetGameMode(game.value.mode),
+        error_msg=f'Failed to SetGameMode to game {game}; mode '
+                  f'{game.value.mode}')
 
 
 def get_load_order():
-    return get_string(lambda len_: raw_api.GetLoadOrder(len_),
-                      error_msg=f'GetLoadOrder failed')
+    return get_string(
+        lambda len_: raw_api.GetLoadOrder(len_),
+        error_msg=f'GetLoadOrder failed')
 
 
 def get_active_plugins():
-    return get_string(lambda len_: raw_api.GetActivePlugins(len_),
-                      error_msg=f'GetActivePlugins failed')
+    return get_string(
+        lambda len_: raw_api.GetActivePlugins(len_),
+        error_msg=f'GetActivePlugins failed')
 
 
 def load_plugins(load_order, smart_load=True):
-    validate(raw_api.Load_plugins(load_order, smart_load),
-             f'Failed to LoadPlugins given load_order {repr(load_order)} and '
-             f'smart_load={smart_load}')
+    verify_execution(
+        raw_api.Load_plugins(load_order, smart_load),
+        error_msg=f'Failed to LoadPlugins given load_order {repr(load_order)} '
+                  f'and smart_load={smart_load}')
 
 
 def load_plugin(file_name):
-    validate(raw_api.LoadPlugin(file_name), f'Failed to load {file_name}')
+    verify_execution(
+        raw_api.LoadPlugin(file_name),
+        error_msg=f'Failed to load {file_name}')
 
 
 @handle_managed
@@ -79,13 +89,15 @@ def load_plugin_header(file_name):
 
 
 def build_references(id_, sync=True):
-    validate(raw_api.BuildReferences(id_, sync),
-             f'Failed to build references for {element_context(id_)}')
+    verify_execution(
+        raw_api.BuildReferences(id_, sync),
+        error_msg=f'Failed to build references for {element_context(id_)}')
 
 
 def unload_plugin(id_):
-    validate(raw_api.UnloadPlugin(id_),
-             f'Failed to unload plugin {element_context(id_)}')
+    verify_execution(
+        raw_api.UnloadPlugin(id_),
+        error_msg=f'Failed to unload plugin {element_context(id_)}')
 
 
 def get_loader_status():

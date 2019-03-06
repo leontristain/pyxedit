@@ -1,7 +1,7 @@
 from enum import Enum, unique
 
 from xelib.lib import raw_api
-from xelib.helpers import get_unsigned_integer, validate, build_flags
+from xelib.helpers import get_unsigned_integer, build_flags, verify_execution
 from xelib.elements import (element_context,
                             get_value,
                             get_links_to,
@@ -113,9 +113,10 @@ def get_hex_form_id(id_, native=False, local=False):
 
 
 def set_form_id(id_, new_form_id, native=False, fix_references=True):
-    validate(raw_api.SetFormId(id_, new_form_id, native, fix_references),
-             f'Failed to set FormID on {element_context(id_)} to '
-             f'{new_form_id}')
+    verify_execution(
+        raw_api.SetFormId(id_, new_form_id, native, fix_references),
+        error_msg=f'Failed to set FormID on {element_context(id_)} to '
+                  f'{new_form_id}')
 
 
 def get_record(id_, form_id, search_masters=True):
@@ -202,25 +203,30 @@ def get_referenced_by(id_):
 
 
 def exchange_references(id_, old_form_id, new_form_id):
-    validate(raw_api.ExchangeReferences(id_, old_form_id, new_form_id),
-             f'Failed to exchange references on {element_context(id_)} from '
-             f'{old_form_id} to {new_form_id}')
+    verify_execution(
+        raw_api.ExchangeReferences(id_, old_form_id, new_form_id),
+        error_msg=f'Failed to exchange references on {element_context(id_)} '
+                  f'from {old_form_id} to {new_form_id}')
 
 
 def is_master(id_):
-    return get_bool(lambda res: raw_api.IsMaster(id_, res))
+    return get_bool(
+        lambda res: raw_api.IsMaster(id_, res))
 
 
 def is_injected(id_):
-    return get_bool(lambda res: raw_api.IsInjected(id_, res))
+    return get_bool(
+        lambda res: raw_api.IsInjected(id_, res))
 
 
 def is_override(id_):
-    return get_bool(lambda res: raw_api.IsOverride(id_, res))
+    return get_bool(
+        lambda res: raw_api.IsOverride(id_, res))
 
 
 def is_winning_override(id_):
-    return get_bool(lambda res: raw_api.IsWinningOverride(id_, res))
+    return get_bool(
+        lambda res: raw_api.IsWinningOverride(id_, res))
 
 
 def get_nodes(id_):

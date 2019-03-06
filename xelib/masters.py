@@ -1,28 +1,32 @@
 from xelib.lib import raw_api
-from xelib.helpers import validate, get_array, get_string_array
+from xelib.helpers import get_array, get_string_array, verify_execution
 from xelib.elements import element_context, name, get_loaded_file_names
 
 
 def clean_masters(id_):
-    validate(raw_api.CleanMasters(id_),
-             f'Failed to clean masters in: {element_context(id_)}')
+    verify_execution(
+        raw_api.CleanMasters(id_),
+        error_msg=f'Failed to clean masters in: {element_context(id_)}')
 
 
 def sort_masters(id_):
-    validate(raw_api.SortMasters(id_),
-             f'Failed to sort masters in: {element_context(id_)}')
+    verify_execution(
+        raw_api.SortMasters(id_),
+        error_msg=f'Failed to sort masters in: {element_context(id_)}')
 
 
 def add_master(id_, file_name):
-    validate(raw_api.AddMaster(id_, file_name),
-             f'Failed to add master {file_name} to file: '
-             f'{element_context(id_)}')
+    verify_execution(
+        raw_api.AddMaster(id_, file_name),
+        error_msg=f'Failed to add master {file_name} to file: '
+                  f'{element_context(id_)}')
 
 
 def add_required_masters(id_, id2, as_new=False):
-    validate(raw_api.AddRequiredMasters(id_, id2, as_new),
-             f'Failed to add required masters for {element_context(id_)} to '
-             f'file: {element_context(id2)}')
+    verify_execution(
+        raw_api.AddRequiredMasters(id_, id2, as_new),
+        error_msg=f'Failed to add required masters for {element_context(id_)} '
+                  f'to file: {element_context(id2)}')
 
 
 def get_masters(id_):

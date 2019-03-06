@@ -4,7 +4,7 @@ from xelib.lib import raw_api
 from xelib.helpers import (get_string,
                            get_string_array,
                            get_image_data,
-                           validate)
+                           verify_execution)
 
 
 @unique
@@ -55,15 +55,16 @@ def build_archive(name,
                   share=False,
                   af='',
                   ff=''):
-    validate(raw_api.BuildArchive(name,
-                                  folder,
-                                  file_paths,
-                                  archive_type.value,
-                                  compress,
-                                  share,
-                                  af,
-                                  ff),
-             f'Failed to build archive {name}')
+    verify_execution(
+        raw_api.BuildArchive(name,
+                             folder,
+                             file_paths,
+                             archive_type.value,
+                             compress,
+                             share,
+                             af,
+                             ff),
+        error_msg=f'Failed to build archive {name}')
 
 
 def get_texture_data(resource_name):

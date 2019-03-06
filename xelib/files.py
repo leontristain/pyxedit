@@ -1,5 +1,5 @@
 from xelib.lib import raw_api
-from xelib.helpers import get_handle, validate, get_integer, get_string
+from xelib.helpers import get_handle, get_integer, get_string, verify_execution
 from xelib.elements import (element_context,
                             get_element,
                             get_uint_value,
@@ -65,38 +65,48 @@ def set_is_esm(id_, state):
 
 
 def add_file(file_name):
-    return get_handle(lambda res: raw_api.AddFile(file_name, res),
-                      error_msg=f'Failed to add new file {file_name}')
+    return get_handle(
+        lambda res: raw_api.AddFile(file_name, res),
+        error_msg=f'Failed to add new file {file_name}')
 
 
 def file_by_index(index):
-    return get_handle(lambda res: raw_api.FileByIndex(index, res))
+    return get_handle(
+        lambda res: raw_api.FileByIndex(index, res))
 
 
 def file_by_load_order(load_order):
-    return get_handle(lambda res: raw_api.FileByLoadOrder(load_order, res))
+    return get_handle(
+        lambda res: raw_api.FileByLoadOrder(load_order, res))
 
 
 def file_by_name(file_name):
-    return get_handle(lambda res: raw_api.FileByName(file_name, res))
+    return get_handle(
+        lambda res: raw_api.FileByName(file_name, res))
 
 
 def file_by_author(author):
-    return get_handle(lambda res: raw_api.FileByAuthor(author, res))
+    return get_handle(
+        lambda res: raw_api.FileByAuthor(author, res))
 
 
 def nuke_file(id_):
-    validate(raw_api.NukeFile(id_), f'Failed to nuke file: {id_}')
+    verify_execution(
+        raw_api.NukeFile(id_),
+        error_msg=f'Failed to nuke file: {id_}')
 
 
 def rename_file(id_, new_file_name):
-    validate(raw_api.RenameFile(id_, new_file_name),
-             f'Failed to rename file {element_context(id_)} to {new_file_name}')
+    verify_execution(
+        raw_api.RenameFile(id_, new_file_name),
+        error_msg=f'Failed to rename file {element_context(id_)} to '
+                  f'{new_file_name}')
 
 
 def save_file(id_, file_path):
-    validate(raw_api.SaveFile(id_, file_path),
-             f'Failed to save file {element_context(id_)}')
+    verify_execution(
+        raw_api.SaveFile(id_, file_path),
+        error_msg=f'Failed to save file {element_context(id_)}')
 
 
 def get_record_count(id_):
@@ -135,11 +145,12 @@ def get_file_header(id_):
 
 
 def sort_editor_ids(id_, sig):
-    validate(raw_api.SortEditorIDs(id_, sig),
-             f'Failed to sort {sig} EditorIDs for: {element_context(id_)}')
+    verify_execution(
+        raw_api.SortEditorIDs(id_, sig),
+        error_msg=f'Failed to sort {sig} EditorIDs for: {element_context(id_)}')
 
 
 def sort_names(id_, sig):
-    validate(raw_api.SortNames(id_, sig),
-             f'Failed to sort {sig} Names for {element_context(id_)}')
-
+    verify_execution(
+        raw_api.SortNames(id_, sig),
+        error_msg=f'Failed to sort {sig} Names for {element_context(id_)}')

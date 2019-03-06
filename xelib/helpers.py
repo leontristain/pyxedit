@@ -10,7 +10,7 @@ class XelibError(Exception):
     pass
 
 
-def validate(result, error_msg, ex=True):
+def verify_execution(result, error_msg='', ex=True):
     '''
     If result is false, raise XelibError with given message
     '''

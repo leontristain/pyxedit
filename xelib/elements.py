@@ -13,7 +13,7 @@ from xelib.helpers import (XelibError,
                            get_string,
                            get_string_array,
                            get_unsigned_integer,
-                           validate)
+                           verify_execution)
 
 
 @unique
@@ -156,8 +156,10 @@ def get_value(id_, path='', ex=False):
 
 
 def set_value(id_, value, path=''):
-    validate(raw_api.SetValue(id_, path, value),
-             f'Failed to set element value at {element_context(id_, path)}')
+    verify_execution(
+        raw_api.SetValue(id_, path, value),
+        error_msg=f'Failed to set element value at '
+                  f'{element_context(id_, path)}')
 
 
 def get_int_value(id_, path='', ex=False):
@@ -168,8 +170,9 @@ def get_int_value(id_, path='', ex=False):
 
 
 def set_int_value(id_, value, path=''):
-    validate(raw_api.SetIntValue(id_, path, value),
-             f'Failed to set int value at {element_context(id_, path)}')
+    verify_execution(
+        raw_api.SetIntValue(id_, path, value),
+        error_msg=f'Failed to set int value at {element_context(id_, path)}')
 
 
 def get_uint_value(id_, path='', ex=False):
@@ -180,8 +183,9 @@ def get_uint_value(id_, path='', ex=False):
 
 
 def set_uint_value(id_, value, path=''):
-    validate(raw_api.SetUIntValue(id_, path, value),
-             f'Failed to set uint value at {element_context(id_, path)}')
+    verify_execution(
+        raw_api.SetUIntValue(id_, path, value),
+        error_msg=f'Failed to set uint value at {element_context(id_, path)}')
 
 
 def get_float_value(id_, path='', ex=False):
@@ -192,14 +196,16 @@ def get_float_value(id_, path='', ex=False):
 
 
 def set_float_value(id_, value, path=''):
-    validate(raw_api.SetFloatValue(id_, path, value),
-             f'Failed to set uint value at {element_context(id_, path)}')
+    verify_execution(
+        raw_api.SetFloatValue(id_, path, value),
+        error_msg=f'Failed to set uint value at {element_context(id_, path)}')
 
 
 def set_flag(id_, path, name, state):
-    validate(raw_api.SetFlag(id_, path, name, state),
-             f'Failed to set flag value at {flag_context(id_, path, name)} '
-             f'to {state}')
+    verify_execution(
+        raw_api.SetFlag(id_, path, name, state),
+        error_msg=f'Failed to set flag value at '
+                  f'{flag_context(id_, path, name)} to {state}')
 
 
 def get_flag(id_, path, name):
@@ -217,8 +223,10 @@ def get_enabled_flags(id_, path=''):
 
 
 def set_enabled_flags(id_, path, flags):
-    validate(raw_api.SetEnabledFlags(id_, path, ','.join(flags)),
-             f'Failed to set enabled flags at {element_context(id_, path)}')
+    verify_execution(
+        raw_api.SetEnabledFlags(id_, path, ','.join(flags)),
+        error_msg=f'Failed to set enabled flags at '
+                  f'{element_context(id_, path)}')
 
 
 def get_all_flags(id_, path=''):
@@ -289,20 +297,23 @@ def add_element_value(id_, path, value):
 
 
 def remove_element(id_, path='', ex=False):
-    validate(raw_api.RemoveElement(id_, path),
-             f'Failed to remove element at {element_context(id_, path)}',
-             ex=ex)
+    verify_execution(
+        raw_api.RemoveElement(id_, path),
+        error_msg=f'Failed to remove element at {element_context(id_, path)}',
+        ex=ex)
 
 
 def remove_element_or_parent(id_):
-    validate(raw_api.RemoveElementOrParent(id_),
-             f'Failed to remove element {element_context(id_)}')
+    verify_execution(
+        raw_api.RemoveElementOrParent(id_),
+        error_msg=f'Failed to remove element {element_context(id_)}')
 
 
 def set_element(id1, id2):
-    validate(raw_api.SetElement(id1, id2),
-             f'Failed to remove element at {element_context(id2)} to '
-             f'{element_context(id1)}')
+    verify_execution(
+        raw_api.SetElement(id1, id2),
+        error_msg=f'Failed to remove element at {element_context(id2)} to '
+                  f'{element_context(id1)}')
 
 
 @handle_managed
@@ -334,8 +345,9 @@ def get_links_to(id_, path='', ex=False):
 
 
 def set_links_to(id_, id2, path=''):
-    validate(raw_api.SetLinksTo(id_, path, id2),
-             f'Failed to set reference at {element_context(id_, path)}')
+    verify_execution(
+        raw_api.SetLinksTo(id_, path, id2),
+        error_msg=f'Failed to set reference at {element_context(id_, path)}')
 
 
 @handle_managed
@@ -411,14 +423,17 @@ def add_array_item(id_, path, subpath, value):
 
 
 def remove_array_item(id_, path, subpath, value):
-    validate(raw_api.RemoveArrayItem(id_, path, subpath, value),
-             f'Failed to remove array item '
-             f'{array_item_context(id_, path, subpath, value)}')
+    verify_execution(
+        raw_api.RemoveArrayItem(id_, path, subpath, value),
+        error_msg=f'Failed to remove array item '
+                  f'{array_item_context(id_, path, subpath, value)}')
 
 
 def move_array_item(id_, index):
-    validate(raw_api.MoveArrayItem(id_, index),
-             f'Failed to move array item {element_context(id_)} to {index}')
+    verify_execution(
+        raw_api.MoveArrayItem(id_, index),
+        error_msg=f'Failed to move array item {element_context(id_)} to '
+                  f'{index}')
 
 
 @handle_managed
@@ -473,8 +488,9 @@ def get_is_editable(id_):
 
 
 def set_is_editable(id_, bool_):
-    validate(raw_api.SetIsEditable(id_, bool_),
-             f'Failed to set is editable for {element_context(id_)}')
+    verify_execution(
+        raw_api.SetIsEditable(id_, bool_),
+        error_msg=f'Failed to set is editable for {element_context(id_)}')
 
 
 def get_is_removable(id_):
