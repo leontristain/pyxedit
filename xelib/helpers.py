@@ -7,7 +7,10 @@ class XelibError(Exception):
     '''
     An exception object for use by xelib
     '''
-    pass
+    def __str__(self):
+        return (f'{super().__str__()} :: '
+                f'xedit-lib message: {repr(get_exception_message())}; '
+                f'xedit-lib stack: {repr(get_exception_stack())}')
 
 
 def verify_execution(result, error_msg='', ex=True):
@@ -212,3 +215,28 @@ def get_dictionary(callback,
 
 def build_flags(opts, flags):
     return sum(flags.get(opt, 0) for opt in opts)
+
+
+def get_messages():
+    return get_string(
+        lambda len_: raw_api.GetMessagesLength(len_),
+        method=raw_api.GetMessages,
+        ex=False)
+
+
+def clear_messages():
+    raw_api.ClearMessages()
+
+
+def get_exception_message():
+    return get_string(
+        lambda len_: raw_api.GetExceptionMessageLength(len_),
+        method=raw_api.GetExceptionMessage,
+        ex=False)
+
+
+def get_exception_stack():
+    return get_string(
+        lambda len_: raw_api.GetExceptionStackLength(len_),
+        method=raw_api.GetExceptionStack,
+        ex=False)

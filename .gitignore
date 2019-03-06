@@ -7,3 +7,5 @@
 .pytest_cache*
 XEditLib
 venv
+xelib_log.txt
+vim*

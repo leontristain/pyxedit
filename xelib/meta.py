@@ -12,8 +12,8 @@ class SortBy(Enum):
     Name = 3
 
 
-def initialize(lib_path):
-    raw_api.InitXEdit(lib_path)
+def initialize():
+    raw_api.InitXEdit()
 
 
 def finalize():
