@@ -9,5 +9,6 @@
         "strings": false
     },
     "editor.suggestOnTriggerCharacters": false,
-    "editor.parameterHints.enabled": false
+    "editor.parameterHints.enabled": false,
+    "python.pythonPath": "venv\\Scripts\\python.exe"
 }
