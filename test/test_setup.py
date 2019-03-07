@@ -53,6 +53,7 @@ class SetupTests(unittest.TestCase):
         with Xelib() as xelib:
             xelib.set_game_mode(xelib.Games.Skyrim)
             app_data_path = xelib.get_global('AppDataPath')
+            self.assertTrue(app_data_path)
 
         plugins_file = Path(app_data_path, 'plugins.txt')
         with backed_up(plugins_file):
