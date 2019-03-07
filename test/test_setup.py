@@ -32,6 +32,10 @@ def backed_up(path):
             shutil.move(back_up, path)
 
 
+def stripped_block(text):
+    return dedent(text).strip()
+
+
 class SetupTests(unittest.TestCase):
     def test_set_game_mode(self):
         with Xelib() as xelib:
@@ -57,12 +61,12 @@ class SetupTests(unittest.TestCase):
 
         plugins_file = Path(app_data_path, 'plugins.txt')
         with backed_up(plugins_file):
-            plugins_file.write_text(dedent('''
+            plugins_file.write_text(stripped_block('''
                 xtest-5.esp
 
                 # comment
                 NonExistingPlugin.esp
-                ''').strip())
+                '''))
             with Xelib() as xelib:
                 xelib.set_game_mode(xelib.Games.Skyrim)
                 load_order = xelib.get_load_order().split()
