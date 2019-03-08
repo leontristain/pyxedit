@@ -49,7 +49,7 @@ class ResourcesMethods(WrapperMethodsBase):
                       share=False,
                       af='',
                       ff=''):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.BuildArchive(name,
                                       folder,
                                       file_paths,

@@ -17,6 +17,7 @@ class HelpersMethods(WrapperMethodsBase):
         '''
         if not result and ex:
             raise XelibError(f'{error_msg}: {self.get_xelib_error_str()}')
+        return bool(result)
 
     def get_string(self, callback, method=None, error_msg='', ex=True):
         '''
@@ -105,12 +106,12 @@ class HelpersMethods(WrapperMethodsBase):
     def get_bool(self, callback, error_msg='', ex=True):
         error_prefix = f'{error_msg}: ' if error_msg else ''
 
-        res = ctypes.c_bool()
+        res = ctypes.c_ushort()
         if not callback(ctypes.byref(res)) and ex:
             raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                              f'parameter {repr(res)} failed: '
                              f'{self.get_xelib_error_str()}')
-        return res.value
+        return bool(res.value)
 
     def get_double(self, callback, error_msg='', ex=True):
         error_prefix = f'{error_msg}: ' if error_msg else ''
@@ -214,3 +215,26 @@ class HelpersMethods(WrapperMethodsBase):
     def get_xelib_error_str(self):
         return (f'xedit-lib message: {repr(self.get_exception_message())}; '
                 f'xedit-lib stack: {repr(self.get_exception_stack())}')
+
+    def safe_element_path(self, id_):
+        '''
+        Safely return a representative string of the given element path;
+        protects from api errors (as this is typically used in output strings
+        which may include error message strings)
+        '''
+        try:
+            return self.path(id_)
+        except XelibError:
+            return str(id_)
+
+    def element_context(self, id_, path=None):
+        if path:
+            return f'{self.safe_element_path(id_)}, "{path}"'
+        else:
+            return self.safe_element_path(id_)
+
+    def flag_context(self, id_, path, name):
+        return f'{self.safe_element_path(id_)}, "{path}\\{name}"'
+
+    def array_item_context(self, id_, path, subpath, value):
+        return f'{self.safe_element_path(id_)}, {path}, {subpath}, {value}'

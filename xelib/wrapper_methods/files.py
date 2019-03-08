@@ -24,18 +24,18 @@ class FilesMethods(WrapperMethodsBase):
             lambda res: self.raw_api.FileByAuthor(author, res))
 
     def nuke_file(self, id_):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.NukeFile(id_),
             error_msg=f'Failed to nuke file: {id_}')
 
     def rename_file(self, id_, new_file_name):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.RenameFile(id_, new_file_name),
             error_msg=f'Failed to rename file {self.element_context(id_)} to '
                       f'{new_file_name}')
 
     def save_file(self, id_, file_path):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SaveFile(id_, file_path),
             error_msg=f'Failed to save file {self.element_context(id_)}')
 
@@ -70,13 +70,13 @@ class FilesMethods(WrapperMethodsBase):
         return self.get_element(id_, 'File Header')
 
     def sort_editor_ids(self, id_, sig):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SortEditorIDs(id_, sig),
             error_msg=f'Failed to sort {sig} EditorIDs for: '
                       f'{self.element_context(id_)}')
 
     def sort_names(self, id_, sig):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SortNames(id_, sig),
             error_msg=f'Failed to sort {sig} Names for '
                       f'{self.element_context(id_)}')

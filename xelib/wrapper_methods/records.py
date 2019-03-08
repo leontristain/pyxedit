@@ -53,7 +53,7 @@ class RecordsMethods(WrapperMethodsBase):
         return f'{form_id:0>6X}' if local else f'{form_id:0>6X}'
 
     def set_form_id(self, id_, new_form_id, native=False, fix_references=True):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SetFormId(id_, new_form_id, native, fix_references),
             error_msg=f'Failed to set FormID on {self.element_context(id_)} to '
                       f'{new_form_id}')
@@ -140,7 +140,7 @@ class RecordsMethods(WrapperMethodsBase):
                       f'{self.element_context(id_)}')
 
     def exchange_references(self, id_, old_form_id, new_form_id):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.ExchangeReferences(id_, old_form_id, new_form_id),
             error_msg=f'Failed to exchange references on '
                       f'{self.element_context(id_)} from {old_form_id} to '

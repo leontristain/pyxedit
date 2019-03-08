@@ -49,10 +49,12 @@ class Xelib(ElementValuesMethods,
     def __enter__(self):
         if not self._raw_api:
             self._raw_api = self.load_lib(self.dll_path)
+            self.initialize()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         if self._raw_api:
+            self.finalize()
             kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
             kernel32.FreeLibrary.argtypes = [wintypes.HMODULE]
             kernel32.FreeLibrary(self._raw_api._handle)

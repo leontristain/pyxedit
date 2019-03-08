@@ -1,5 +1,7 @@
+from xelib.wrapper_methods.base import WrapperMethodsBase
 
-class ElementValuesMethods:
+
+class ElementValuesMethods(WrapperMethodsBase):
     def name(self, id_):
         return self.get_string(
             lambda len_: self.raw_api.Name(id_, len_),
@@ -146,28 +148,3 @@ class ElementValuesMethods:
         return self.get_dictionary(
             lambda len_: self.raw_api.GetSignatureNameMap(len_),
             error_msg=f'Failed to get signature name map')
-
-
-class ElementValuesUtilsMethods:
-    def safe_element_path(self, id_):
-        '''
-        Safely return a representative string of the given element path;
-        protects from api errors (as this is typically used in output strings
-        which may include error message strings)
-        '''
-        try:
-            return self.path(self, id_)
-        except self.XelibError:
-            return str(id_)
-
-    def element_context(self, id_, path=None):
-        if path:
-            return f'{self.safe_element_path(id_)}, "{path}"'
-        else:
-            return self.safe_element_path(id_)
-
-    def flag_context(self, id_, path, name):
-        return f'{self.safe_element_path(id_)}, "{path}\\{name}"'
-
-    def array_item_context(self, id_, path, subpath, value):
-        return f'{self.safe_element_path(id_)}, {path}, {subpath}, {value}'

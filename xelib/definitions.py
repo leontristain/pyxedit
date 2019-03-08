@@ -1,4 +1,4 @@
-from ctypes import c_bool, c_double, c_int, c_ubyte, c_uint, c_wchar_p, POINTER
+from ctypes import c_ushort, c_double, c_int, c_ubyte, c_uint, c_wchar_p, POINTER
 from enum import Enum, unique
 
 
@@ -27,12 +27,12 @@ class DelphiTypes(Enum):
     Cardinal = c_uint
     Double = c_double
     Integer = c_int
-    WordBool = c_bool
+    WordBool = c_ushort
     PByte = POINTER(c_ubyte)
     PCardinal = POINTER(c_uint)
     PDouble = POINTER(c_double)
     PInteger = POINTER(c_int)
-    PWordBool = POINTER(c_bool)
+    PWordBool = POINTER(c_ushort)
     PWideChar = c_wchar_p
 
 
