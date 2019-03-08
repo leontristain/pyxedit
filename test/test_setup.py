@@ -6,7 +6,6 @@ import shutil
 from textwrap import dedent
 import time
 
-
 from xelib import Xelib, XelibError
 
 
@@ -97,7 +96,14 @@ def loaded_xelib():
         yield xelib
 
 
-class TestSetGameMode:
+class TestSetup:
+    def app_data_path(self, file_name):
+        with Xelib() as xelib:
+            xelib.set_game_mode(xelib.Games.Skyrim)
+            app_data_path = xelib.get_global('AppDataPath')
+            assert app_data_path
+        return Path(app_data_path, file_name)
+
     def test_set_game_mode(self):
         with Xelib() as xelib:
             # AppDataPath should not be set at the beginning
@@ -113,15 +119,6 @@ class TestSetGameMode:
 
             # AppDataPath should now be accessible
             assert xelib.get_global('AppDataPath')
-
-
-class TestPluginsInspection:
-    def app_data_path(self, file_name):
-        with Xelib() as xelib:
-            xelib.set_game_mode(xelib.Games.Skyrim)
-            app_data_path = xelib.get_global('AppDataPath')
-            assert app_data_path
-        return Path(app_data_path, file_name)
 
     def test_get_load_order(self):
         plugins_file = self.app_data_path('plugins.txt')
@@ -187,8 +184,6 @@ class TestPluginsInspection:
                 assert 'Skyrim.esm' in plugins
                 assert 'Update.esm' in plugins
 
-
-class TestSetup:
     def test_load_plugins(self, loaded_xelib):
         # there should be 10 files
         assert loaded_xelib.get_global('FileCount') == '10'
@@ -199,3 +194,29 @@ class TestSetup:
         with Timer() as build_references_time:
             assert loaded_xelib.build_references(file_handle, sync=False)
         assert build_references_time.seconds < 2
+
+    def test_unload_load_plugin(self, loaded_xelib):
+        # should fail if required by other loaded plugins
+        handle = loaded_xelib.file_by_name('Update.esm')
+        with pytest.raises(XelibError):
+            loaded_xelib.unload_plugin(handle)
+
+        # otherwise, unload should be successful
+        handle = loaded_xelib.file_by_name('xtest-5.esp')
+        assert loaded_xelib.unload_plugin(handle)
+
+        # should update FileCount global
+        assert loaded_xelib.get_global('FileCount') == '9'
+
+        # should be able to load it back in
+        loaded_xelib.load_plugin('xtest-5.esp')
+        assert (loaded_xelib.get_loader_status() ==
+                loaded_xelib.LoaderStates.lsActive)
+        with Timer() as load_time:
+            while (loaded_xelib.get_loader_status() ==
+                   loaded_xelib.LoaderStates.lsActive):
+                time.sleep(0.1)
+        assert load_time.seconds < 0.5
+
+        # should update FileCount global
+        assert loaded_xelib.get_global('FileCount') == '10'
