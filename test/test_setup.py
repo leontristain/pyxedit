@@ -189,10 +189,10 @@ class TestSetup:
         assert loaded_xelib.get_global('FileCount') == '10'
 
     def test_build_references(self, loaded_xelib):
-        file_handle = loaded_xelib.file_by_name('xtest-2.esp')
+        handle = loaded_xelib.file_by_name('xtest-2.esp')
 
         with Timer() as build_references_time:
-            assert loaded_xelib.build_references(file_handle, sync=False)
+            assert loaded_xelib.build_references(handle, sync=False)
         assert build_references_time.seconds < 2
 
     def test_unload_load_plugin(self, loaded_xelib):
