@@ -54,7 +54,7 @@ class ElementValuesMethods(WrapperMethodsBase):
             ex=ex)
 
     def set_value(self, id_, value, path=''):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SetValue(id_, path, value),
             error_msg=f'Failed to set element value at '
                       f'{self.element_context(id_, path)}')
@@ -67,7 +67,7 @@ class ElementValuesMethods(WrapperMethodsBase):
             ex=ex)
 
     def set_int_value(self, id_, value, path=''):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SetIntValue(id_, path, value),
             error_msg=f'Failed to set int value at '
                       f'{self.element_context(id_, path)}')
@@ -80,7 +80,7 @@ class ElementValuesMethods(WrapperMethodsBase):
             ex=ex)
 
     def set_uint_value(self, id_, value, path=''):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SetUIntValue(id_, path, value),
             error_msg=f'Failed to set uint value at '
                       f'{self.element_context(id_, path)}')
@@ -93,13 +93,13 @@ class ElementValuesMethods(WrapperMethodsBase):
             ex=ex)
 
     def set_float_value(self, id_, value, path=''):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SetFloatValue(id_, path, value),
             error_msg=f'Failed to set uint value at '
                       f'{self.element_context(id_, path)}')
 
     def set_flag(self, id_, path, name, state):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SetFlag(id_, path, name, state),
             error_msg=f'Failed to set flag value at '
                       f'{self.flag_context(id_, path, name)} to {state}')
@@ -111,22 +111,24 @@ class ElementValuesMethods(WrapperMethodsBase):
                       f'{self.flag_context(id_, path, name)}')
 
     def get_enabled_flags(self, id_, path=''):
-        return self.get_string(
+        comma_separated_flags = self.get_string(
             lambda len_: self.raw_api.GetEnabledFlags(id_, path, len_),
             error_msg=f'Failed to get enabled flags at: '
-                      f'{self.element_context(id_, path)}').split(',')
+                      f'{self.element_context(id_, path)}')
+        return comma_separated_flags.split(',') if comma_separated_flags else []
 
     def set_enabled_flags(self, id_, path, flags):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SetEnabledFlags(id_, path, ','.join(flags)),
             error_msg=f'Failed to set enabled flags at '
                       f'{self.element_context(id_, path)}')
 
     def get_all_flags(self, id_, path=''):
-        return self.get_string(
+        comma_separated_flags = self.get_string(
             lambda len_: self.raw_api.GetAllFlags(id_, path, len_),
             error_msg=f'Failed to get all flags at: '
                       f'{self.element_context(id_, path)}')
+        return comma_separated_flags.split(',') if comma_separated_flags else []
 
     def get_enum_options(self, id_, path=''):
         return self.get_string(
