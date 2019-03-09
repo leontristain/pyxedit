@@ -1,99 +1,11 @@
-from contextlib import contextmanager
-import os
 from pathlib import Path
 import pytest
-import shutil
-from textwrap import dedent
 import time
 
 from xelib import Xelib, XelibError
 
-
-@contextmanager
-def backed_up(path):
-    path = Path(path)
-    back_up = path.parent / f'{path.name}.bak'
-    try:
-        if path.is_file():
-            shutil.copyfile(path, back_up)
-        elif path.is_dir():
-            shutil.copytree(path, back_up)
-        elif path.exists():
-            raise ValueError(f'backed_up expected file or folder, got '
-                             f'something else')
-        yield
-    finally:
-        if back_up.is_file():
-            shutil.copyfile(back_up, path)
-            os.remove(back_up)
-        elif back_up.is_dir():
-            if path.exists():
-                shutil.rmtree(path)
-            shutil.move(back_up, path)
-
-
-class Timer:
-    def __init__(self):
-        self._start = None
-        self._end = None
-
-    def __enter__(self):
-        self._start = time.time()
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        self._end = time.time()
-
-    @property
-    def start(self):
-        if self._start is None:
-            raise ValueError('Timer has not started execution')
-        return self._start
-
-    @property
-    def end(self):
-        if self._end is None:
-            raise ValueError('Timer has not finished execution')
-        return self._end
-
-    @property
-    def seconds(self):
-        return self.end - self.start
-
-
-def stripped_block(text):
-    return dedent(text).strip()
-
-
-@pytest.fixture
-def xelib():
-    with Xelib() as xelib:
-        xelib.set_game_mode(xelib.Games.Skyrim)
-        yield xelib
-
-
-@pytest.fixture(scope='class')
-def loaded_xelib():
-    with Xelib() as xelib:
-        xelib.set_game_mode(xelib.Games.Skyrim)
-        xelib.load_plugins(stripped_block('''
-                    Skyrim.esm
-                    Update.esm
-                    Dawnguard.esm
-                    HearthFires.esm
-                    Dragonborn.esm
-                    xtest-1.esp
-                    xtest-2.esp
-                    xtest-3.esp
-                    xtest-4.esp
-                    xtest-5.esp
-                    '''))
-        assert xelib.get_loader_status() == xelib.LoaderStates.lsActive
-        with Timer() as load_time:
-            while xelib.get_loader_status() == xelib.LoaderStates.lsActive:
-                time.sleep(0.1)
-        assert load_time.seconds < 10.0
-        yield xelib
+from . fixtures import xelib  # NOQA: for pytest
+from . utils import backed_up, Timer, stripped_block
 
 
 class TestSetup:
@@ -184,39 +96,38 @@ class TestSetup:
                 assert 'Skyrim.esm' in plugins
                 assert 'Update.esm' in plugins
 
-    def test_load_plugins(self, loaded_xelib):
-        # there should be 10 files
-        assert loaded_xelib.get_global('FileCount') == '10'
+    def test_load_plugins(self, xelib):
+        # there should be 11 files
+        # (hardcoded + Skyrim + Update + 3 DLCs + 5 test esps)
+        assert xelib.get_global('FileCount') == '11'
 
-    def test_build_references(self, loaded_xelib):
-        handle = loaded_xelib.file_by_name('xtest-2.esp')
+    def test_build_references(self, xelib):
+        handle = xelib.file_by_name('xtest-2.esp')
 
         with Timer() as build_references_time:
-            assert loaded_xelib.build_references(handle, sync=False)
+            assert xelib.build_references(handle, sync=False)
         assert build_references_time.seconds < 2
 
-    def test_unload_load_plugin(self, loaded_xelib):
+    def test_unload_load_plugin(self, xelib):
         # should fail if required by other loaded plugins
-        handle = loaded_xelib.file_by_name('Update.esm')
+        handle = xelib.file_by_name('Update.esm')
         with pytest.raises(XelibError):
-            loaded_xelib.unload_plugin(handle)
+            xelib.unload_plugin(handle)
 
         # otherwise, unload should be successful
-        handle = loaded_xelib.file_by_name('xtest-5.esp')
-        assert loaded_xelib.unload_plugin(handle)
+        handle = xelib.file_by_name('xtest-5.esp')
+        assert xelib.unload_plugin(handle)
 
         # should update FileCount global
-        assert loaded_xelib.get_global('FileCount') == '9'
+        assert xelib.get_global('FileCount') == '10'
 
         # should be able to load it back in
-        loaded_xelib.load_plugin('xtest-5.esp')
-        assert (loaded_xelib.get_loader_status() ==
-                loaded_xelib.LoaderStates.lsActive)
+        xelib.load_plugin('xtest-5.esp')
+        assert xelib.get_loader_status() == xelib.LoaderStates.lsActive
         with Timer() as load_time:
-            while (loaded_xelib.get_loader_status() ==
-                   loaded_xelib.LoaderStates.lsActive):
+            while xelib.get_loader_status() == xelib.LoaderStates.lsActive:
                 time.sleep(0.1)
         assert load_time.seconds < 0.5
 
         # should update FileCount global
-        assert loaded_xelib.get_global('FileCount') == '10'
+        assert xelib.get_global('FileCount') == '11'
