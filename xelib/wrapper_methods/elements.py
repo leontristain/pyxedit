@@ -86,7 +86,7 @@ class ElementsMethods(WrapperMethodsBase):
         return self.get_bool(
             lambda res: self.raw_api.HasElement(id_, path, res),
             error_msg=f'Failed to check if element exists at '
-                      f'{self.element_context(id, path)}')
+                      f'{self.element_context(id_, path)}')
 
     def get_element(self, id_, path='', ex=False):
         return self.get_handle(
@@ -108,20 +108,20 @@ class ElementsMethods(WrapperMethodsBase):
                       f'{self.element_context(id_, path)}, with value: {value}')
 
     def remove_element(self, id_, path='', ex=False):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.RemoveElement(id_, path),
             error_msg=f'Failed to remove element at '
                       f'{self.element_context(id_, path)}',
             ex=ex)
 
     def remove_element_or_parent(self, id_):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.RemoveElementOrParent(id_),
             error_msg=f'Failed to remove element '
                       f'{self.element_context(id_)}')
 
     def set_element(self, id1, id2):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SetElement(id1, id2),
             error_msg=f'Failed to remove element at '
                       f'{self.element_context(id2)} to '
@@ -153,7 +153,7 @@ class ElementsMethods(WrapperMethodsBase):
             ex=ex)
 
     def set_links_to(self, id_, id2, path=''):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SetLinksTo(id_, path, id2),
             error_msg=f'Failed to set reference at '
                       f'{self.element_context(id_, path)}')
@@ -224,13 +224,13 @@ class ElementsMethods(WrapperMethodsBase):
                       f'{self.array_item_context(id_, path, subpath, value)}')
 
     def remove_array_item(self, id_, path, subpath, value):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.RemoveArrayItem(id_, path, subpath, value),
             error_msg=f'Failed to remove array item '
                       f'{self.array_item_context(id_, path, subpath, value)}')
 
     def move_array_item(self, id_, index):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.MoveArrayItem(id_, index),
             error_msg=f'Failed to move array item {self.element_context(id_)} '
                       f'to {index}')
@@ -288,7 +288,7 @@ class ElementsMethods(WrapperMethodsBase):
                       f'{self.element_context(id_)}')
 
     def set_is_editable(self, id_, bool_):
-        self.verify_execution(
+        return self.verify_execution(
             self.raw_api.SetIsEditable(id_, bool_),
             error_msg=f'Failed to set is editable for '
                       f'{self.element_context(id_)}')
