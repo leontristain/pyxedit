@@ -231,7 +231,7 @@ class TestElementValues:
         xelib.set_value(data.element, '14.100000')
         assert xelib.get_value(data.element) == '14.100000'
 
-        xelib.set_value(data.keyword, 'ArmorLight [KYWD:0006BBD3]')        
+        xelib.set_value(data.keyword, 'ArmorLight [KYWD:0006BBD3]')
         assert xelib.get_value(data.keyword) == 'ArmorLight [KYWD:0006BBD3]'
 
         # should set element value at path
