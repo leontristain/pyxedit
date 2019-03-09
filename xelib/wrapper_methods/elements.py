@@ -107,7 +107,7 @@ class ElementsMethods(WrapperMethodsBase):
             error_msg=f'Failed to create new element at '
                       f'{self.element_context(id_, path)}, with value: {value}')
 
-    def remove_element(self, id_, path='', ex=False):
+    def remove_element(self, id_, path='', ex=True):
         return self.verify_execution(
             self.raw_api.RemoveElement(id_, path),
             error_msg=f'Failed to remove element at '

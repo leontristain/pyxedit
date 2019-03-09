@@ -71,7 +71,6 @@ class TestElements:
 
     def test_get_element(self, xelib):
         data = self.get_data(xelib)
-
         get_element = functools.partial(xelib.get_element, ex=True)
 
         # should return a handle if the index is in bounds
@@ -217,3 +216,113 @@ class TestElements:
         # should fail if any subpath is invalid
         with pytest.raises(XelibError):
             get_element(0, path='Skyrim.esm\\ARMO\\00012E46\\ABCD')
+
+    def test_add_element_remove_element(self, xelib):
+        data = self.get_data(xelib)
+
+        # should create a new file if no handle given
+        # should NOT be able to remove files
+        assert not xelib.get_element(0, path='NewFile-1.esp')
+        xelib.add_element(0, path='NewFile-1.esp')
+        assert xelib.get_element(0, path='NewFile-1.esp')
+        with pytest.raises(XelibError):
+            xelib.remove_element(0, path='NewFile-1.esp')
+        assert xelib.get_element(0, path='NewFile-1.esp')
+
+        # should be able to add groups to files, even existing ones
+        # should be able to remove groups from files
+        assert xelib.get_element(data.xt3, path='ARMO')
+        assert not xelib.get_element(data.xt3, path='CELL')
+        xelib.add_element(data.xt3, path='ARMO')
+        xelib.add_element(data.xt3, path='CELL')
+        assert xelib.get_element(data.xt3, path='ARMO')
+        assert xelib.get_element(data.xt3, path='CELL')
+        xelib.remove_element(data.xt3, path='CELL')
+        assert xelib.get_element(data.xt3, path='ARMO')
+        assert not xelib.get_element(data.xt3, path='CELL')
+
+        # should be able to override records in files
+        assert not xelib.get_element(data.xt3, path='0001392A')
+        assert xelib.element_count(data.armo2) == 1
+        xelib.add_element(data.xt3, path='0001392A')
+        assert xelib.get_element(data.xt3, path='0001392A')
+        assert xelib.element_count(data.armo2) == 2
+
+        # record override should not work if record being overridden is not a
+        # master, but should work if is a master
+        assert not xelib.get_element(data.xt3, path='0403C0F6')
+        # TODO: apparently this causes xedit-lib to hang; probably why xedit-lib
+        # did not have this check prior to setting the master
+        # with pytest.raises(XelibError):
+        #     xelib.add_element(data.xt3, path='0403C0F6')
+        assert not xelib.get_element(data.xt3, path='0403C0F6')
+
+        assert xelib.get_master_names(data.xt3) == ['Skyrim.esm', 'Update.esm']
+        xelib.add_master(data.xt3, 'Dragonborn.esm')
+        assert xelib.get_master_names(data.xt3) == ['Skyrim.esm',
+                                                    'Update.esm',
+                                                    'Dragonborn.esm']
+
+        assert not xelib.get_element(data.xt3, path='0403C0F6')
+        xelib.add_element(data.xt3, path='0403C0F6')
+        assert xelib.get_element(data.xt3, path='0403C0F6')
+        xelib.remove_element(data.xt3, path='0403C0F6')
+        assert not xelib.get_element(data.xt3, path='0403C0F6')
+
+        # should be able to add records to groups
+        # should be able to remove records from groups
+        assert xelib.element_count(data.armo2) == 2
+        xelib.add_element(data.armo2, path='ARMO')
+        assert xelib.element_count(data.armo2) == 3
+        xelib.remove_element(data.armo2, path='[2]')
+        assert xelib.element_count(data.armo2) == 2
+        xelib.remove_element(data.armo2, path='[1]')
+        assert xelib.element_count(data.armo2) == 1
+
+        # should be able to create a new element on a record, even existing ones
+        # should be able to remove elements from records
+        assert xelib.get_element(data.ar2, path='EDID - Editor ID')
+        assert not xelib.get_element(data.ar2, path='Destructible')
+        xelib.add_element(data.ar2, path='EDID - Editor ID')
+        xelib.add_element(data.ar2, path='Destructible')
+        assert xelib.get_element(data.ar2, path='EDID - Editor ID')
+        assert xelib.get_element(data.ar2, path='Destructible')
+        xelib.remove_element(data.ar2, path='Destructible')
+        assert not xelib.get_element(data.ar2, path='Destructible')
+
+        # should be able to push a new element onto an array
+        # should be able to insert an element at an index in an array
+        # should be able to remove an element from an array
+        assert xelib.element_count(data.keywords) == 5
+        assert xelib.element_count(data.armature) == 1
+        xelib.add_element(data.keywords, path='.')
+        xelib.add_element(data.armature, path='.')
+        assert xelib.element_count(data.keywords) == 6
+        assert xelib.element_count(data.armature) == 2
+        xelib.add_element(data.armature, '^0')
+        assert xelib.element_count(data.armature) == 3
+        xelib.remove_element(data.keywords, '[0]')
+        xelib.remove_element(data.armature, '[0]')
+        assert xelib.element_count(data.keywords) == 5
+        assert xelib.element_count(data.armature) == 2
+
+        # should be able to remove the last element in an array
+        # TODO: this test is not working for some reason, in xedit I also don't
+        # see such a path under xtest-4.esp, yet it works with xedit-lib tests;
+        # I might need help with this one
+        # assert xelib.get_element(0, 'xtest-4.esp\\05000802\\Armature\\[0]')
+        # xelib.remove_element(0, 'xtest-4.esp\\05000802\\Armature\\[0]')
+        # assert not xelib.get_element(0, 'xtest-4.esp\\05000802\\Armature\\[0]')
+
+        # should fail to add element if interface is not a container
+        element = xelib.get_element(data.ar2, path='FULL')
+        with pytest.raises(XelibError):
+            xelib.add_element(element, path='.')
+
+        # should fail to remove if null handle is passed
+        with pytest.raises(XelibError):
+            xelib.remove_element(0, '')
+
+        # should fail if no element exists at the given path
+        with pytest.raises(XelibError):
+            xelib.remove_element(data.ar3, 'YNAM')

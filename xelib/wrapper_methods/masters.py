@@ -40,7 +40,7 @@ class MastersMethods(WrapperMethodsBase):
 
     def get_master_names(self, id_):
         return self.get_string_array(
-            lambda len_: self.raw_api.GetMasterNames(id, len_),
+            lambda len_: self.raw_api.GetMasterNames(id_, len_),
             error_msg=f'Failed to get master names for '
                       f'{self.element_context(id_)}')
 
