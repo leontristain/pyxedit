@@ -982,7 +982,7 @@ class TestElements:
         # should raise an exception if a null handle is passed
         with pytest.raises(XelibError):
             xelib.get_signature_allowed(0, 'TES4')
-        
+
         # should raise an exception if element isn't an integer
         with pytest.raises(XelibError):
             xelib.get_signature_allowed(data.skyrim, 'TES4')
@@ -1002,7 +1002,7 @@ class TestElements:
 
         # should work with checked references
         assert xelib.get_allowed_signatures(data.keyword) == ['KYWD', 'NULL']
-        
+
         # should work with union elements
         h = xelib.get_element(
                       data.skyrim,
