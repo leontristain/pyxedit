@@ -580,7 +580,7 @@ class TestElements:
         # should return the referenced record
         assert get_links_to_name(data.keyword) == 'PerkFistsIron'
         assert get_links_to_name(data.ar1, path='RNAM') == 'Default Race'
-        
+
         # should work on unions
         assert get_links_to_name(
                    data.skyrim, path='0009CD51\\DATA\\Teaches') == 'Flames'
@@ -589,7 +589,7 @@ class TestElements:
         h = xelib.get_element(data.skyrim, path='000FF1DE')
         assert get_links_to_name(
                    h, path='NVNM\\Edge Links\\[0]\\Mesh') == '[NAVM:000FF1CB]'
-        
+
         # should fail if called on a null reference
         with pytest.raises(XelibError):
             xelib.get_links_to(data.armo2, path='ZNAM', ex=True)
