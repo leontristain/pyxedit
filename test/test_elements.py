@@ -448,25 +448,239 @@ class TestElements:
         assert len(children) == 15037
 
     def test_get_def_names(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should work with main records
+        assert xelib.get_def_names(data.ar1) == [
+                   'Record Header',
+                   'EDID - Editor ID',
+                   'VMAD - Virtual Machine Adapter',
+                   'OBND - Object Bounds',
+                   'FULL - Name',
+                   'EITM - Object Effect',
+                   'EAMT - Enchantment Amount',
+                   'Male world model',
+                   'Icon',
+                   'Female world model',
+                   'Icon 2 (female)',
+                   'Biped Body Template',
+                   'Destructible',
+                   'YNAM - Sound - Pick Up',
+                   'ZNAM - Sound - Put Down',
+                   'BMCT - Ragdoll Constraint Template',
+                   'ETYP - Equipment Type',
+                   'BIDS - Bash Impact Data Set',
+                   'BAMT - Alternate Block Material',
+                   'RNAM - Race',
+                   'KSIZ - Keyword Count',
+                   'KWDA - Keywords',
+                   'DESC - Description',
+                   'Armature',
+                   'DATA - Data',
+                   'DNAM - Armor Rating',
+                   'TNAM - Template Armor']
+
+        # should include additional elements
+        h = xelib.get_element(data.skyrim, path='000094BD')
+        assert xelib.get_def_names(h) == [
+                   'Worldspace',
+                   'Record Header',
+                   'EDID - Editor ID',
+                   'FULL - Name',
+                   'DATA - Flags',
+                   'XCLC - Grid',
+                   'XCLL - Lighting',
+                   'TVDT - Occlusion Data',
+                   'MHDT - Max Height Data',
+                   'LTMP - Lighting Template',
+                   'LNAM - Unknown',
+                   'XCLW - Water Height',
+                   'XNAM - Water Noise Texture',
+                   'XCLR - Regions',
+                   'XLCN - Location',
+                   'XWCN - Unknown',
+                   'XWCS - Unknown',
+                   'XWCU - Water Velocity',
+                   'XCWT - Water',
+                   'Ownership',
+                   'XILL - Lock List',
+                   'XWEM - Water Environment Map',
+                   'XCCM - Sky/Weather from Region',
+                   'XCAS - Acoustic Space',
+                   'XEZN - Encounter Zone',
+                   'XCMO - Music Type',
+                   'XCIM - Image Space']
+
+        # should work with structs
+        h = xelib.get_element(data.ar1, path='OBND')
+        assert xelib.get_def_names(h) == [
+                   'X1', 'Y1', 'Z1', 'X2', 'Y2', 'Z2']
+
+        # should work with unions
+        h = xelib.get_element(data.skyrim, path='00000DD6\\DATA')
+        assert xelib.get_def_names(h) == ['Float']
+
+        # should work with VMAD Object Unions
+        h = xelib.get_element(0, path='Update.esm\\0100080E\\VMAD\\Scripts\\'
+                                      '[0]\\Properties\\[0]\\Value\\'
+                                      'Object Union')
+        assert xelib.get_def_names(h) == ['Object v2']
+
+        h = xelib.get_element(h, path='Object v2')
+        assert xelib.get_def_names(h) == ['FormID', 'Alias', 'Unused']
 
     def test_get_container(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should return the file containing a group
+        assert xelib.get_container(data.armo1)
+
+        # should return the group containing a record
+        assert xelib.get_container(data.ar1)
+
+        # should return the record containing an element
+        h = xelib.get_element(data.ar1, path='EDID')
+        assert xelib.get_container(h)
+
+        h = xelib.get_element(data.refr, path='Record Header')
+        assert xelib.get_container(h)
+
+        # should return the parent element containing a child element
+        h = xelib.get_element(data.ar1, path='BODT\\Armor Type')
+        assert xelib.get_container(h)
+
+        # should fail if called on a file
+        with pytest.raises(XelibError):
+            xelib.get_container(data.skyrim, ex=True)
 
     def test_get_element_file(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should return the input if the input is a file
+        assert xelib.name(xelib.get_element_file(data.skyrim)) == 'Skyrim.esm'
+
+        # should return the file containing a group
+        assert xelib.name(xelib.get_element_file(data.armo1)) == 'Skyrim.esm'
+
+        # should return the file containing a record
+        assert xelib.name(xelib.get_element_file(data.ar1)) == 'Skyrim.esm'
+        assert xelib.name(xelib.get_element_file(data.ar2)) == 'xtest-2.esp'
+        assert xelib.name(xelib.get_element_file(data.ar3)) == 'xtest-3.esp'
+
+        # should return the file containing an element
+        assert xelib.name(xelib.get_element_file(data.keywords)) == 'Skyrim.esm'
+        assert xelib.name(xelib.get_element_file(data.entries)) == 'xtest-2.esp'
 
     def test_get_links_to(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        def get_links_to_name(*args, **kwargs):
+            return xelib.name(xelib.get_links_to(*args, **kwargs))
+
+        # should return the referenced record
+        assert get_links_to_name(data.keyword) == 'PerkFistsIron'
+        assert get_links_to_name(data.ar1, path='RNAM') == 'Default Race'
+        
+        # should work on unions
+        assert get_links_to_name(
+                   data.skyrim, path='0009CD51\\DATA\\Teaches') == 'Flames'
+
+        # should work with navmesh edge links
+        h = xelib.get_element(data.skyrim, path='000FF1DE')
+        assert get_links_to_name(
+                   h, path='NVNM\\Edge Links\\[0]\\Mesh') == '[NAVM:000FF1CB]'
+        
+        # should fail if called on a null reference
+        with pytest.raises(XelibError):
+            xelib.get_links_to(data.armo2, path='ZNAM', ex=True)
+
+        # should fail if path is invalid
+        with pytest.raises(XelibError):
+            xelib.get_links_to(data.keywords, path='[99]', ex=True)
+
+        # should fail on elements that cannot store a reference
+        with pytest.raises(XelibError):
+            xelib.get_links_to(0, ex=True)
+        with pytest.raises(XelibError):
+            xelib.get_links_to(data.skyrim, ex=True)
+        with pytest.raises(XelibError):
+            xelib.get_links_to(data.ar1, ex=True)
+        with pytest.raises(XelibError):
+            xelib.get_links_to(data.dnam, ex=True)
+
+        # should be fast
+        # NOTE: not implementing this one, seems weird to run a performance
+        # test on a wrapper that just invokes the DLL which is already
+        # performance-tested
 
     def test_set_links_to(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should set references
+        h_start = xelib.get_links_to(data.keyword)
+        h = xelib.get_element(0, path='Skyrim.esm\\0002C17B')
+        assert xelib.name(h_start) == 'PerkFistsIron'
+        xelib.set_links_to(data.keyword, h)
+        assert xelib.name(xelib.get_links_to(data.keyword)) == 'PerkFistsDaedric'
+        xelib.set_links_to(data.keyword, h_start)
+        assert xelib.name(xelib.get_links_to(data.keyword)) == 'PerkFistsIron'
 
     def test_element_count(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should return number of files if null handle is passed
+        assert xelib.element_count(0) == 11
+
+        # should return the number of elements in a file
+        assert xelib.element_count(data.skyrim) == 118
+
+        # should return number of elements in a group
+        assert xelib.element_count(data.armo1) == 2762
+
+        # should return the number of elements in a record
+        assert xelib.element_count(data.ar1) == 13
+
+        # should return the number of elements in a subrecord
+        assert xelib.element_count(data.keywords) == 5
+
+        # should return 0 if there are no children
+        assert xelib.element_count(data.dnam) == 0
 
     def test_element_equals(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should return true for same element
+        h = xelib.get_element(0, path='Skyrim.esm')
+        assert xelib.element_equals(data.skyrim, h)
+
+        h = xelib.get_element(data.skyrim, path='ARMO')
+        assert xelib.element_equals(data.armo1, h)
+
+        h = xelib.get_element(data.armo1, path='00012E46')
+        assert xelib.element_equals(data.ar1, h)
+
+        h = xelib.get_element(data.ar1, path='KWDA')
+        assert xelib.element_equals(data.keywords, h)
+
+        h = xelib.get_element(data.ar1, path='DNAM')
+        assert xelib.element_equals(data.dnam, h)
+
+        # should return false for different elements holding the same value
+        h = xelib.get_element(data.ar2, path='DNAM')
+        assert not xelib.element_equals(data.dnam, h)
+
+        h = xelib.get_element(data.ar2, path='KWDA')
+        assert not xelib.element_equals(data.keywords, h)
+
+        # should return false for different elements
+        assert not xelib.element_equals(data.skyrim, data.armo1)
+        assert not xelib.element_equals(data.armo1, data.ar1)
+        assert not xelib.element_equals(data.ar1, data.keywords)
+        assert not xelib.element_equals(data.keywords, data.dnam)
+
+        # should fail if null handle passed
+        with pytest.raises(XelibError):
+            xelib.element_equals(0, 0)
 
     def test_element_matches(self, xelib):
         raise NotImplementedError
