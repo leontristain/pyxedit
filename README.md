@@ -8,7 +8,10 @@ Python API for xedit-lib
     if you play SSE since you can have a pristine test environment without
     impacting your actual modded game)
 2. copy the test esps from the XEditLib folder to your Skyrim Data directory
-3. with everything in `requirements.txt` installed, run `pytest -v test` from
+3. for the time being, copy the `Skyrim.Hardcoded.dat` file from the XEditLib
+    folder to the root of your python installation (possibly something like
+    `%localappdata%/Programs/Python/Python37`).
+4. with everything in `requirements.txt` installed, run `pytest -v test` from
     root of the code base
 
 Note that running tests will sometimes modify files in your `%localappdata`'s
