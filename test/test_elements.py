@@ -870,22 +870,300 @@ class TestElements:
         pytest.skip('xedit-lib has not yet implemented this one')
 
     def test_copy_element(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # before anything else, add xt2, xt4 as masters to xt5
+        assert ([xelib.name(id_) for id_ in xelib.get_masters(data.xt5)] ==
+                ['Skyrim.esm', 'Update.esm'])
+        xelib.add_master(data.xt5, 'xtest-2.esp')
+        xelib.add_master(data.xt5, 'xtest-4.esp')
+        assert ([xelib.name(id_) for id_ in xelib.get_masters(data.xt5)] ==
+                ['Skyrim.esm', 'Update.esm', 'xtest-2.esp', 'xtest-4.esp'])
+
+        # should be able to deep copy groups
+        source = xelib.get_element(0, 'xtest-2.esp\\ARMO')
+        h = xelib.copy_element(source, data.xt5, as_new=True)
+        assert xelib.name(xelib.get_element_file(h)) == 'xtest-5.esp'
+        assert xelib.is_master(xelib.get_element(h, path='[0]'))
+
+        # should be able to deep copy records
+        source = xelib.get_element(0, 'xtest-2.esp\\00013739')
+        h = xelib.copy_element(source, data.xt5, as_new=True)
+        assert xelib.name(xelib.get_element_file(h)) == 'xtest-5.esp'
+        assert xelib.is_master(h)
+
+        # should be able to deep copy elements
+        try:
+            assert xelib.add_array_item(
+                            0, 'xtest-3.esp\\00012E46\\KWDA', '', '0006BBD4')
+            rec = xelib.get_element(0, path='xtest-5.esp\\ARMO\\[0]')
+            assert rec
+            source = xelib.get_element(0, 'xtest-3.esp\\00012E46\\KWDA')
+            h = xelib.copy_element(source, rec, as_new=True)
+            assert xelib.name(xelib.get_element_file(h)) == 'xtest-5.esp'
+            assert xelib.element_count(h) == 6
+        finally:
+            assert xelib.remove_array_item(
+                       0, 'xtest-3.esp\\00012E46\\KWDA', '', '0006BBD4')
+
+        # should be able to copy array elements
+        try:
+            h = xelib.get_element(data.ar3, 'KWDA')
+            assert h
+            source = xelib.get_element(0, 'xtest-3.esp\\00012E46\\KWDA\\[0]')
+            h = xelib.copy_element(source, h, as_new=True)
+            assert xelib.name(xelib.get_element_file(h)) == 'xtest-3.esp'
+            assert xelib.element_count(xelib.get_container(h)) == 6
+        finally:
+            assert xelib.remove_array_item(data.ar3, 'KWDA', '', '000424EF')
+
+        # should be able to override records
+        source = xelib.get_element(0, 'xtest-2.esp\\00012E46')
+        h = xelib.copy_element(source, data.xt5)
+        assert xelib.name(xelib.get_element_file(h)) == 'xtest-5.esp'
+        assert not xelib.is_master(h)
+
+        # should copy records with Deleted References (UDRs)
+        source = xelib.get_element(0, 'xtest-4.esp\\00027DE7')
+        h = xelib.copy_element(source, data.xt5)
+        assert xelib.name(xelib.get_element_file(h)) == 'xtest-5.esp'
+
+        # should copy records with Unexpected References (UERs)
+        # should be able to remove the last element in an array
+        # TODO: this test is not working for some reason, in xedit I also don't
+        # see such a path under xtest-4.esp, yet it works with xedit-lib tests;
+        # somehow... I might need help with this one
+        # source = xelib.get_element(0, 'xtest-4.esp\\05000800')
+        # assert source
+        # h = xelib.copy_element(source, data.xt5)
+        # assert xelib.name(xelib.get_element_file(h)) == 'xtest-5.esp'
+
+        # should copy records with Unresolved References (URRs)
+        # source = xelib.get_element(0, 'xtest-4.esp\\05000801')
+        # h = xelib.copy_element(source, data.xt5)
+        # assert xelib.name(xelib.get_element_file(h)) == 'xtest-5.esp'
+
+        # should copy records with Unexpected Subrecords (UESs)
+        # source = xelib.get_element(0, 'xtest-4.esp\\05000802')
+        # h = xelib.copy_element(source, data.xt5)
+        # assert xelib.name(xelib.get_element_file(h)) == 'xtest-5.esp'
+
+        # remove masters we added at the beginning of this test
+        xelib.clean_masters(data.xt5)
+        xelib.add_master(data.xt5, 'Skyrim.esm')
+        xelib.add_master(data.xt5, 'Update.esm')
+        assert ([xelib.name(id_) for id_ in xelib.get_masters(data.xt5)] ==
+                ['Skyrim.esm', 'Update.esm'])
 
     def test_get_signature_allowed(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should return true if signature is allowed
+        assert xelib.get_signature_allowed(data.keyword, 'KYWD')
+        assert xelib.get_signature_allowed(data.keyword, 'NULL')
+        h = xelib.get_element(data.ar2, path='ZNAM')
+        assert h
+        assert xelib.get_signature_allowed(h, 'SNDR')
+        h = xelib.get_element(0, 'Update.esm\\000E49CD\\VMAD\\Scripts\\[0]\\'
+                                 'Properties\\[0]\\Value\\Object Union\\'
+                                 'Object v2\\FormID')
+        assert h
+        assert xelib.get_signature_allowed(h, 'NULL')
+        assert xelib.get_signature_allowed(h, 'ARMO')
+        assert xelib.get_signature_allowed(h, 'WEAP')
+        assert xelib.get_signature_allowed(h, 'COBJ')
+
+        # should return false if signature is not allowed
+        assert not xelib.get_signature_allowed(data.keyword, 'ARMO')
+        assert not xelib.get_signature_allowed(data.keyword, 'NPC_')
+        h = xelib.get_element(data.ar2, 'ZNAM')
+        assert not xelib.get_signature_allowed(h, 'NULL')
+
+        # should raise an exception if a null handle is passed
+        with pytest.raises(XelibError):
+            xelib.get_signature_allowed(0, 'TES4')
+        
+        # should raise an exception if element isn't an integer
+        with pytest.raises(XelibError):
+            xelib.get_signature_allowed(data.skyrim, 'TES4')
+        with pytest.raises(XelibError):
+            xelib.get_signature_allowed(data.armo1, 'ARMO')
+        with pytest.raises(XelibError):
+            xelib.get_signature_allowed(data.ar1, 'BODT')
+        with pytest.raises(XelibError):
+            xelib.get_signature_allowed(data.keywords, 'KYWD')
+
+        # should raise an excxeption if element can't hold FormIDs
+        with pytest.raises(XelibError):
+            xelib.get_signature_allowed(data.dnam, 'ARMO')
 
     def test_get_allowed_signatures(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should work with checked references
+        assert xelib.get_allowed_signatures(data.keyword) == ['KYWD', 'NULL']
+        
+        # should work with union elements
+        h = xelib.get_element(
+                      data.skyrim,
+                      path='00000DD2\\Conditions\\[1]\\CTDA\\Parameter #1')
+        assert xelib.get_allowed_signatures(h) == ['PERK']
+
+        # should raise an exception if element isn't an integer
+        with pytest.raises(XelibError):
+            xelib.get_allowed_signatures(data.skyrim)
+        with pytest.raises(XelibError):
+            xelib.get_allowed_signatures(data.armo1)
+        with pytest.raises(XelibError):
+            xelib.get_allowed_signatures(data.ar1)
+        with pytest.raises(XelibError):
+            xelib.get_allowed_signatures(data.keywords)
+
+        # should raise an exception if element can't hold FormIDs
+        with pytest.raises(XelibError):
+            xelib.get_allowed_signatures(data.dnam)
 
     def test_get_is_editable(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should return false for uneditable files
+        assert not xelib.get_is_editable(data.skyrim)
+
+        # should return false for uneditable records
+        assert not xelib.get_is_editable(data.ar1)
+
+        # should return true for editable files
+        assert xelib.get_is_editable(data.xt3)
+
+        # should return true for editable records
+        assert xelib.get_is_editable(data.ar2)
 
     def test_get_can_add(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should return true for editable files
+        h = xelib.get_element(0, path='Update.esm')
+        assert h
+        assert xelib.get_can_add(h)
+        assert xelib.get_can_add(data.xt3)
+
+        # should return true for editable groups
+        h = xelib.get_element(0, path='Update.esm\\ARMO')
+        assert h
+        assert xelib.get_can_add(h)
+        assert xelib.get_can_add(data.armo2)
+
+        # should return false for uneditable files
+        assert not xelib.get_can_add(data.skyrim)
+
+        # should return false for uneditable groups
+        assert not xelib.get_can_add(data.armo1)
 
     def test_get_add_list(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should return add list for editable files
+        h = xelib.get_element(0, path='Update.esm')
+        assert h
+        add_list = xelib.get_add_list(h)
+        assert add_list[0] == 'AACT - Action'
+        assert add_list[-1] == 'WTHR - Weather'
+        assert len(add_list) == 72
+
+        # should return add list for editable groups
+        assert xelib.get_add_list(data.armo2) == ['ARMO - Armor']
+
+        # should fail on uneditable files
+        with pytest.raises(XelibError):
+            xelib.get_add_list(data.skyrim)
 
     def test_value_type(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        def value_type_at(id_, path=''):
+            if path:
+                return xelib.value_type(xelib.get_element(id_, path=path))
+            return xelib.value_type(id_)
+
+        # should return vtBytes for byte array elements
+        assert (value_type_at(data.ar1, path='Male world model\\MO2T') ==
+                    xelib.ValueTypes.vtBytes)
+
+        # should return vtNumber for numeric elements
+        assert (value_type_at(data.ar1, path='OBND\\X1') ==
+                    xelib.ValueTypes.vtNumber)
+        assert (value_type_at(data.ar1, path='DNAM') ==
+                    xelib.ValueTypes.vtNumber)
+        assert (value_type_at(data.ar1, path='DATA\\Weight') ==
+                    xelib.ValueTypes.vtNumber)
+
+        # should return vtString for string elements
+        assert (value_type_at(data.ar1, path='EDID') ==
+                    xelib.ValueTypes.vtString)
+        assert (value_type_at(data.ar1, path='FULL') ==
+                    xelib.ValueTypes.vtString)
+        assert (value_type_at(data.ar1, path='Male world model\\MOD2') ==
+                    xelib.ValueTypes.vtString)
+
+        # should return vtText for multi-line string elements
+        assert (value_type_at(data.skyrim, path='00015475\\DESC') ==
+                    xelib.ValueTypes.vtText)
+        assert (value_type_at(data.skyrim, path='0001362F\\Responses\\[0]\\NAM1') ==
+                    xelib.ValueTypes.vtText)
+        assert (value_type_at(0, path='xtest-1.esp\\File Header\\SNAM') ==
+                    xelib.ValueTypes.vtText)
+        assert (value_type_at(data.skyrim, path='0000014C\\DNAM') ==
+                    xelib.ValueTypes.vtText)
+        assert (value_type_at(data.skyrim, path='00015D24\\Stages\\[1]\\'
+                                                'Log Entries\\[0]\\CNAM') ==
+                    xelib.ValueTypes.vtText)
+
+        # should return vtReference for FormID elements
+        assert (value_type_at(data.ar1, path='KWDA\\[0]') ==
+                    xelib.ValueTypes.vtReference)
+        assert (value_type_at(data.ar1, path='Armature\\[0]') ==
+                    xelib.ValueTypes.vtReference)
+
+        # should return vtFlags for flags elements
+        assert (value_type_at(data.ar1, path='BODT\\First Person Flags') ==
+                    xelib.ValueTypes.vtFlags)
+        assert (value_type_at(data.ar1, path='BODT\\General Flags') ==
+                    xelib.ValueTypes.vtFlags)
+        assert (value_type_at(data.ar1, path='Record Header\\Record Flags') ==
+                    xelib.ValueTypes.vtFlags)
+
+        # should return vtEnum for enumeration elements
+        assert (value_type_at(data.ar1, path='BODT\\Armor Type') ==
+                    xelib.ValueTypes.vtEnum)
+
+        # should return vtColor for color elements
+        assert (value_type_at(data.skyrim, path='0000001B\\PNAM') ==
+                    xelib.ValueTypes.vtColor)
+        assert (value_type_at(data.skyrim, path='00027D1C\\XCLL\\Ambient Color') ==
+                    xelib.ValueTypes.vtColor)
+
+        # should return vtStruct for struct elements
+        assert (value_type_at(data.ar1, path='Male world model') ==
+                    xelib.ValueTypes.vtStruct)
+        assert (value_type_at(data.ar1, path='OBND') ==
+                    xelib.ValueTypes.vtStruct)
+        assert (value_type_at(data.ar1, path='DATA') ==
+                    xelib.ValueTypes.vtStruct)
+        assert (value_type_at(data.ar1, path='Record Header') ==
+                    xelib.ValueTypes.vtStruct)
+
+        # should resolve union defs correctly
+        assert (value_type_at(data.skyrim, path='00000DD6\\DATA') ==
+                    xelib.ValueTypes.vtNumber)
+
+        # should fail on files, groups, and main records
+        with pytest.raises(XelibError):
+            value_type_at(data.skyrim)
+        with pytest.raises(XelibError):
+            value_type_at(data.armo1)
+        with pytest.raises(XelibError):
+            value_type_at(data.ar1)
+
+        # should fail on null handles
+        with pytest.raises(XelibError):
+            value_type_at(0)
