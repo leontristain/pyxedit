@@ -30,7 +30,7 @@ class MetaMethods(WrapperMethodsBase):
             lambda len_: self.raw_api.GetGlobals(len_),
             error_msg=f'GetGlobals failed')
 
-    def set_sort_mode(self, mode, reverse):
+    def set_sort_mode(self, mode, reverse=False):
         return self.verify_execution(
             self.raw_api.SetSortMode(mode.value, reverse),
             error_msg=f'Failed to set sort mode to {mode} '

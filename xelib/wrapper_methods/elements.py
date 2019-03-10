@@ -123,7 +123,7 @@ class ElementsMethods(WrapperMethodsBase):
     def set_element(self, id1, id2):
         return self.verify_execution(
             self.raw_api.SetElement(id1, id2),
-            error_msg=f'Failed to remove element at '
+            error_msg=f'Failed to set element at '
                       f'{self.element_context(id2)} to '
                       f'{self.element_context(id1)}')
 

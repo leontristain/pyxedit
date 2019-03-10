@@ -309,7 +309,7 @@ class TestElements:
         # should be able to remove the last element in an array
         # TODO: this test is not working for some reason, in xedit I also don't
         # see such a path under xtest-4.esp, yet it works with xedit-lib tests;
-        # I might need help with this one
+        # somehow... I might need help with this one
         # assert xelib.get_element(0, 'xtest-4.esp\\05000802\\Armature\\[0]')
         # xelib.remove_element(0, 'xtest-4.esp\\05000802\\Armature\\[0]')
         # assert not xelib.get_element(0, 'xtest-4.esp\\05000802\\Armature\\[0]')
@@ -326,3 +326,183 @@ class TestElements:
         # should fail if no element exists at the given path
         with pytest.raises(XelibError):
             xelib.remove_element(data.ar3, 'YNAM')
+
+    def test_set_element(self, xelib):
+        data = self.get_data(xelib)
+
+        # should work with value elements
+        ar2_edid = xelib.get_element(data.ar2, path='EDID')
+        ar3_edid = xelib.get_element(data.ar3, path='EDID')
+        assert xelib.set_element(ar2_edid, ar3_edid)
+
+        ar2_dnam = xelib.get_element(data.ar2, path='DNAM')
+        ar3_dnam = xelib.get_element(data.ar3, path='DNAM')
+        assert xelib.set_element(ar2_dnam, ar3_dnam)
+
+        ar2_armature_0 = xelib.get_element(data.ar2, path='Armature\\[0]')
+        ar3_armature_0 = xelib.get_element(data.ar3, path='Armature\\[0]')
+        assert xelib.set_element(ar2_armature_0, ar3_armature_0)
+
+        ar2_znam = xelib.get_element(data.ar2, path='ZNAM')
+        ar3_znam = xelib.get_element(data.ar3, path='ZNAM')
+        assert xelib.set_element(ar2_znam, ar3_znam)
+
+        ar2_bodt_fpf = xelib.get_element(data.ar2, path='BODT\\First Person Flags')
+        ar3_bodt_fpf = xelib.get_element(data.ar3, path='BODT\\First Person Flags')
+        assert xelib.set_element(ar2_bodt_fpf, ar3_bodt_fpf)
+
+        # should work with struct elements
+        ar2_obnd = xelib.get_element(data.ar2, path='OBND')
+        ar3_obnd = xelib.get_element(data.ar3, path='OBND')
+        assert xelib.set_element(ar2_obnd, ar3_obnd)
+
+        ar2_fwm = xelib.get_element(data.ar2, path='Female world model')
+        ar3_fwm = xelib.get_element(data.ar3, path='Female world model')
+        assert xelib.set_element(ar2_fwm, ar3_fwm)
+
+        # should work with array elements
+        ar2_kwda = xelib.get_element(data.ar2, path='KWDA')
+        ar3_kwda = xelib.get_element(data.ar3, path='KWDA')
+        assert xelib.set_element(ar2_kwda, ar3_kwda)
+
+        ar2_armature = xelib.get_element(data.ar2, path='Armature')
+        ar3_armature = xelib.get_element(data.ar3, path='Armature')
+        assert xelib.set_element(ar2_armature, ar3_armature)
+
+        # should fail if a file, group, or record is passed
+        with pytest.raises(XelibError):
+            xelib.set_element(data.xt3, data.xt3)
+        with pytest.raises(XelibError):
+            xelib.set_element(data.armo2, data.armo2)
+        with pytest.raises(XelibError):
+            xelib.set_element(data.ar2, data.ar2)
+
+        # should fail if a null handle is passed
+        with pytest.raises(XelibError):
+            xelib.set_element(0, 0)
+        with pytest.raises(XelibError):
+            xelib.set_element(data.skyrim, 0)
+        with pytest.raises(XelibError):
+            xelib.set_element(0, data.skyrim)
+
+    def test_get_elements(self, xelib):
+        data = self.get_data(xelib)
+
+        def get_elements_names(*args, **kwargs):
+            return [xelib.name(id_)
+                    for id_ in xelib.get_elements(*args, **kwargs)]
+
+        def get_elements_edids(*args, **kwargs):
+            return [xelib.get_value(id_, path='EDID')
+                    for id_ in xelib.get_elements(*args, **kwargs)]
+
+        # should resolve root children (files)
+        files = get_elements_names(0)
+        files = [file_ for file_ in files if file_ != 'NewFile-1.esp']
+        assert len(files) == 11
+        assert 'Skyrim.esm' in files
+
+        # should resolve file children (file header and groups)
+        children = get_elements_names(data.skyrim)
+        assert len(children) == 118
+        assert 'File Header' in children
+        assert 'Reverb Parameters' in children
+
+        # should resolve group children (records)
+        records = get_elements_edids(data.armo1)
+        assert len(records) == 2762
+        assert 'DremoraBoots' in records
+        assert 'SkinNaked' in records
+
+        # should resolve record children (subrecords/elements)
+        subrecords = get_elements_names(data.ar1)
+        assert len(subrecords) == 13
+        assert 'Record Header' in subrecords
+        assert 'DNAM - Armor Rating' in subrecords
+
+        # should resolve element children
+        children = get_elements_names(data.keywords)
+        assert len(children) == 5
+        assert all(child == 'Keyword' for child in children)
+
+        # should resolve paths
+        paths = xelib.get_elements(data.ar2, path='KWDA')
+        assert len(paths) == 5
+
+        # should be able to return sorted elements
+        try:
+            xelib.set_sort_mode(xelib.SortBy.FormID)
+            children = get_elements_names(data.skyrim, sort=True)
+            assert 'File Header' == children[0]
+            assert 'Weather' == children[-1]
+            files = get_elements_names(0, sort=True)
+            assert 'Skyrim.esm' == files[0]
+            xelib.set_sort_mode(xelib.SortBy.FormID, reverse=True)
+            files = get_elements_names(0, sort=True)
+            assert 'Skyrim.esm' == files[-1]
+        finally:
+            xelib.set_sort_mode(xelib.SortBy.None_)
+
+        # should not include child groups
+        children = xelib.get_elements(0, path='Skyrim.esm\\DIAL')
+        assert len(children) == 15037
+
+    def test_get_def_names(self, xelib):
+        raise NotImplementedError
+
+    def test_get_container(self, xelib):
+        raise NotImplementedError
+
+    def test_get_element_file(self, xelib):
+        raise NotImplementedError
+
+    def test_get_links_to(self, xelib):
+        raise NotImplementedError
+
+    def test_set_links_to(self, xelib):
+        raise NotImplementedError
+
+    def test_element_count(self, xelib):
+        raise NotImplementedError
+
+    def test_element_equals(self, xelib):
+        raise NotImplementedError
+
+    def test_element_matches(self, xelib):
+        raise NotImplementedError
+
+    def test_has_array_item(self, xelib):
+        raise NotImplementedError
+
+    def test_get_array_item(self, xelib):
+        raise NotImplementedError
+
+    def test_add_array_item(self, xelib):
+        raise NotImplementedError
+
+    def test_move_array_item(self, xelib):
+        pytest.skip('xedit-lib has not yet implemented this one')
+
+    def test_remove_array_item(self, xelib):
+        pytest.skip('xedit-lib has not yet implemented this one')
+
+    def test_copy_element(self, xelib):
+        raise NotImplementedError
+
+    def test_get_signature_allowed(self, xelib):
+        raise NotImplementedError
+
+    def test_get_allowed_signatures(self, xelib):
+        raise NotImplementedError
+
+    def test_get_is_editable(self, xelib):
+        raise NotImplementedError
+
+    def test_get_can_add(self, xelib):
+        raise NotImplementedError
+
+    def test_get_add_list(self, xelib):
+        raise NotImplementedError
+
+    def test_value_type(self, xelib):
+        raise NotImplementedError
