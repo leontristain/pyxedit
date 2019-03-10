@@ -629,7 +629,7 @@ class TestElements:
         data = self.get_data(xelib)
 
         # should return number of files if null handle is passed
-        assert xelib.element_count(0) == 11
+        assert xelib.element_count(0) == 12
 
         # should return the number of elements in a file
         assert xelib.element_count(data.skyrim) == 118
