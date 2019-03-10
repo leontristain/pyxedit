@@ -683,16 +683,185 @@ class TestElements:
             xelib.element_equals(0, 0)
 
     def test_element_matches(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should work on null references
+        assert xelib.element_matches(
+                   data.ar2, 'ZNAM', 'NULL - Null Reference [00000000]')
+        assert not xelib.element_matches(data.ar2, 'ZNAM', '')
+
+        # should work on string fields
+        assert xelib.element_matches(data.ar2, 'EDID', 'ArmorIronGauntlets')
+        assert not xelib.element_matches(data.ar2, 'EDID', 'Blarg')
+
+        # should work on integer fields
+        assert xelib.element_matches(data.ar2, 'OBND\\Z1', '-1')
+        assert not xelib.element_matches(data.ar2, 'OBND\\Z1', '-69')
+
+        # should work on float fields
+        assert xelib.element_matches(data.ar2, 'DATA\\Weight', '5.0')
+        assert not xelib.element_matches(data.ar2, 'DATA\\Weight', '5.01')
+        assert xelib.element_matches(data.ar2, 'DATA\\Weight', '5')
+        assert xelib.element_matches(data.ar2, 'DNAM', '10.0')
+        assert xelib.element_matches(data.ar2, 'DNAM', '10')
+
+        # should return true if FormID matches
+        assert xelib.element_matches(data.keywords, '[0]', '000424EF')
+        assert xelib.element_matches(data.ar2, 'ZNAM', '00000000')
+        assert xelib.element_matches(data.ar2, 'RNAM', '00000019')
+
+        # should return false if FormID does not match
+        assert not xelib.element_matches(data.keywords, '[0]', '000A82BB')
+        assert not xelib.element_matches(data.ar2, 'RNAM', '00000029')
+
+        # should return true if Editor ID matches
+        assert xelib.element_matches(data.keywords, '[0]', 'PerkFistsIron')
+        assert xelib.element_matches(data.keywords, '[3]', 'ArmorGauntlets')
+        assert xelib.element_matches(data.ar2, 'RNAM', 'DefaultRace')
+
+        # should return false if Editor ID does not match
+        assert not xelib.element_matches(data.keywords, '[0]', '"Vampire"')
+        assert not xelib.element_matches(data.keywords, '[1]', '"ArMorHeAvY"')
+
+        # should return true if FULL name matches
+        assert xelib.element_matches(data.ar2, 'RNAM', '"Default Race"')
+        assert xelib.element_matches(data.keywords, '[0]', '""')
+
+        # should return false if FULL name does not match
+        assert not xelib.element_matches(data.ar2, 'RNAM', '"Default RacE"')
+        assert not xelib.element_matches(data.ar2, 'ZNAM', '"Null Reference"')
 
     def test_has_array_item(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should return true if array item is present (value arrays)
+        assert xelib.has_array_item(data.ar2, 'KWDA', '', 'PerkFistsIron')
+        assert xelib.has_array_item(data.keywords, '', '', 'ArmorGauntlets')
+        assert xelib.has_array_item(data.keywords, '', '', '0006BBE3')
+        assert xelib.has_array_item(data.ar2, 'Armature', '', 'IronGlovesAA')
+
+        # should return false if array item is not present (value arrays)
+        assert not xelib.has_array_item(data.keywords, '', '', 'PerkFistsSteel')
+        assert not xelib.has_array_item(data.keywords, '', '', 'ArmorHelmet')
+        assert not xelib.has_array_item(data.keywords, '', '', '0006BBD4')
+        assert not xelib.has_array_item(data.ar2, 'Armature', '', 'IronHelmetAA')
+
+        # should return true if array item is present (struct arrays)
+        assert xelib.has_array_item(
+                   data.entries, '', 'LVLO\\Reference', 'ArmorIronGauntlets')
+        assert xelib.has_array_item(
+                   data.entries, '', 'LVLO\\Reference', '"Iron Armor"')
+        assert xelib.has_array_item(
+                   data.entries, '', 'LVLO\\Reference', '00012E4B')
+        assert xelib.has_array_item(
+                   data.entries, '', 'LVLO\\Reference', '"Iron Helmet"')
+
+        # should return false if array item is not present (struct arrays)
+        assert not xelib.has_array_item(
+                       data.entries, '', 'LVLO\\Reference', 'ArmorSteelHelmetA')
+        assert not xelib.has_array_item(
+                       data.entries, '', 'LVLO\\Reference', '"Steel Helmet"')
+        assert not xelib.has_array_item(
+                       data.entries, '', 'LVLO\\Reference', '00131954')
 
     def test_get_array_item(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should succeed if array item is present (value arrays)
+        assert xelib.get_array_item(data.ar2, 'KWDA', '', 'PerkFistsIron')
+        assert xelib.get_array_item(data.keywords, '', '', 'ArmorGauntlets')
+        assert xelib.get_array_item(data.keywords, '', '', '0006BBE3')
+        assert xelib.get_array_item(data.ar2, 'Armature', '', 'IronGlovesAA')
+
+        # should fail if array item is not present (value arrays)
+        with pytest.raises(XelibError):
+            xelib.get_array_item(data.keywords, '', '', 'PerkFistsSteel')
+        with pytest.raises(XelibError):
+            xelib.get_array_item(data.keywords, '', '', 'ArmorHelmet')
+        with pytest.raises(XelibError):
+            xelib.get_array_item(data.keywords, '', '', '0006BBD4')
+        with pytest.raises(XelibError):
+            xelib.get_array_item(data.ar2, 'Armature', '', 'IronHelmetAA')
+
+        # should succeed if array item is present (struct arrays)
+        assert xelib.get_array_item(
+                   data.entries, '', 'LVLO\\Reference', 'ArmorIronGauntlets')
+        assert xelib.get_array_item(
+                   data.entries, '', 'LVLO\\Reference', '"Iron Armor"')
+        assert xelib.get_array_item(
+                   data.entries, '', 'LVLO\\Reference', '00012E4B')
+        assert xelib.get_array_item(
+                   data.entries, '', 'LVLO\\Reference', '"Iron Helmet"')
+
+        # should fail if array item is not present (struct arrays)
+        with pytest.raises(XelibError):
+            xelib.get_array_item(
+                      data.entries, '', 'LVLO\\Reference', 'ArmorSteelHelmetA')
+        with pytest.raises(XelibError):
+            xelib.get_array_item(
+                      data.entries, '', 'LVLO\\Reference', '"Steel Helmet"')
+        with pytest.raises(XelibError):
+            xelib.get_array_item(
+                      data.entries, '', 'LVLO\\Reference', '00131954')
 
     def test_add_array_item(self, xelib):
-        raise NotImplementedError
+        data = self.get_data(xelib)
+
+        # should add an array item (references)
+        assert xelib.element_count(data.keywords) == 5
+        assert xelib.add_array_item(data.keywords, '', '', '')
+        assert xelib.element_count(data.keywords) == 6
+
+        # should create the array if missing (references)
+        assert xelib.remove_element(data.ar2, path='Armature')
+        assert not xelib.has_element(data.ar2, path='Armature')
+        h = xelib.add_array_item(data.ar2, 'Armature', '', '00012E47')
+        assert h
+        assert xelib.get_value(h) == 'IronGlovesAA [ARMA:00012E47]'
+        assert xelib.has_element(data.ar2, path='Armature')
+        h = xelib.get_element(data.ar2, path='Armature')
+        assert xelib.element_count(h) == 1
+
+        # should be able to set reference with FormID (references)
+        assert xelib.element_count(data.keywords) == 6
+        h = xelib.add_array_item(data.keywords, '', '', '0006BBD4')
+        assert h
+        assert xelib.get_value(h) == 'ArmorMaterialDaedric [KYWD:0006BBD4]'
+        assert xelib.element_count(data.keywords) == 7
+
+        # should be able to add reference with edit value (references)
+        assert xelib.element_count(data.keywords) == 7
+        h = xelib.add_array_item(
+                      data.keywords, '', '', 'ArmorLight [KYWD:0006BBD3]')
+        assert h
+        assert xelib.get_value(h) == 'ArmorLight [KYWD:0006BBD3]'
+        assert xelib.element_count(data.keywords) == 8
+
+        # should add an aray item (struct arrays)
+        assert xelib.element_count(data.entries) == 4
+        assert xelib.add_array_item(data.entries, '', '', '')
+        assert xelib.element_count(data.entries) == 5
+
+        # should be able to set value at subpath (struct arrays)
+        assert xelib.element_count(data.entries) == 5
+        assert xelib.add_array_item(
+                         data.entries,
+                         '',
+                         'LVLO\\Reference',
+                         'ArmorLeatherBoots "Leather Boots" [ARMO:00013920]')
+        assert xelib.element_count(data.entries) == 6
+
+        # should fail if subpath is invalid (struct arrays)
+        with pytest.raises(XelibError):
+            xelib.add_array_item(
+                      data.entries,
+                      '',
+                      'Fake\\Path',
+                      'ArmorLeatherCuirass "Leather Armor" [ARMO:0003619E]')
+
+        # should fail if element is not an array
+        with pytest.raises(XelibError):
+            xelib.add_array_item(data.ar1, '', '', '')
 
     def test_move_array_item(self, xelib):
         pytest.skip('xedit-lib has not yet implemented this one')
