@@ -276,7 +276,7 @@ class TestRecords:
         # should work with union defs
         assert xelib.get_nodes(
                    xelib.get_element(0, 'Update.esm\\0100080E'))
-        
+
         # should fail on elements that are not records
         with pytest.raises(XelibError):
             xelib.get_nodes(data.skyrim)
