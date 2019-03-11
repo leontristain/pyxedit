@@ -209,8 +209,8 @@ class HelpersMethods(WrapperMethodsBase):
             dictionary[key] = value
         return dictionary
 
-    def build_flags(self, opts, flags):
-        return sum(flags.get(opt, 0) for opt in opts)
+    def build_flags(self, opts):
+        return sum(opt.value for opt in set(opts)) if opts else 0
 
     def get_xelib_error_str(self):
         return (f'xedit-lib message: {repr(self.get_exception_message())}; '

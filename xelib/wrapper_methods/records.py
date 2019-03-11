@@ -72,7 +72,7 @@ class RecordsMethods(WrapperMethodsBase):
                       f'{self.element_context(id_)}')
 
     def get_refrs(self, id_, search, opts=None):
-        opts = opts or {}
+        opts = opts or []
         return self.get_array(
             lambda len_:
                 self.raw_api.GetREFRs(id_, search, self.build_flags(opts), len_),
@@ -177,7 +177,7 @@ class RecordsMethods(WrapperMethodsBase):
             return (ConflictAll(conflict_all).name,
                     ConflictThis(conflict_this).name)
         else:
-            return conflict_all, conflict_this
+            return ConflictAll(conflict_all), ConflictThis(conflict_this)
 
     def get_record_conflict_data(self, id_):
         return self.get_conflict_data(0, id_)
