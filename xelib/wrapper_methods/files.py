@@ -15,9 +15,10 @@ class FilesMethods(WrapperMethodsBase):
         return self.get_handle(
             lambda res: self.raw_api.FileByLoadOrder(load_order, res))
 
-    def file_by_name(self, file_name):
+    def file_by_name(self, file_name, ex=True):
         return self.get_handle(
-            lambda res: self.raw_api.FileByName(file_name, res))
+            lambda res: self.raw_api.FileByName(file_name, res),
+            ex=ex)
 
     def file_by_author(self, author):
         return self.get_handle(
