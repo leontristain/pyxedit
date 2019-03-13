@@ -35,7 +35,7 @@ class FilesMethods(WrapperMethodsBase):
             error_msg=f'Failed to rename file {self.element_context(id_)} to '
                       f'{new_file_name}')
 
-    def save_file(self, id_, file_path):
+    def save_file(self, id_, file_path=''):
         return self.verify_execution(
             self.raw_api.SaveFile(id_, file_path),
             error_msg=f'Failed to save file {self.element_context(id_)}')
