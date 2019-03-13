@@ -9,7 +9,7 @@ class XEditError(Exception):
 
 
 class XEditBase:
-    def __init__(self, xelib):
+    def __init__(self, xelib, handle, handle_group):
         self.handle = None
         self._handle_group = None
         self._xelib = xelib
@@ -22,12 +22,15 @@ class XEditBase:
                              f'xelib session')
         return self._xelib
 
+    @classmethod
+    def from_xedit_obj(cls, handle, xedit_obj):
+        if not handle or handle not in xedit_obj._xelib._current_handles:
+            raise XEditError(f'Attempting to create XEdit object from invalid '
+                             f'handle {handle}')
+        return cls(xedit_obj.xelib, handle, xedit_obj._xelib._current_handles)
+
 
 class XEditPlugin(XEditBase):
-    def __init__(self, xelib, handle):
-        self.xelib = xelib
-        self.handle = handle
-
     @property
     def name(self):
         return self.xelib.name(self.handle)
@@ -76,7 +79,11 @@ class XEdit(XEditBase):
         self.game_mode = game_mode
         self.data_path = game_path
         self.plugins = plugins
-        self.xelib = Xelib()
+        self._xelib = Xelib()
+
+    def plugin(self, plugin_name):
+        h = self.xelib.file_by_name(plugin_name)
+        return XEditPlugin.from_xedit_obj(h, self)
 
     def session(self):
         class XeditSession:
@@ -89,7 +96,7 @@ class XEdit(XEditBase):
                 self.xedit.xelib.set_game_path(self.game_path)
                 self.xedit.xelib.load_plugins(os.linesep.join(self.plugins))
                 while (self.xedit.xelib.get_loader_status() ==
-                           Xelib.LoaderStates.lsActive):
+                                            Xelib.LoaderStates.lsActive):
                     time.sleep(0.1)
                 return self.xedit
 
