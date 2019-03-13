@@ -4,7 +4,26 @@ import time
 from xelib.xelib import Xelib
 
 
-class XEditPlugin:
+class XEditError(Exception):
+    pass
+
+
+class XEditBase:
+    def __init__(self, xelib):
+        self.handle = None
+        self._handle_group = None
+        self._xelib = xelib
+
+    @property
+    def xelib(self):
+        if self.handle and self.handle not in self._handle_group:
+            raise XEditError(f'Accessing XEdit object of handle {self.handle} '
+                             f'which has already been released from the '
+                             f'xelib session')
+        return self._xelib
+
+
+class XEditPlugin(XEditBase):
     def __init__(self, xelib, handle):
         self.xelib = xelib
         self.handle = handle
@@ -52,7 +71,7 @@ class XEditPlugin:
         return self.xelib.save_file(self.handle, file_path=file_path)
 
 
-class XEdit:
+class XEdit(XEditBase):
     def __init__(self, game_mode, game_path, plugins):
         self.game_mode = game_mode
         self.data_path = game_path

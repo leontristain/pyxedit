@@ -64,13 +64,21 @@ class Xelib(ElementValuesMethods,
             kernel32.FreeLibrary(self._raw_api._handle)
             self._raw_api = None
 
+    @property
+    def opened_handles(self):
+        opened_handles = set()
+        for handles in self._handles_stack:
+            opened_handles.update(handles)
+        opened_handles.update(self._current_handles)
+        return opened_handles
+
     def track_handle(self, handle):
         self._current_handles.add(handle)
 
     def release_handles(self):
-        for handle in self._current_handles:
+        while self._current_handles:
             try:
-                self.release(handle)
+                self.release(self._current_handles.pop())
             except XelibError:
                 pass
 
