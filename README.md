@@ -10,7 +10,9 @@ Python API for xedit-lib
 2. copy the test esps from the XEditLib folder to your Skyrim Data directory
 3. for the time being, copy the `Skyrim.Hardcoded.dat` file from the XEditLib
     folder to the root of your python installation (possibly something like
-    `%localappdata%/Programs/Python/Python37`).
+    `%localappdata%/Programs/Python/Python37`). This is an unfortunate hack,
+    which should no longer be needed once Mator updates xedit-lib to xedit 4.0,
+    and I update this library to match.
 4. with everything in `requirements.txt` installed, run `pytest -v test` from
     root of the code base
 
