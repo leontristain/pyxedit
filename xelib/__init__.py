@@ -1,4 +1,5 @@
 import ctypes
+from contextlib import contextmanager
 from ctypes import wintypes
 from pathlib import Path
 
@@ -45,6 +46,8 @@ class Xelib(ElementValuesMethods,
     def __init__(self):
         self.dll_path = DLL_PATH
         self._raw_api = None
+        self._handles_stack = []
+        self._current_handles = set()
 
     def __enter__(self):
         if not self._raw_api:
@@ -54,11 +57,32 @@ class Xelib(ElementValuesMethods,
 
     def __exit__(self, exc_type, exc_value, traceback):
         if self._raw_api:
+            self.release_handles()
             self.finalize()
             kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
             kernel32.FreeLibrary.argtypes = [wintypes.HMODULE]
             kernel32.FreeLibrary(self._raw_api._handle)
             self._raw_api = None
+
+    def track_handle(self, handle):
+        self._current_handles.add(handle)
+
+    def release_handles(self):
+        for handle in self._current_handles:
+            try:
+                self.release(handle)
+            except XelibError:
+                pass
+
+    @contextmanager
+    def manage_handles(self):
+        try:
+            self._handles_stack.append(self._current_handles)
+            self._current_handles = set()
+            yield
+        finally:
+            self.release_handles()
+            self._current_handles = self._handles_stack.pop()
 
     @property
     def raw_api(self):

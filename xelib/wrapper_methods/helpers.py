@@ -81,6 +81,7 @@ class HelpersMethods(WrapperMethodsBase):
             raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                              f'parameter {repr(res)} failed: '
                              f'{self.get_xelib_error_str()}')
+        self.track_handle(res.value)
         return res.value
 
     def get_integer(self, callback, error_msg='', ex=True):
@@ -180,7 +181,10 @@ class HelpersMethods(WrapperMethodsBase):
         # given buffer, return with a converted list of python ints; or error
         # if resulting boolean value indicates failure
         if method(buffer, len_):
-            return [int(value) for value in buffer]
+            items = [int(value) for value in buffer]
+            for item in items:
+                self.track_handle(item)
+            return items
         else:
             raise XelibError(f'{error_prefix}Failed to retrieve array via '
                              f'method {repr(method)}, buffer `{repr(buffer)}`, '
