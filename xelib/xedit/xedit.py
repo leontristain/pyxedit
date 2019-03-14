@@ -7,10 +7,13 @@ from xelib.xelib import Xelib
 
 
 class XEdit(XEditBase):
-    def __init__(self, game_mode, game_path, plugins):
+    def __init__(self,
+                 game_mode=Xelib.GameModes.gmSSE,
+                 game_path=None,
+                 plugins=None):
         self.game_mode = game_mode
-        self.data_path = game_path
-        self.plugins = plugins
+        self.game_path = game_path
+        self.plugins = plugins or []
         self._xelib = Xelib()
 
     def plugin(self, plugin_name):
@@ -25,7 +28,8 @@ class XEdit(XEditBase):
             def __enter__(self):
                 self.xedit.xelib.__enter__()
                 self.xedit.xelib.set_game_mode(self.game_mode)
-                self.xedit.xelib.set_game_path(self.game_path)
+                if self.game_path:
+                    self.xedit.xelib.set_game_path(self.game_path)
                 self.xedit.xelib.load_plugins(os.linesep.join(self.plugins))
                 while (self.xedit.xelib.get_loader_status() ==
                                             Xelib.LoaderStates.lsActive):
