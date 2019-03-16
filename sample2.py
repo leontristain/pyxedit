@@ -72,9 +72,9 @@ with XEdit(game='SkyrimSE', plugins=['The Ordinary Women.esp']).session() as xed
     # released after the context
     with xedit.manage_handles:
         armo = xedit['Skyrim.esp\\ARMO']
-        
+
         # `armo` will have an active handle here, and you can do things to it
-    
+
     # `armo` will have been released here; further attempting to use the object
     # will raise errors
 
@@ -91,12 +91,15 @@ with XEdit(game='SkyrimSE', plugins=['The Ordinary Women.esp']).session() as xed
     ...
 
     # the actual handle associated with the object can be inspected with:
-    self.handle
+    tow_bryling.handle
 
     # you also have access to a `xelib` object on the class, that you can
     # invoke methods from the lower-level xelib api with, and if you need
     # the current handle, it's provided as I just mentioned above.
-    self.xelib.set_float_value(self.handle, path='X', 3.0)
+    xedit.xelib.set_float_value(tow_bryling.handle, 3.0, path='X')
+    tow_bryling.xelib.set_float_value(tow_bryling.handle, 3.0, path='X')
+    # these both work, since the `xelib` handle is available on every object
+    # traversed from the root `xedit` object
 
     # this xelib API should be near-identical to the javascript xelib API
     # used in mator's zedit. After all, both are wrappers around xedit-lib, and
@@ -108,7 +111,10 @@ with XEdit(game='SkyrimSE', plugins=['The Ordinary Women.esp']).session() as xed
 # One thing to note is that Skyrim has A LOT of record types! So it will
 # probably take a long time for all of them to have a good class implemented
 # to make accessing them easy. I will implement classes as my usage of this API
-# touch upon them.
+# touch upon them. Of course, I'm going to always welcome pull requests, just
+# make sure you have good code quality, the fields are well conceived and match
+# well with the actual record fields, and unit test is included to ensure it
+# works
 
 # If a high-level class isn't yet implemented, remember you always have the
 # lower-level xelib API to fall back on right there in the class.
