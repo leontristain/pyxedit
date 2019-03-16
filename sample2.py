@@ -90,6 +90,11 @@ with XEdit(game='SkyrimSE', plugins=['The Ordinary Women.esp']).session() as xed
         ...
     ...
 
+    # The top-level xedit context that you are already in will not only manage
+    # the top-level handles (i.e. they are released after), but also ensure the
+    # whole DLL is unloaded after, such that the next time you start over you're
+    # starting afresh.
+
     # the actual handle associated with the object can be inspected with:
     tow_bryling.handle
 
