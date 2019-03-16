@@ -70,10 +70,18 @@ with XEdit(game='SkyrimSE', plugins=['The Ordinary Women.esp']).session() as xed
         tow.is_pseudo_esl = True
 
     # or maybe merge a bunch of plugins?
-    xelib.merge_plugins(['A.esp', 'B.esp', 'C.esp'], dest='merged.esp')
+    xedit.merge_plugins(['A.esp', 'B.esp', 'C.esp'], dest='merged.esp')
 
     # or maybe generate a patch?
-    xelib.create_merged_patch(dest='merged_patch.esp')
+    xedit.create_merged_patch(dest='merged_patch.esp')
+
+    # or maybe generate a mod entirely?
+    from somebodys_lib import create_weapon
+    with XEdit(...).session() as xedit:
+        create_weapon(xedit,
+                      name='UltimateImmersiveSwordOfDestiny',
+                      model_path='Meshes/Actors/WaitIsThisTheRightFolder?',
+                      dest_esp='UltimateImmersiveSwordOfDestiny.esp')
 
     # and you can do it all right there in python! Imagine how powerful this
     # could be when combined with python's amazing library and ecosystem for
