@@ -115,11 +115,10 @@ class SetupMethods(WrapperMethodsBase):
             error_msg=f'Failed to get loader status'))
 
     def get_loaded_file_names(self, exclude_hardcoded=True):
-        with self.get_elements() as elements:
-            file_names = []
-            for file_ in elements:
-                file_name = self.name(file_)
-                if exclude_hardcoded and file_name.endswith('.Hardcoded.dat'):
-                    continue
-                file_names.append(file_name)
-            return file_names
+        file_names = []
+        for file_ in self.get_elements():
+            file_name = self.name(file_)
+            if exclude_hardcoded and file_name.endswith('.Hardcoded.dat'):
+                continue
+            file_names.append(file_name)
+        return file_names

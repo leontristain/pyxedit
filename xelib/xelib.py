@@ -65,6 +65,10 @@ class Xelib(ElementValuesMethods,
             self._raw_api = None
 
     @property
+    def loaded(self):
+        return bool(self._raw_api)
+
+    @property
     def opened_handles(self):
         opened_handles = set()
         for handles in self._handles_stack:

@@ -36,10 +36,11 @@ class ElementValuesMethods(WrapperMethodsBase):
             lambda len_: self.raw_api.Path(id_, False, True, len_),
             error_msg=f'Path failed on {id_}')
 
-    def signature(self, id_):
+    def signature(self, id_, ex=True):
         return self.get_string(
             lambda len_: self.raw_api.Signature(id_, len_),
-            error_msg=f'Signature failed on {id_}')
+            error_msg=f'Signature failed on {id_}',
+            ex=ex)
 
     def sort_key(self, id_):
         return self.get_string(
