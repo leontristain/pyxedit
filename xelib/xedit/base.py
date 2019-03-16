@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from pathlib import Path
 
 
@@ -23,6 +24,11 @@ class XEditBase:
 
     def __getitem__(self, path):
         return self.get(path, ex=True)
+
+    @contextmanager
+    def manage_handles(self):
+        with self.xelib.manage_handles():
+            yield self
 
     def get(self, path, default=None, ex=False):
         handle = self.xelib.get_element(self.handle, path=path, ex=ex)
@@ -57,6 +63,17 @@ class XEditBase:
             raise XEditError(f'No object can be obtained at path {path} from '
                              f'{self.long_path}')
         return default
+
+    def add(self, path):
+        with self.manage_handles():
+            if self.get(path):
+                raise XEditError(f'Cannot add object at path {path}; an object '
+                                 f'already exists there')
+            self.xelib.add_element(self.handle, path=path)
+
+    def delete(self, path=''):
+        self.xelib.remove_element(self.handle, path=path)
+
 
     @property
     def name(self):
@@ -115,6 +132,7 @@ class XEditBase:
     @staticmethod
     def import_all_object_classes():
         from xelib.xedit.object_classes.NPC_ import XEditNPC  # NOQA
+        from xelib.xedit.object_classes.TXST import XEditTextureSet  # NOQA
 
 
 class XEditPlugin(XEditBase):
@@ -158,6 +176,48 @@ class XEditPlugin(XEditBase):
 
 
 class XEditGenericObject(XEditBase):
+    def get_value(self, path='', type_=str, unsigned=False):
+        if type_ == int:
+            if unsigned:
+                return self.xelib.get_uint_value(self.handle, path=path)
+            else:
+                return self.xelib.get_int_value(self.handle, path=path)
+        elif type_ == float:
+            return self.xelib.get_float_value(self.handle, path=path)
+        elif type_ == str:
+            return self.xelib.get_value(self.handle, path=path)
+        else:
+            raise XEditError(f'getting value of type {type_} is not supported')
+
+    def set_value(self, value, path='', type_=str, unsigned=False):
+        if type_ == int:
+            if unsigned:
+                return self.xelib.set_uint_value(self.handle, int(value), path=path)
+            else:
+                return self.xelib.set_int_value(self.handle, int(value), path=path)
+        elif type_ == float:
+            return self.xelib.set_float_value(self.handle, float(value), path=path)
+        elif type_ == str:
+            return self.xelib.set_value(self.handle, str(value), path=path)
+        else:
+            raise XEditError(f'setting value of type {type_} is not supported')
+
+    @property
+    def data_size(self):
+        with self.manage_handles():
+            return self['Record Header']['Data Size'].get_value(type_=int)
+
+    @property
+    def form_id(self):
+        with self.manage_handles():
+            return self['Record Header']['FormID'].get_value(
+                                                      type_=int, unsigned=True)
+
+    @property
+    def form_version(self):
+        with self.manage_handles():
+            return self['Record Header']['Form Version'].get_value(type_=int)
+
     @property
     def editor_id(self):
         return self.xelib.editor_id(self.handle)
