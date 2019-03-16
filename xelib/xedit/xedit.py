@@ -2,7 +2,6 @@ import os
 import time
 
 from xelib.xedit.base import XEditBase
-from xelib.xedit.plugin import XEditPlugin
 from xelib.xelib import Xelib
 
 
@@ -34,10 +33,6 @@ class XEdit(XEditBase):
     @property
     def plugin_names(self):
         return self.xelib.get_loaded_file_names()
-
-    def plugin(self, plugin_name):
-        h = self.xelib.file_by_name(plugin_name)
-        return XEditPlugin.from_xedit_object(h, self)
 
     def session(self):
         class XeditSession:
