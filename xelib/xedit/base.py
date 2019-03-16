@@ -74,7 +74,6 @@ class XEditBase:
     def delete(self, path=''):
         self.xelib.remove_element(self.handle, path=path)
 
-
     @property
     def name(self):
         return self.xelib.name(self.handle)
