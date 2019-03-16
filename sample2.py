@@ -62,6 +62,26 @@ with XEdit(game='SkyrimSE', plugins=['The Ordinary Women.esp']).session() as xed
     tow.save_as('D:\\SkyrimModding\\my_modified_tow.esp')  # as a new file
     tow.save()  # save in place
 
+    # maybe eventually we could have things like cleaning a plugin?
+    tow.clean()
+
+    # or maybe turning a plugin into a pseudo esl?
+    if tow.is_candidate_for_pseudo_esl:
+        tow.is_pseudo_esl = True
+
+    # or maybe merge a bunch of plugins?
+    xelib.merge_plugins(['A.esp', 'B.esp', 'C.esp'], dest='merged.esp')
+
+    # or maybe generate a patch?
+    xelib.create_merged_patch(dest='merged_patch.esp')
+
+    # and you can do it all right there in python! Imagine how powerful this
+    # could be when combined with python's amazing library and ecosystem for
+    # automating everything on your PC. Imagine how many people can start
+    # hacking this stuff when they can do it in a language as simple, succinct,
+    # intuitive, and newbie-friendly as python, the language used by most CS101
+    # classes!
+
     # when working in xedit, under the hood every new record you open will take
     # up a "handle"; it is good practice to release handles after you are done
     # with them. In the XEdit high level API here, each object is associated
