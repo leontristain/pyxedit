@@ -202,38 +202,43 @@ class ElementsMethods(WrapperMethodsBase):
             error_msg=f'Failed to check element matches for '
                       f'{self.element_context(id_, path)},{value}')
 
-    def has_array_item(self, id_, path, subpath, value):
+    def has_array_item(self, id_, path, subpath, value, ex=True):
         return self.get_bool(
             lambda res:
                 self.raw_api.HasArrayItem(id_, path, subpath, value, res),
             error_msg=f'Failed to check if array has item for '
-                      f'{self.array_item_context(id_, path, subpath, value)}')
+                      f'{self.array_item_context(id_, path, subpath, value)}',
+            ex=ex)
 
-    def get_array_item(self, id_, path, subpath, value):
+    def get_array_item(self, id_, path, subpath, value, ex=True):
         return self.get_handle(
             lambda res:
                 self.raw_api.GetArrayItem(id_, path, subpath, value, res),
             error_msg=f'Failed to get array item for '
-                      f'{self.array_item_context(id_, path, subpath, value)}')
+                      f'{self.array_item_context(id_, path, subpath, value)}',
+            ex=ex)
 
-    def add_array_item(self, id_, path, subpath, value):
+    def add_array_item(self, id_, path, subpath, value, ex=True):
         return self.get_handle(
             lambda res:
                 self.raw_api.AddArrayItem(id_, path, subpath, value, res),
             error_msg=f'Failed to add array item to '
-                      f'{self.array_item_context(id_, path, subpath, value)}')
+                      f'{self.array_item_context(id_, path, subpath, value)}',
+            ex=ex)
 
-    def remove_array_item(self, id_, path, subpath, value):
+    def remove_array_item(self, id_, path, subpath, value, ex=True):
         return self.verify_execution(
             self.raw_api.RemoveArrayItem(id_, path, subpath, value),
             error_msg=f'Failed to remove array item '
-                      f'{self.array_item_context(id_, path, subpath, value)}')
+                      f'{self.array_item_context(id_, path, subpath, value)}',
+            ex=ex)
 
-    def move_array_item(self, id_, index):
+    def move_array_item(self, id_, index, ex=True):
         return self.verify_execution(
             self.raw_api.MoveArrayItem(id_, index),
             error_msg=f'Failed to move array item {self.element_context(id_)} '
-                      f'to {index}')
+                      f'to {index}',
+            ex=ex)
 
     def copy_element(self, id_, id2, as_new=False):
         return self.get_handle(

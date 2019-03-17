@@ -60,6 +60,10 @@ class XEdit(XEditBase):
 
     @classmethod
     def quickstart(cls, game=XEditBase.Games.SkyrimSE, plugins=None):
-        plugins = plugins or []
+        '''
+        For when you want to play around with an xedit session in the
+        interpreter quickly
+        '''
+        plugins = plugins or ['Skyrim.esm', 'Update.esm', 'Dawnguard.esm']
         xedit = cls(game_mode=game, plugins=plugins)
         return xedit.session().__enter__()

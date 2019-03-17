@@ -162,3 +162,88 @@ class TestXEditBase:
             assert tx.local_path == 'Textures (RGB/A)'
             assert tx.signature == 'TX00'
             assert tx.signature_name == ''
+
+    def test_objectify(self, xedit):
+        with xedit.manage_handles():
+            assert xedit.__class__.__name__ == 'XEdit'
+
+            dawnguard = xedit['Dawnguard.esm']
+            assert dawnguard.__class__.__name__ == 'XEditPlugin'
+
+            armo = xedit['Dawnguard.esm\\ARMO']
+            assert armo.__class__.__name__ == 'XEditGenericObject'
+
+            txst = xedit['Dawnguard.esm\\Texture Set\\EyesSnowElf']
+            assert txst.__class__.__name__ == 'XEditTextureSet'
+
+            parts = xedit['Dawnguard.esm\\Head Part\\MaleEyesSnowElf\\Parts']
+            assert parts.__class__.__name__ == 'XEditCollection'
+
+
+class TestXEditCollection:
+    def test_basic_functionality(self, xedit):
+        with xedit.manage_handles():
+            parts = xedit['Dawnguard.esm\\Head Part\\MaleHeadHighElfSnow\\'
+                          'Parts']
+
+            # should be able to determine length using the len() builtin
+            assert len(parts) == 3
+
+            # should be able to get part objects via indexing
+            assert parts[0]['NAM0'].xelib_run('get_value') == 'Race Morph'
+            assert parts[1]['NAM0'].xelib_run('get_value') == 'Tri'
+            assert parts[2]['NAM0'].xelib_run('get_value') == 'Chargen Morph'
+            assert parts[-1]['NAM0'].xelib_run('get_value') == 'Chargen Morph'
+            assert parts[-2]['NAM0'].xelib_run('get_value') == 'Tri'
+            assert parts[-3]['NAM0'].xelib_run('get_value') == 'Race Morph'
+            with pytest.raises(IndexError):
+                parts[3]
+
+            # should be able to iterate over parts, resulting in objects
+            for i, part in enumerate(parts):
+                type_str = part['NAM0'].xelib_run('get_value')
+                expected = ['Race Morph', 'Tri', 'Chargen Morph'][i]
+                assert type_str == expected
+
+            # should be able to check whether an item exists via information
+            # about its content
+            assert parts.has_item_with('Tri', subpath='NAM0')
+            assert not parts.has_item_with('Nope', subpath='NopeNope')
+
+            # should be able to retrieve an object via information about its
+            # content
+            assert parts.find_item_with('Nope', subpath='NopeNope') is None
+            part = parts.find_item_with('Tri', subpath='NAM0')
+            assert part
+
+            # should be able to check whether an object exists in the collection
+            # with the `in` operator
+            assert part in parts
+
+            # should be able to find the index of a part using the part object
+            assert parts.index(part) == 1
+
+            # should be able to add an item to the collection
+            item = parts.add_item_with('Foo\\Bar.tri', subpath='NAM1')
+            print(item.long_path)
+            assert item['NAM1'].value == 'Foo\\Bar.tri'
+            assert len(parts) == 4
+            assert parts.index(item) == 3
+
+            # should be able to move the item
+            assert parts[-1]['NAM1'].value == 'Foo\\Bar.tri'
+            parts.move_item(parts[-1], 0)
+            assert parts[-1]['NAM1'].value != 'Foo\\Bar.tri'
+            assert parts[0]['NAM1'].value == 'Foo\\Bar.tri'
+
+            # should be able to remove the item; the array should be back to
+            # the way it used to be
+            assert len(parts) == 4
+            parts.remove_item_with('Foo\\Bar.tri', subpath='NAM1')
+            assert len(parts) == 3
+            assert parts[0]['NAM0'].xelib_run('get_value') == 'Race Morph'
+            assert parts[0]['NAM1'].value != 'Foo\\Bar.tri'
+            assert parts[1]['NAM0'].xelib_run('get_value') == 'Tri'
+            assert parts[1]['NAM1'].value != 'Foo\\Bar.tri'
+            assert parts[2]['NAM0'].xelib_run('get_value') == 'Chargen Morph'
+            assert parts[2]['NAM1'].value != 'Foo\\Bar.tri'

@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from functools import partial
 
 from xelib.xelib import Xelib
 
@@ -28,6 +29,13 @@ class XEditBase:
                              f'xelib session')
         return self._xelib
 
+    def xelib_run(self, method_name, *args, **kwargs):
+        '''
+        Invokes a xelib method with the current handle
+        '''
+        return partial(getattr(self.xelib, method_name),
+                       id_=self.handle)(*args, **kwargs)
+
     def __eq__(self, other):
         return self.xelib.element_equals(self.handle, other.handle)
 
@@ -56,7 +64,7 @@ class XEditBase:
         return self.xelib.value_type(self.handle, ex=False)
 
     def objectify(self, handle):
-        # first create a generic object out of it so we ca inspect it
+        # first create a generic object out of it so we can inspect it
         generic_obj = XEditGenericObject.from_xedit_object(handle, self)
 
         # if object is a plugin, use the XEditPlugin class
@@ -219,7 +227,7 @@ class XEditGenericObject(XEditBase):
                 self.DefTypes.dtStruct,
                 self.DefTypes.dtUnion,
                 self.DefTypes.dtEmpty,
-                self.DefTypes.dtSTructChapter):
+                self.DefTypes.dtStructChapter):
             return
         elif def_type == self.DefTypes.dtString:
             return self.xelib.get_value(self.handle)
@@ -246,7 +254,7 @@ class XEditGenericObject(XEditBase):
                 self.DefTypes.dtStruct,
                 self.DefTypes.dtUnion,
                 self.DefTypes.dtEmpty,
-                self.DefTypes.dtSTructChapter):
+                self.DefTypes.dtStructChapter):
             return
         elif def_type == self.DefTypes.dtString:
             return self.xelib.set_value(self.handle, str(value))
@@ -309,9 +317,17 @@ class XEditCollection(XEditGenericObject):
     def __getitem__(self, index):
         # implements `parts[2]`
         len_ = len(self)
-        if index >= len_:
-            raise IndexError(f'XEditCollection has only {len_} items; list '
+
+        # support negative indexing
+        if index < 0:
+            index += len_
+
+        # raise IndexError on out of range resolved index
+        if not 0 <= index < len_:
+            raise IndexError(f'XEditCollection has {len_} items; resolved '
                              f'index {index} is out of range')
+
+        # in range, get and objectify the array element
         return self.objectify(
                    self.xelib.get_element(self.handle, path=f'[{index}]'))
 
@@ -320,12 +336,19 @@ class XEditCollection(XEditGenericObject):
         for index in range(len(self)):
             yield self[index]
 
+    def index(self, item):
+        for i, my_item in enumerate(self):
+            if item == my_item:
+                return i
+        raise ValueError(f'item equivalent to {item} is not in the list')
+
     def add_item_with(self, value, subpath=''):
         return self.objectify(
                    self.xelib.add_array_item(self.handle, '', subpath, value))
 
     def has_item_with(self, value, subpath=''):
-        return self.xelib.has_array_item(self.handle, '', subpath, value)
+        return self.xelib.has_array_item(
+                   self.handle, '', subpath, value, ex=False)
 
     def find_item_with(self, value, subpath=''):
         item_handle = self.xelib.get_array_item(
