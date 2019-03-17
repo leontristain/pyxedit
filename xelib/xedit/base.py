@@ -168,6 +168,7 @@ class XEditBase:
 
     @staticmethod
     def import_all_object_classes():
+        from xelib.xedit.object_classes.HDPT import XEditHeadPart  # NOQA
         from xelib.xedit.object_classes.NPC_ import XEditNPC  # NOQA
         from xelib.xedit.object_classes.TXST import XEditTextureSet  # NOQA
 
@@ -232,7 +233,11 @@ class XEditGenericObject(XEditBase):
         elif def_type == self.DefTypes.dtString:
             return self.xelib.get_value(self.handle)
         elif def_type == self.DefTypes.dtInteger:
-            return self.xelib.get_int_value(self.handle)
+            if self.value_type == self.ValueTypes.vtReference:
+                referenced = self.xelib.get_links_to(self.handle, ex=False)
+                return self.objectify(referenced) if referenced else None
+            else:
+                return self.xelib.get_int_value(self.handle)
         elif def_type == self.DefTypes.dtFloat:
             return self.xelib.get_float_value(self.handle)
         else:
@@ -259,7 +264,15 @@ class XEditGenericObject(XEditBase):
         elif def_type == self.DefTypes.dtString:
             return self.xelib.set_value(self.handle, str(value))
         elif def_type == self.DefTypes.dtInteger:
-            return self.xelib.set_int_value(self.handle, int(value))
+            if self.value_type == self.ValueTypes.vtReference:
+                if isinstance(value, XEditBase):
+                    return self.xelib.set_links_to(self.handle, value.handle)
+                else:
+                    raise XEditError(f'Setting a value for an object of type '
+                                     f'{self.ValueTypes.vtReference} requires '
+                                     f'another xedit object')
+            else:
+                return self.xelib.set_int_value(self.handle, int(value))
         elif def_type == self.DefTypes.dtFloat:
             return self.xelib.set_float_value(self.handle, float(value))
         else:

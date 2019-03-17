@@ -41,3 +41,29 @@ class XEditHeadPart(XEditGenericObject):
 
     pnam = property(fget=get_pnam, fset=set_pnam, fdel=del_pnam)
     headpart_type = pnam
+
+    @property
+    def parts(self):
+        return self['Parts']
+
+    @property
+    def file_paths(self):
+        with self.manage_handles():
+            files = [part['NAM1'].value for part in self.parts]
+        return [file_ for file_ in files if file_]
+
+    @property
+    def texture_set(self):
+        return self['TNAM'].value
+
+    @texture_set.setter
+    def texture_set(self, value):
+        self['TNAM'].value = value
+
+    @property
+    def valid_races(self):
+        return self['RNAM'].value
+
+    @valid_races.setter
+    def valid_races(self, value):
+        self['RNAM'].value = value
