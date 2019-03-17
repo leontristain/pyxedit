@@ -34,31 +34,32 @@ class XEdit(XEditBase):
     def plugin_names(self):
         return self.xelib.get_loaded_file_names()
 
-    def session(self):
+    def session(self, load_plugins=True):
         class XeditSession:
-            def __init__(self, xedit):
+            def __init__(self, xedit, load_plugins):
                 self.xedit = xedit
+                self.load_plugins = load_plugins
 
             def __enter__(self):
                 self.xedit.xelib.__enter__()
                 self.xedit.xelib.set_game_mode(self.xedit._game_mode)
                 if self.xedit._game_path:
                     self.xedit.xelib.set_game_path(self.xedit._game_path)
-                self.xedit.xelib.load_plugins(
-                    os.linesep.join(self.xedit._plugins))
-                while (self.xedit.xelib.get_loader_status() ==
-                                            Xelib.LoaderStates.lsActive):
-                    time.sleep(0.1)
+                if self.load_plugins:
+                    self.xedit.xelib.load_plugins(
+                        os.linesep.join(self.xedit._plugins))
+                    while (self.xedit.xelib.get_loader_status() ==
+                                                Xelib.LoaderStates.lsActive):
+                        time.sleep(0.1)
                 return self.xedit
 
             def __exit__(self, exc_type, exc_value, traceback):
                 self.xedit.xelib.__exit__(exc_type, exc_value, traceback)
 
-        return XeditSession(self)
+        return XeditSession(self, load_plugins)
 
     @classmethod
-    def quickstart(cls, game='SkyrimSE', plugins=None):
+    def quickstart(cls, game=XEditBase.Games.SkyrimSE, plugins=None):
         plugins = plugins or []
-        game_mode = Xelib.Games[game]
-        xedit = cls(game_mode=game_mode, plugins=plugins)
+        xedit = cls(game_mode=game, plugins=plugins)
         return xedit.session().__enter__()

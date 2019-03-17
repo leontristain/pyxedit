@@ -305,29 +305,37 @@ class ElementsMethods(WrapperMethodsBase):
             error_msg=f'Failed to get can add for '
                       f'{self.element_context(id_)}')
 
-    def element_type(self, id_):
-        return ElementTypes(self.get_byte(
+    def element_type(self, id_, ex=True):
+        result = self.get_byte(
             lambda res: self.raw_api.ElementType(id_, res),
             error_msg=f'Failed to get element type for '
-                      f'{self.element_context(id_)}'))
+                      f'{self.element_context(id_)}',
+            ex=ex)
+        return result if result is None else ElementTypes(result)
 
-    def def_type(self, id_):
-        return DefTypes(self.get_byte(
+    def def_type(self, id_, ex=True):
+        result = self.get_byte(
             lambda res: self.raw_api.DefType(id_, res),
             error_msg=f'Failed to get def type for '
-                      f'{self.element_context(id_)}'))
+                      f'{self.element_context(id_)}',
+            ex=ex)
+        return result if result is None else DefTypes(result)
 
-    def smash_type(self, id_):
-        return SmashTypes(self.get_byte(
+    def smash_type(self, id_, ex=True):
+        result = self.get_byte(
             lambda res: self.raw_api.SmashType(id_, res),
             error_msg=f'Failed to get smash type for '
-                      f'{self.element_context(id_)}'))
+                      f'{self.element_context(id_)}',
+            ex=ex)
+        return result if result is None else SmashTypes(result)
 
-    def value_type(self, id_):
-        return ValueTypes(self.get_byte(
+    def value_type(self, id_, ex=True):
+        result = self.get_byte(
             lambda res: self.raw_api.ValueType(id_, res),
             error_msg=f'Failed to get value type for '
-                      f'{self.element_context(id_)}'))
+                      f'{self.element_context(id_)}',
+            ex=ex)
+        return result if result is None else ValueTypes(result)
 
     def is_sorted(self, id_):
         return self.get_bool(

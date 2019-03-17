@@ -1,6 +1,8 @@
 from contextlib import contextmanager
 from pathlib import Path
 
+from xelib.xelib import Xelib
+
 
 class XEditError(Exception):
     pass
@@ -8,6 +10,11 @@ class XEditError(Exception):
 
 class XEditBase:
     SIGNATURE = None
+    Games = Xelib.Games
+    ElementTypes = Xelib.ElementTypes
+    DefTypes = Xelib.DefTypes
+    SmashTypes = Xelib.SmashTypes
+    ValueTypes = Xelib.ValueTypes
 
     def __init__(self, xelib, handle, handle_group):
         self.handle = handle
@@ -22,6 +29,9 @@ class XEditBase:
                              f'xelib session')
         return self._xelib
 
+    def __eq__(self, other):
+        return self.xelib.element_equals(self.handle, other.handle)
+
     def __getitem__(self, path):
         return self.get(path, ex=True)
 
@@ -30,39 +40,60 @@ class XEditBase:
         with self.xelib.manage_handles():
             yield self
 
-    def get(self, path, default=None, ex=False):
-        handle = self.xelib.get_element(self.handle, path=path, ex=ex)
+    @property
+    def element_type(self):
+        return self.xelib.element_type(self.handle, ex=False)
 
-        # got a valid handle
-        if handle:
-            # first create a generic object out of it so we ca inspect it
-            generic_obj = XEditGenericObject.from_xedit_object(handle, self)
+    @property
+    def def_type(self):
+        return self.xelib.def_type(self.handle, ex=False)
 
-            # if object is a plugin, use the XEditPlugin class
-            if generic_obj.is_plugin:
-                return XEditPlugin.from_xedit_object(handle, self)
+    @property
+    def smash_type(self):
+        return self.xelib.smash_type(self.handle, ex=False)
 
-            # if object is a top-level group, use the generic class as-is, since
-            # it's going to have a signature that is same as the records in the
-            # group, but won't have anything of substance
-            if generic_obj.is_toplevel_group:
-                return generic_obj
+    @property
+    def value_type(self):
+        return self.xelib.value_type(self.handle, ex=False)
 
-            # otherwise, see if we can find a subclass of XEditBase
-            # corresponding to the signature; if so, use the subclass to make
-            # the object, otherwise just use the generic object
-            if generic_obj.signature:
-                for subclass in XEditBase.get_imported_subclasses():
-                    if subclass.SIGNATURE == generic_obj.signature:
-                        return subclass.from_xedit_object(handle, self)
+    def objectify(self, handle):
+        # first create a generic object out of it so we ca inspect it
+        generic_obj = XEditGenericObject.from_xedit_object(handle, self)
+
+        # if object is a plugin, use the XEditPlugin class
+        if generic_obj.element_type == self.ElementTypes.etFile:
+            return XEditPlugin.from_xedit_object(handle, self)
+
+        # if object is a top-level group, use the generic class as-is, since
+        # it's going to have a signature that is same as the records in the
+        # group, but won't have anything of substance
+        if generic_obj.element_type == self.ElementTypes.etGroupRecord:
             return generic_obj
 
-        # no valid handle, if ex is enabled, raise an exception; otherwise just
-        # return the default
-        if ex:
+        # if object is an array or subrecord array, use the collection class
+        if generic_obj.element_type in (self.ElementTypes.etArray,
+                                        self.ElementTypes.etSubRecordArray):
+            return XEditCollection.from_xedit_object(handle, self)
+
+        # otherwise, see if we can find a subclass of XEditBase
+        # corresponding to the signature; if so, use the subclass to make
+        # the object, otherwise just use the generic object
+        if generic_obj.signature:
+            for subclass in XEditBase.get_imported_subclasses():
+                if subclass.SIGNATURE == generic_obj.signature:
+                    return subclass.from_xedit_object(handle, self)
+
+        return generic_obj
+
+    def get(self, path, default=None, ex=False):
+        handle = self.xelib.get_element(self.handle, path=path, ex=ex)
+        if handle:
+            return self.objectify(handle)
+        elif ex:
             raise XEditError(f'No object can be obtained at path {path} from '
                              f'{self.long_path}')
-        return default
+        else:
+            return default
 
     def add(self, path):
         with self.manage_handles():
@@ -125,7 +156,9 @@ class XEditBase:
     def from_xedit_object(cls, handle, xedit_obj):
         if not handle or handle not in xedit_obj._xelib._current_handles:
             raise XEditError(f'Attempting to create XEdit object from invalid '
-                             f'handle {handle}')
+                             f'handle {handle} with respect to source object '
+                             f'{xedit_obj}; handle not managed by the current '
+                             f'manage_handles context of the object')
         return cls(xedit_obj.xelib, handle, xedit_obj._xelib._current_handles)
 
     @staticmethod
@@ -258,3 +291,42 @@ class XEditGenericObject(XEditBase):
     @property
     def editor_id(self):
         return self.xelib.editor_id(self.handle)
+
+
+class XEditCollection(XEditGenericObject):
+    def __len__(self):
+        # implements `len(parts)`
+        return self.xelib.element_count(self.handle)
+
+    def __getitem__(self, index):
+        # implements `parts[2]`
+        len_ = len(self)
+        if index >= len_:
+            raise IndexError(f'XEditCollection has only {len_} items; list '
+                             f'index {index} is out of range')
+        return self.objectify(
+                   self.xelib.get_element(self.handle, path=f'[{index}]'))
+
+    def __iter__(self):
+        # implements `for part in parts`
+        for index in range(len(self)):
+            yield self[index]
+
+    def add_item_with(self, value, subpath=''):
+        return self.objectify(
+                   self.xelib.add_array_item(self.handle, '', subpath, value))
+
+    def has_item_with(self, value, subpath=''):
+        return self.xelib.has_array_item(self.handle, '', subpath, value)
+
+    def find_item_with(self, value, subpath=''):
+        item_handle = self.xelib.get_array_item(
+                          self.handle, '', subpath, value, ex=False)
+        if item_handle:
+            return self.objectify(item_handle)
+
+    def remove_item_with(self, value, subpath=''):
+        return self.xelib.remove_array_item(self.handle, '', subpath, value)
+
+    def move_item(self, sub_item, to_index):
+        return self.xelib.move_array_item(sub_item.handle, to_index)

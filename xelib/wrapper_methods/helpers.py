@@ -77,10 +77,12 @@ class HelpersMethods(WrapperMethodsBase):
         error_prefix = f'{error_msg}: ' if error_msg else ''
 
         res = ctypes.c_uint()
-        if not callback(ctypes.byref(res)) and ex:
-            raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
-                             f'parameter {repr(res)} failed: '
-                             f'{self.get_xelib_error_str()}')
+        if not callback(ctypes.byref(res)):
+            if ex:
+                raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                                 f'parameter {repr(res)} failed: '
+                                 f'{self.get_xelib_error_str()}')
+            return None
         self.track_handle(res.value)
         return res.value
 
@@ -88,40 +90,48 @@ class HelpersMethods(WrapperMethodsBase):
         error_prefix = f'{error_msg}: ' if error_msg else ''
 
         res = ctypes.c_int()
-        if not callback(ctypes.byref(res)) and ex:
-            raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
-                             f'parameter {repr(res)} failed: '
-                             f'{self.get_xelib_error_str()}')
+        if not callback(ctypes.byref(res)):
+            if ex:
+                raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                                 f'parameter {repr(res)} failed: '
+                                 f'{self.get_xelib_error_str()}')
+            return None
         return res.value
 
     def get_unsigned_integer(self, callback, error_msg='', ex=True):
         error_prefix = f'{error_msg}: ' if error_msg else ''
 
         res = ctypes.c_uint()
-        if not callback(ctypes.byref(res)) and ex:
-            raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
-                             f'parameter {repr(res)} failed: '
-                             f'{self.get_xelib_error_str()}')
+        if not callback(ctypes.byref(res)):
+            if ex:
+                raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                                 f'parameter {repr(res)} failed: '
+                                 f'{self.get_xelib_error_str()}')
+            return None
         return res.value
 
     def get_bool(self, callback, error_msg='', ex=True):
         error_prefix = f'{error_msg}: ' if error_msg else ''
 
         res = ctypes.c_ushort()
-        if not callback(ctypes.byref(res)) and ex:
-            raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
-                             f'parameter {repr(res)} failed: '
-                             f'{self.get_xelib_error_str()}')
+        if not callback(ctypes.byref(res)):
+            if ex:
+                raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                                 f'parameter {repr(res)} failed: '
+                                 f'{self.get_xelib_error_str()}')
+            return None
         return bool(res.value)
 
     def get_double(self, callback, error_msg='', ex=True):
         error_prefix = f'{error_msg}: ' if error_msg else ''
 
         res = ctypes.c_double()
-        if not callback(ctypes.byref(res)) and ex:
-            raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
-                             f'parameter {repr(res)} failed: '
-                             f'{self.get_xelib_error_str()}')
+        if not callback(ctypes.byref(res)):
+            if ex:
+                raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                                 f'parameter {repr(res)} failed: '
+                                 f'{self.get_xelib_error_str()}')
+            return None
         return res.value
 
     def get_byte(self, callback, error_msg='', ex=True):
@@ -133,10 +143,12 @@ class HelpersMethods(WrapperMethodsBase):
         error_prefix = f'{error_msg}: ' if error_msg else ''
 
         res = ctypes.c_ubyte()
-        if not callback(ctypes.byref(res)) and ex:
-            raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
-                             f'parameter {repr(res)} failed: '
-                             f'{self.get_xelib_error_str()}')
+        if not callback(ctypes.byref(res)):
+            if ex:
+                raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                                 f'parameter {repr(res)} failed: '
+                                 f'{self.get_xelib_error_str()}')
+            return None
         return res.value
 
     def get_two_bytes(self, callback, error_msg='', ex=True):
@@ -144,10 +156,12 @@ class HelpersMethods(WrapperMethodsBase):
 
         res1 = ctypes.c_ubyte()
         res2 = ctypes.c_ubyte()
-        if not callback(ctypes.byref(res1), ctypes.byref(res2)) and ex:
-            raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
-                             f'parameters {repr(res1)}, {repr(res2)} failed: '
-                             f'{self.get_xelib_error_str()}')
+        if not callback(ctypes.byref(res1), ctypes.byref(res2)):
+            if ex:
+                raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
+                                 f'parameters {repr(res1)}, {repr(res2)} failed: '
+                                 f'{self.get_xelib_error_str()}')
+            return None, None
         return res1.value, res2.value
 
     def get_array(self, callback, method=None, error_msg='', ex=True):
