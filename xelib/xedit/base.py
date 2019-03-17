@@ -176,30 +176,68 @@ class XEditPlugin(XEditBase):
 
 class XEditGenericObject(XEditBase):
     def get_value(self, path='', type_=str, unsigned=False):
-        if type_ == int:
-            if unsigned:
-                return self.xelib.get_uint_value(self.handle, path=path)
-            else:
-                return self.xelib.get_int_value(self.handle, path=path)
-        elif type_ == float:
-            return self.xelib.get_float_value(self.handle, path=path)
-        elif type_ == str:
-            return self.xelib.get_value(self.handle, path=path)
-        else:
-            raise XEditError(f'getting value of type {type_} is not supported')
+        with self.manage_handles():
+            if not path or self.get(path):
+                if type_ == int:
+                    if unsigned:
+                        return self.xelib.get_uint_value(self.handle, path=path)
+                    else:
+                        return self.xelib.get_int_value(self.handle, path=path)
+                elif type_ == float:
+                    return self.xelib.get_float_value(self.handle, path=path)
+                elif type_ == str:
+                    return self.xelib.get_value(self.handle, path=path)
+                else:
+                    raise XEditError(f'getting value of type {type_} is not '
+                                     f'supported')
 
-    def set_value(self, value, path='', type_=str, unsigned=False):
-        if type_ == int:
-            if unsigned:
-                return self.xelib.set_uint_value(self.handle, int(value), path=path)
+    def set_value(self,
+                  value,
+                  path='',
+                  type_=str,
+                  unsigned=False,
+                  create_node=False):
+        # a helper function to create the node if it doesn't exist; gated by
+        # the method's create_node parameter
+        def create_node_if_not_exist():
+            if path and not self.get(path):
+                if create_node:
+                    self.add(path=path)
+                else:
+                    raise XEditError(f'Cannot set value at {path} from '
+                                     f'{self.long_path}; node does not exist; '
+                                     f'you can specify create_node=True to '
+                                     f'create one; just make sure you have not '
+                                     f'misspelled anything')
+        with self.manage_handles():
+            if value is None:
+                # a None given as a value means we should delete the node
+                if not path or self.get(path=path):
+                    self.delete(path=path)
             else:
-                return self.xelib.set_int_value(self.handle, int(value), path=path)
-        elif type_ == float:
-            return self.xelib.set_float_value(self.handle, float(value), path=path)
-        elif type_ == str:
-            return self.xelib.set_value(self.handle, str(value), path=path)
-        else:
-            raise XEditError(f'setting value of type {type_} is not supported')
+                # otherwise, we set the value on the node; remember to run the
+                # create_node_if_not_exist function only when we're about to
+                # set the value
+                if type_ == int:
+                    if unsigned:
+                        create_node_if_not_exist()
+                        return self.xelib.set_uint_value(
+                                   self.handle, int(value), path=path)
+                    else:
+                        create_node_if_not_exist()
+                        return self.xelib.set_int_value(
+                                   self.handle, int(value), path=path)
+                elif type_ == float:
+                    create_node_if_not_exist()
+                    return self.xelib.set_float_value(
+                               self.handle, float(value), path=path)
+                elif type_ == str:
+                    create_node_if_not_exist()
+                    return self.xelib.set_value(
+                               self.handle, str(value), path=path)
+                else:
+                    raise XEditError(f'setting value of type {type_} is not '
+                                     f'supported')
 
     @property
     def data_size(self):

@@ -10,35 +10,15 @@ class XEditTextureSet(XEditGenericObject):
         return f'Textures (RGB/A)\\TX{slot:0>2}'
 
     def get_texture_path(self, slot=0):
-        '''
-        Returns the string at the texture slot path if it exists; or None if not
-        '''
-        with self.manage_handles():
-            slot_path = self.texture_slot_path(slot)
-            if self.get(slot_path):
-                return self.get_value(path=slot_path)
+        return self.get_value(path=self.texture_slot_path(slot))
 
     def set_texture_path(self, path, slot=0):
-        '''
-        Sets the string at the texture slot path; if None is given, the slot
-        path will be deleted if it exists.
-        '''
-        with self.manage_handles():
-            slot_path = self.texture_slot_path(slot)
-            if path is None:
-                if self.get(slot_path):
-                    self.delete_texture_path(slot=slot)
-            else:
-                if not self.get(slot_path):
-                    self.add(slot_path)
-                self.set_value(path, path=slot_path)
+        return self.set_value(path,
+                              path=self.texture_slot_path(slot),
+                              create_node=True)
 
     def delete_texture_path(self, slot=0):
-        '''
-        Delete the texture slot path
-        '''
-        with self.manage_handles():
-            self[self.texture_slot_path(slot)].delete()
+        self.delete(path=self.texture_slot_path(slot))
 
     tx00 = property(fget=partial(get_texture_path, slot=0),
                     fset=partial(set_texture_path, slot=0),
