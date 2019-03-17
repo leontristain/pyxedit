@@ -1,5 +1,4 @@
 from contextlib import contextmanager
-from pathlib import Path
 
 from xelib.xelib import Xelib
 
@@ -128,14 +127,6 @@ class XEditBase:
     @property
     def local_path(self):
         return self.xelib.local_path(self.handle)
-
-    @property
-    def is_plugin(self):
-        return len(Path(self.long_path).parts) == 1
-
-    @property
-    def is_toplevel_group(self):
-        return len(Path(self.long_path).parts) == 2
 
     @property
     def signature(self):
