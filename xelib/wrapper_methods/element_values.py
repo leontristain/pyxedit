@@ -2,39 +2,45 @@ from xelib.wrapper_methods.base import WrapperMethodsBase
 
 
 class ElementValuesMethods(WrapperMethodsBase):
-    def name(self, id_):
+    def name(self, id_, ex=True):
         return self.get_string(
             lambda len_: self.raw_api.Name(id_, len_),
-            error_msg=f'Name failed on {id_}')
+            error_msg=f'Name failed on {id_}',
+            ex=ex)
 
-    def long_name(self, id_):
+    def long_name(self, id_, ex=True):
         return self.get_string(
             lambda len_: self.raw_api.LongName(id_, len_),
-            error_msg=f'LongName failed on {id_}')
+            error_msg=f'LongName failed on {id_}',
+            ex=ex)
 
-    def display_name(self, id_):
+    def display_name(self, id_, ex=True):
         return self.get_string(
             lambda len_: self.raw_api.DisplayName(id_, len_),
-            error_msg=f'DisplayName failed on {id_}')
+            error_msg=f'DisplayName failed on {id_}',
+            ex=ex)
 
     def placement_name(self, id_):
         rec = self.get_links_to(id_, 'NAME')
         return rec > 0 and f'Places {self.name(rec)}'
 
-    def path(self, id_):
+    def path(self, id_, ex=True):
         return self.get_string(
             lambda len_: self.raw_api.Path(id_, True, False, len_),
-            error_msg=f'Path failed on {id_}')
+            error_msg=f'Path failed on {id_}',
+            ex=ex)
 
-    def long_path(self, id_):
+    def long_path(self, id_, ex=True):
         return self.get_string(
             lambda len_: self.raw_api.Path(id_, False, False, len_),
-            error_msg=f'Path failed on {id_}')
+            error_msg=f'Path failed on {id_}',
+            ex=ex)
 
-    def local_path(self, id_):
+    def local_path(self, id_, ex=True):
         return self.get_string(
             lambda len_: self.raw_api.Path(id_, False, True, len_),
-            error_msg=f'Path failed on {id_}')
+            error_msg=f'Path failed on {id_}',
+            ex=ex)
 
     def signature(self, id_, ex=True):
         return self.get_string(
@@ -137,15 +143,17 @@ class ElementValuesMethods(WrapperMethodsBase):
             error_msg=f'Failed to get all enum options at '
                       f'{self.element_context(id_, path)}').split(',')
 
-    def signature_from_name(self, name):
+    def signature_from_name(self, name, ex=True):
         return self.get_string(
             lambda len_: self.raw_api.SignatureFromName(name, len_),
-            error_msg=f'Failed to get signature from name: {name}')
+            error_msg=f'Failed to get signature from name: {name}',
+            ex=ex)
 
-    def name_from_signature(self, sig):
+    def name_from_signature(self, sig, ex=True):
         return self.get_string(
             lambda len_: self.raw_api.NameFromSignature(sig, len_),
-            error_msg=f'Failed to get name from signature: {sig}')
+            error_msg=f'Failed to get name from signature: {sig}',
+            ex=ex)
 
     def get_signature_name_map(self):
         return self.get_dictionary(

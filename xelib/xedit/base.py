@@ -99,34 +99,39 @@ class XEditBase:
             if self.get(path):
                 raise XEditError(f'Cannot add object at path {path}; an object '
                                  f'already exists there')
-            self.xelib.add_element(self.handle, path=path)
+        handle = self.xelib.add_element(self.handle, path=path)
+        if handle:
+            return self.objectify(handle)
+
+    def get_or_add(self, path):
+        return self.get(path) or self.add(path)
 
     def delete(self, path=''):
         self.xelib.remove_element(self.handle, path=path)
 
     @property
     def name(self):
-        return self.xelib.name(self.handle)
+        return self.xelib.name(self.handle, ex=False)
 
     @property
     def long_name(self):
-        return self.xelib.long_name(self.handle)
+        return self.xelib.long_name(self.handle, ex=False)
 
     @property
     def display_name(self):
-        return self.xelib.display_name(self.handle)
+        return self.xelib.display_name(self.handle, ex=False)
 
     @property
     def path(self):
-        return self.xelib.path(self.handle)
+        return self.xelib.path(self.handle, ex=False)
 
     @property
     def long_path(self):
-        return self.xelib.long_path(self.handle)
+        return self.xelib.long_path(self.handle, ex=False)
 
     @property
     def local_path(self):
-        return self.xelib.local_path(self.handle)
+        return self.xelib.local_path(self.handle, ex=False)
 
     @property
     def signature(self):
@@ -135,7 +140,8 @@ class XEditBase:
     @property
     def signature_name(self):
         signature = self.signature
-        return self.xelib.name_from_signature(signature) if signature else None
+        return (self.xelib.name_from_signature(signature, ex=False)
+                if signature else '')
 
     @classmethod
     def get_imported_subclasses(cls):
@@ -199,69 +205,80 @@ class XEditPlugin(XEditBase):
 
 
 class XEditGenericObject(XEditBase):
-    def get_value(self, path='', type_=str, unsigned=False):
-        with self.manage_handles():
-            if not path or self.get(path):
-                if type_ == int:
-                    if unsigned:
-                        return self.xelib.get_uint_value(self.handle, path=path)
-                    else:
-                        return self.xelib.get_int_value(self.handle, path=path)
-                elif type_ == float:
-                    return self.xelib.get_float_value(self.handle, path=path)
-                elif type_ == str:
-                    return self.xelib.get_value(self.handle, path=path)
-                else:
-                    raise XEditError(f'getting value of type {type_} is not '
-                                     f'supported')
+    @property
+    def value(self):
+        def_type = self.def_type
+        if def_type is None or def_type in (
+                self.DefTypes.dtRecord,
+                self.DefTypes.dtSubRecord,
+                self.DefTypes.dtSubRecordArray,
+                self.DefTypes.dtSubRecordStruct,
+                self.DefTypes.dtSubRecordUnion,
+                self.DefTypes.dtFlag,
+                self.DefTypes.dtArray,
+                self.DefTypes.dtStruct,
+                self.DefTypes.dtUnion,
+                self.DefTypes.dtEmpty,
+                self.DefTypes.dtSTructChapter):
+            return
+        elif def_type == self.DefTypes.dtString:
+            return self.xelib.get_value(self.handle)
+        elif def_type == self.DefTypes.dtInteger:
+            return self.xelib.get_int_value(self.handle)
+        elif def_type == self.DefTypes.dtFloat:
+            return self.xelib.get_float_value(self.handle)
+        else:
+            raise NotImplementedError(f'Just encountered {def_type}, which is '
+                                      f'not yet supported as a gettable value; '
+                                      f'we should check it out and add it')
 
-    def set_value(self,
-                  value,
-                  path='',
-                  type_=str,
-                  unsigned=False,
-                  create_node=False):
-        # a helper function to create the node if it doesn't exist; gated by
-        # the method's create_node parameter
-        def create_node_if_not_exist():
-            if path and not self.get(path):
-                if create_node:
-                    self.add(path=path)
-                else:
-                    raise XEditError(f'Cannot set value at {path} from '
-                                     f'{self.long_path}; node does not exist; '
-                                     f'you can specify create_node=True to '
-                                     f'create one; just make sure you have not '
-                                     f'misspelled anything')
+    @value.setter
+    def value(self, value):
+        def_type = self.def_type
+        if def_type is None or def_type in (
+                self.DefTypes.dtRecord,
+                self.DefTypes.dtSubRecord,
+                self.DefTypes.dtSubRecordArray,
+                self.DefTypes.dtSubRecordStruct,
+                self.DefTypes.dtSubRecordUnion,
+                self.DefTypes.dtFlag,
+                self.DefTypes.dtArray,
+                self.DefTypes.dtStruct,
+                self.DefTypes.dtUnion,
+                self.DefTypes.dtEmpty,
+                self.DefTypes.dtSTructChapter):
+            return
+        elif def_type == self.DefTypes.dtString:
+            return self.xelib.set_value(self.handle, str(value))
+        elif def_type == self.DefTypes.dtInteger:
+            return self.xelib.set_int_value(self.handle, int(value))
+        elif def_type == self.DefTypes.dtFloat:
+            return self.xelib.set_float_value(self.handle, float(value))
+        else:
+            raise NotImplementedError(f'Just encountered {def_type}, which is '
+                                      f'not yet supported as a settable value; '
+                                      f'we should check it out and add it')
+
+    def get_value(self, path=''):
+        with self.manage_handles():
+            return (self[path] if path else self).value
+
+    def set_value(self, value, path='', create_node=False):
         with self.manage_handles():
             if value is None:
-                # a None given as a value means we should delete the node
                 if not path or self.get(path=path):
                     self.delete(path=path)
             else:
-                # otherwise, we set the value on the node; remember to run the
-                # create_node_if_not_exist function only when we're about to
-                # set the value
-                if type_ == int:
-                    if unsigned:
-                        create_node_if_not_exist()
-                        return self.xelib.set_uint_value(
-                                   self.handle, int(value), path=path)
+                if path and not self.get(path=path):
+                    if create_node:
+                        self.add(path=path)
                     else:
-                        create_node_if_not_exist()
-                        return self.xelib.set_int_value(
-                                   self.handle, int(value), path=path)
-                elif type_ == float:
-                    create_node_if_not_exist()
-                    return self.xelib.set_float_value(
-                               self.handle, float(value), path=path)
-                elif type_ == str:
-                    create_node_if_not_exist()
-                    return self.xelib.set_value(
-                               self.handle, str(value), path=path)
-                else:
-                    raise XEditError(f'setting value of type {type_} is not '
-                                     f'supported')
+                        raise XEditError(
+                            f'Cannot set value at {path} from {self.long_path}; '
+                            f'node does not exist; you can specify '
+                            f'create_node=True to create one; just make sure '
+                            f'you have not misspelled anything')
+                (self[path] if path else self).value = value
 
     @property
     def data_size(self):

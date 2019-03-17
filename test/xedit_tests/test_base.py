@@ -116,8 +116,49 @@ class TestXEditBase:
             assert not tx.get('TX03')
 
             # add it back; we should be able to delete it via its own object
-            tx.add('TX03')
-            tx03 = tx.get('TX03')
+            tx03 = tx.add('TX03')
             assert tx03
             tx03.delete()
             assert not tx.get('TX03')
+
+    def test_names_paths_and_signature(self, xedit):
+        with xedit.manage_handles():
+            dawnguard = xedit['Dawnguard.esm']
+            assert dawnguard.name == 'Dawnguard.esm'
+            assert dawnguard.long_name == '[02] Dawnguard.esm'
+            assert dawnguard.display_name == '[02] Dawnguard.esm'
+            assert dawnguard.path == 'Dawnguard.esm'
+            assert dawnguard.long_path == 'Dawnguard.esm'
+            assert dawnguard.local_path == 'Dawnguard.esm'
+            assert dawnguard.signature == ''
+            assert dawnguard.signature_name == ''
+
+            armo = xedit['Dawnguard.esm\\ARMO']
+            assert armo.name == 'Armor'
+            assert armo.long_name == 'GRUP Top "ARMO"'
+            assert armo.display_name == 'GRUP Top "ARMO"'
+            assert armo.path == 'Dawnguard.esm\\ARMO'
+            assert armo.long_path == 'Dawnguard.esm\\ARMO'
+            assert armo.local_path == 'Dawnguard.esm\\ARMO'
+            assert armo.signature == 'ARMO'
+            assert armo.signature_name == 'Armor'
+
+            pnam = xedit['Dawnguard.esm\\Head Part\\MaleEyesSnowElf\\PNAM']
+            assert pnam.name == 'PNAM - Type'
+            assert pnam.long_name == 'PNAM - Type'
+            assert pnam.display_name == 'PNAM - Type'
+            assert pnam.path == 'Dawnguard.esm\\02003786\\PNAM - Type'
+            assert pnam.long_path == 'Dawnguard.esm\\HDPT\\02003786\\PNAM - Type'
+            assert pnam.local_path == 'PNAM - Type'
+            assert pnam.signature == 'PNAM'
+            assert pnam.signature_name == ''
+
+            tx = xedit['Dawnguard.esm\\Texture Set\\EyesSnowElf\\Textures (RGB/A)']
+            assert tx.name == 'Textures (RGB/A)'
+            assert tx.long_name == 'Textures (RGB/A)'
+            assert tx.display_name == 'Textures (RGB/A)'
+            assert tx.path == 'Dawnguard.esm\\02003787\\Textures (RGB/A)'
+            assert tx.long_path == 'Dawnguard.esm\\TXST\\02003787\\Textures (RGB/A)'
+            assert tx.local_path == 'Textures (RGB/A)'
+            assert tx.signature == 'TX00'
+            assert tx.signature_name == ''
