@@ -42,6 +42,13 @@ class XEditBase:
     def __getitem__(self, path):
         return self.get(path, ex=True)
 
+    def __len__(self):
+        return self.xelib.element_count(self.handle)
+
+    def __iter__(self):
+        for handle in self.xelib.get_elements(self.handle):
+            yield self.objectify(handle)
+
     @contextmanager
     def manage_handles(self):
         with self.xelib.manage_handles():
@@ -323,10 +330,6 @@ class XEditGenericObject(XEditBase):
 
 
 class XEditCollection(XEditGenericObject):
-    def __len__(self):
-        # implements `len(parts)`
-        return self.xelib.element_count(self.handle)
-
     def __getitem__(self, index):
         # implements `parts[2]`
         len_ = len(self)
