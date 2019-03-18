@@ -15,4 +15,3 @@ class XEditArmor(XEditGenericObject):
     object_effect = eitm
     enchantment = eitm
     enchantment_amount = eamt
-
