@@ -1,7 +1,7 @@
 from collections import namedtuple
 from enum import Enum, unique
 
-from xelib.wrapper_methods.base import WrapperMethodsBase
+from xelib.xelib.wrapper_methods.base import WrapperMethodsBase
 
 
 GameInfo = namedtuple('GameInfo', 'name short_name mode exe_name')

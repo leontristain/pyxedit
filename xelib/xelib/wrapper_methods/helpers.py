@@ -1,6 +1,6 @@
 import ctypes
 
-from xelib.wrapper_methods.base import WrapperMethodsBase
+from xelib.xelib.wrapper_methods.base import WrapperMethodsBase
 
 
 class XelibError(Exception):
@@ -82,8 +82,8 @@ class HelpersMethods(WrapperMethodsBase):
                 raise XelibError(f'{error_prefix}Call to {repr(callback)} with '
                                  f'parameter {repr(res)} failed: '
                                  f'{self.get_xelib_error_str()}')
-            return None
-        self.track_handle(res.value)
+        if res.value:
+            self.track_handle(res.value)
         return res.value
 
     def get_integer(self, callback, error_msg='', ex=True):

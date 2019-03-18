@@ -1,6 +1,6 @@
 from enum import Enum, unique
 
-from xelib.wrapper_methods.base import WrapperMethodsBase
+from xelib.xelib.wrapper_methods.base import WrapperMethodsBase
 
 
 @unique

@@ -53,16 +53,13 @@ class XEditBase:
         '''
         Invokes a xelib method with the current handle
         '''
-        return getattr(self.xelib, method)(id_=self.handle, *args, **kwargs)
+        return getattr(self.xelib, method)(self.handle, *args, **kwargs)
 
     def __eq__(self, other):
         return self.xelib_run('element_equals', other.handle)
 
     def __getitem__(self, path):
         return self.get(path, ex=True)
-
-    def __len__(self):
-        return self.xelib.element_count(self.handle)
 
     def __iter__(self):
         for handle in self.xelib_run('get_elements'):
@@ -176,6 +173,10 @@ class XEditBase:
         signature = self.signature
         return (self.xelib.name_from_signature(signature, ex=False)
                 if signature else '')
+
+    @property
+    def num_children(self):
+        return self.xelib_run('element_count')
 
     @classmethod
     def get_imported_subclasses(cls):
@@ -343,6 +344,9 @@ class XEditGenericObject(XEditBase):
 
 
 class XEditCollection(XEditGenericObject):
+    def __len__(self):
+        return self.num_children
+
     def __getitem__(self, index):
         # implements `parts[2]`
         len_ = len(self)

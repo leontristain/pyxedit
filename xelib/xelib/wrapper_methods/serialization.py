@@ -1,6 +1,6 @@
 import json
 
-from xelib.wrapper_methods.base import WrapperMethodsBase
+from xelib.xelib.wrapper_methods.base import WrapperMethodsBase
 
 
 class SerializationMethods(WrapperMethodsBase):

@@ -3,27 +3,27 @@ from contextlib import contextmanager
 from ctypes import wintypes
 from pathlib import Path
 
-from xelib.definitions import DelphiTypes, XEditLibSignatures
-from xelib.wrapper_methods.element_values import ElementValuesMethods
-from xelib.wrapper_methods.elements import ElementsMethods
-from xelib.wrapper_methods.errors import ErrorsMethods
-from xelib.wrapper_methods.file_values import FileValuesMethods
-from xelib.wrapper_methods.files import FilesMethods
-from xelib.wrapper_methods.filter import FilterMethods
-from xelib.wrapper_methods.groups import GroupsMethods
-from xelib.wrapper_methods.helpers import HelpersMethods, XelibError
-from xelib.wrapper_methods.masters import MastersMethods
-from xelib.wrapper_methods.messages import MessagesMethods
-from xelib.wrapper_methods.meta import MetaMethods
-from xelib.wrapper_methods.record_values import RecordValuesMethods
-from xelib.wrapper_methods.records import RecordsMethods
-from xelib.wrapper_methods.resources import ResourcesMethods
-from xelib.wrapper_methods.serialization import SerializationMethods
-from xelib.wrapper_methods.setup import SetupMethods
+from xelib.xelib.definitions import DelphiTypes, XEditLibSignatures
+from xelib.xelib.wrapper_methods.element_values import ElementValuesMethods
+from xelib.xelib.wrapper_methods.elements import ElementsMethods
+from xelib.xelib.wrapper_methods.errors import ErrorsMethods
+from xelib.xelib.wrapper_methods.file_values import FileValuesMethods
+from xelib.xelib.wrapper_methods.files import FilesMethods
+from xelib.xelib.wrapper_methods.filter import FilterMethods
+from xelib.xelib.wrapper_methods.groups import GroupsMethods
+from xelib.xelib.wrapper_methods.helpers import HelpersMethods, XelibError
+from xelib.xelib.wrapper_methods.masters import MastersMethods
+from xelib.xelib.wrapper_methods.messages import MessagesMethods
+from xelib.xelib.wrapper_methods.meta import MetaMethods
+from xelib.xelib.wrapper_methods.record_values import RecordValuesMethods
+from xelib.xelib.wrapper_methods.records import RecordsMethods
+from xelib.xelib.wrapper_methods.resources import ResourcesMethods
+from xelib.xelib.wrapper_methods.serialization import SerializationMethods
+from xelib.xelib.wrapper_methods.setup import SetupMethods
 
 __all__ = ['DLL_PATH', 'Xelib', 'XelibError']
 
-DLL_PATH = Path(__file__).parent / '../XEditLib/XEditLib.dll'
+DLL_PATH = Path(__file__).parent / '../../XEditLib/XEditLib.dll'
 
 
 class Xelib(ElementValuesMethods,

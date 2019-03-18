@@ -1,6 +1,6 @@
 from enum import Enum, unique
 
-from xelib.wrapper_methods.base import WrapperMethodsBase
+from xelib.xelib.wrapper_methods.base import WrapperMethodsBase
 
 
 @unique
@@ -173,11 +173,14 @@ class RecordsMethods(WrapperMethodsBase):
                 self.raw_api.GetConflictData(id1, id2, res1, res2),
             error_msg=f'GetConflictData failed on {id1}, {id2}',
             ex=ex)
+
+        conflict_all = ConflictAll(conflict_all or 0)
+        conflict_this = ConflictThis(conflict_this or 0)
+
         if as_string:
-            return (ConflictAll(conflict_all).name,
-                    ConflictThis(conflict_this).name)
+            return conflict_all.name, conflict_this.name
         else:
-            return ConflictAll(conflict_all), ConflictThis(conflict_this)
+            return conflict_all, conflict_this
 
     def get_record_conflict_data(self, id_):
         return self.get_conflict_data(0, id_)
