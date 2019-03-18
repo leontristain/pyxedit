@@ -1,5 +1,4 @@
 from contextlib import contextmanager
-from functools import partial
 
 from xelib.xelib import Xelib
 
