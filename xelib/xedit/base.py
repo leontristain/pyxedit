@@ -8,6 +8,27 @@ class XEditError(Exception):
     pass
 
 
+class XEditAttribute:
+    def __init__(self, path, enum=None, read_only=False, create=True):
+        self.path = path
+        self.enum = enum
+        self.read_only = read_only
+        self.create = create
+
+    def __get__(self, obj, type=None):
+        value = obj.get_value(path=self.path)
+        if self.enum:
+            return self.enum(value)
+        return value
+
+    def __set__(self, obj, value):
+        if self.read_only:
+            raise XEditError(f'Cannot set read-only attribute to {value}')
+        if self.enum:
+            value = value.value
+        return obj.set_value(value, path=self.path, create_node=self.create)
+
+
 class XEditBase:
     SIGNATURE = None
     Games = Xelib.Games
@@ -29,15 +50,14 @@ class XEditBase:
                              f'xelib session')
         return self._xelib
 
-    def xelib_run(self, method_name, *args, **kwargs):
+    def xelib_run(self, method, *args, **kwargs):
         '''
         Invokes a xelib method with the current handle
         '''
-        return partial(getattr(self.xelib, method_name),
-                       id_=self.handle)(*args, **kwargs)
+        return getattr(self.xelib, method)(id_=self.handle, *args, **kwargs)
 
     def __eq__(self, other):
-        return self.xelib.element_equals(self.handle, other.handle)
+        return self.xelib_run('element_equals', other.handle)
 
     def __getitem__(self, path):
         return self.get(path, ex=True)
@@ -46,7 +66,7 @@ class XEditBase:
         return self.xelib.element_count(self.handle)
 
     def __iter__(self):
-        for handle in self.xelib.get_elements(self.handle):
+        for handle in self.xelib_run('get_elements'):
             yield self.objectify(handle)
 
     @contextmanager
@@ -56,19 +76,19 @@ class XEditBase:
 
     @property
     def element_type(self):
-        return self.xelib.element_type(self.handle, ex=False)
+        return self.xelib_run('element_type', ex=False)
 
     @property
     def def_type(self):
-        return self.xelib.def_type(self.handle, ex=False)
+        return self.xelib_run('def_type', ex=False)
 
     @property
     def smash_type(self):
-        return self.xelib.smash_type(self.handle, ex=False)
+        return self.xelib_run('smash_type', ex=False)
 
     @property
     def value_type(self):
-        return self.xelib.value_type(self.handle, ex=False)
+        return self.xelib_run('value_type', ex=False)
 
     def objectify(self, handle):
         # first create a generic object out of it so we can inspect it
@@ -100,7 +120,7 @@ class XEditBase:
         return generic_obj
 
     def get(self, path, default=None, ex=False):
-        handle = self.xelib.get_element(self.handle, path=path, ex=ex)
+        handle = self.xelib_run('get_element', path=path, ex=ex)
         if handle:
             return self.objectify(handle)
         elif ex:
@@ -114,7 +134,7 @@ class XEditBase:
             if self.get(path):
                 raise XEditError(f'Cannot add object at path {path}; an object '
                                  f'already exists there')
-        handle = self.xelib.add_element(self.handle, path=path)
+        handle = self.xelib_run('add_element', path=path)
         if handle:
             return self.objectify(handle)
 
@@ -122,35 +142,35 @@ class XEditBase:
         return self.get(path) or self.add(path)
 
     def delete(self, path=''):
-        self.xelib.remove_element(self.handle, path=path)
+        self.xelib_run('remove_element', path=path)
 
     @property
     def name(self):
-        return self.xelib.name(self.handle, ex=False)
+        return self.xelib_run('name', ex=False)
 
     @property
     def long_name(self):
-        return self.xelib.long_name(self.handle, ex=False)
+        return self.xelib_run('long_name', ex=False)
 
     @property
     def display_name(self):
-        return self.xelib.display_name(self.handle, ex=False)
+        return self.xelib_run('display_name', ex=False)
 
     @property
     def path(self):
-        return self.xelib.path(self.handle, ex=False)
+        return self.xelib_run('path', ex=False)
 
     @property
     def long_path(self):
-        return self.xelib.long_path(self.handle, ex=False)
+        return self.xelib_run('long_path', ex=False)
 
     @property
     def local_path(self):
-        return self.xelib.local_path(self.handle, ex=False)
+        return self.xelib_run('local_path', ex=False)
 
     @property
     def signature(self):
-        return self.xelib.signature(self.handle, ex=False)
+        return self.xelib_run('signature', ex=False)
 
     @property
     def signature_name(self):
@@ -175,6 +195,8 @@ class XEditBase:
 
     @staticmethod
     def import_all_object_classes():
+        from xelib.xedit.object_classes.ARMA import XEditArmature  # NOQA
+        from xelib.xedit.object_classes.ARMO import XEditArmor  # NOQA
         from xelib.xedit.object_classes.HDPT import XEditHeadPart  # NOQA
         from xelib.xedit.object_classes.NPC_ import XEditNPC  # NOQA
         from xelib.xedit.object_classes.TXST import XEditTextureSet  # NOQA
@@ -183,41 +205,41 @@ class XEditBase:
 class XEditPlugin(XEditBase):
     @property
     def author(self):
-        return self.xelib.get_file_author(self.handle)
+        return self.xelib_run('get_file_author')
 
     @author.setter
     def author(self, value):
-        self.xelib.set_file_author(self.handle, value)
+        return self.xelib_run('set_file_author', value)
 
     @property
     def description(self):
-        return self.xelib.get_description(self.handle)
+        return self.xelib_run('get_description')
 
     @description.setter
     def description(self, value):
-        self.xelib.set_description(self.handle, value)
+        return self.xelib_run('set_description', value)
 
     @property
     def is_esm(self):
-        return self.xelib.get_is_esm(self.handle)
+        return self.xelib_run('get_is_esm')
 
     @is_esm.setter
     def is_esm(self, value):
-        self.xelib.set_is_esm(self.handle, value)
+        return self.xelib_run('set_is_esm', value)
 
     @property
-    def next_object_id(self):
-        return self.xelib.get_next_object_id(self.handle)
+    def next_object(self):
+        return self.objectify(self.xelib_run('get_next_object_id'))
 
-    @next_object_id.setter
-    def next_object_id(self, value):
-        self.xelib.set_next_object_id(self.handle, value)
+    @next_object.setter
+    def next_object(self, value):
+        return self.xelib_run('set_next_object_id', value.handle)
 
     def save(self):
-        return self.xelib.save_file(self.handle)
+        return self.xelib_run('save_file')
 
     def save_as(self, file_path):
-        return self.xelib.save_file(self.handle, file_path=file_path)
+        return self.xelib_run('save_file', file_path=file_path)
 
 
 class XEditGenericObject(XEditBase):
@@ -237,7 +259,8 @@ class XEditGenericObject(XEditBase):
                 self.DefTypes.dtEmpty,
                 self.DefTypes.dtStructChapter):
             return
-        elif def_type == self.DefTypes.dtString:
+        elif def_type in (self.DefTypes.dtString,
+                          self.DefTypes.dtLString):
             return self.xelib.get_value(self.handle)
         elif def_type == self.DefTypes.dtInteger:
             if self.value_type == self.ValueTypes.vtReference:
@@ -268,7 +291,8 @@ class XEditGenericObject(XEditBase):
                 self.DefTypes.dtEmpty,
                 self.DefTypes.dtStructChapter):
             return
-        elif def_type == self.DefTypes.dtString:
+        elif def_type in (self.DefTypes.dtString,
+                          self.DefTypes.dtLString):
             return self.xelib.set_value(self.handle, str(value))
         elif def_type == self.DefTypes.dtInteger:
             if self.value_type == self.ValueTypes.vtReference:
@@ -289,9 +313,11 @@ class XEditGenericObject(XEditBase):
 
     def get_value(self, path=''):
         with self.manage_handles():
-            return (self[path] if path else self).value
+            obj = self.get(path) if path else self
+            if obj:
+                return obj.value
 
-    def set_value(self, value, path='', create_node=False):
+    def set_value(self, value, path='', create_node=True):
         with self.manage_handles():
             if value is None:
                 if not path or self.get(path=path):
@@ -308,25 +334,13 @@ class XEditGenericObject(XEditBase):
                             f'you have not misspelled anything')
                 (self[path] if path else self).value = value
 
-    @property
-    def data_size(self):
-        with self.manage_handles():
-            return self['Record Header']['Data Size'].get_value(type_=int)
+    data_size = XEditAttribute('Record Header\\Data Size', read_only=True)
+    form_version = XEditAttribute('Record Header\\Form Version', read_only=True)
+    editor_id = XEditAttribute('EDID', read_only=True)
 
     @property
     def form_id(self):
-        with self.manage_handles():
-            return self['Record Header']['FormID'].get_value(
-                                                      type_=int, unsigned=True)
-
-    @property
-    def form_version(self):
-        with self.manage_handles():
-            return self['Record Header']['Form Version'].get_value(type_=int)
-
-    @property
-    def editor_id(self):
-        return self.xelib.editor_id(self.handle)
+        return self.xelib_run('get_int_value', path='Record Header\\FormID')
 
 
 class XEditCollection(XEditGenericObject):

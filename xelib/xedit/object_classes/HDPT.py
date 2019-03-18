@@ -1,6 +1,6 @@
 from enum import Enum
 
-from xelib.xedit.base import XEditGenericObject
+from xelib.xedit.base import XEditAttribute, XEditGenericObject
 
 
 class HeadPartTypes(Enum):
@@ -15,55 +15,26 @@ class HeadPartTypes(Enum):
 
 class XEditHeadPart(XEditGenericObject):
     SIGNATURE = 'HDPT'
-    TYPES = HeadPartTypes
+    HeadPartTypes = HeadPartTypes
 
-    def get_modl(self):
-        return self.get_value(path='Model\\MODL')
+    full = XEditAttribute('FULL')
+    modl = XEditAttribute('Model\\MODL')
+    data = XEditAttribute('DATA', read_only=True)
+    pnam = XEditAttribute('PNAM', enum=HeadPartTypes)
+    parts = XEditAttribute('Parts', read_only=True)
+    tnam = XEditAttribute('TNAM', read_only=True)
+    rnam = XEditAttribute('RNAM', read_only=True)
 
-    def set_modl(self, value):
-        return self.set_value(value, path='Model\\MODL', create_node=True)
-
-    def del_modl(self):
-        return self.delete(path='Model\\MODL')
-
-    modl = property(fget=get_modl, fset=set_modl, fdel=del_modl)
+    # aliases
+    full_name = full
     model_filename = modl
-
-    def get_pnam(self):
-        return self.TYPES(self.get_value(path='PNAM'))
-
-    def set_pnam(self, headpart_type):
-        return self.set_value(
-                        headpart_type.value, path='PNAM', create_node=True)
-
-    def del_pnam(self):
-        return self.delete(path='PNAM')
-
-    pnam = property(fget=get_pnam, fset=set_pnam, fdel=del_pnam)
+    flags = data
     headpart_type = pnam
-
-    @property
-    def parts(self):
-        return self['Parts']
+    texture_set = tnam
+    valid_races = rnam
 
     @property
     def file_paths(self):
         with self.manage_handles():
             files = [part['NAM1'].value for part in self.parts]
         return [file_ for file_ in files if file_]
-
-    @property
-    def texture_set(self):
-        return self['TNAM'].value
-
-    @texture_set.setter
-    def texture_set(self, value):
-        self['TNAM'].value = value
-
-    @property
-    def valid_races(self):
-        return self['RNAM'].value
-
-    @valid_races.setter
-    def valid_races(self, value):
-        self['RNAM'].value = value

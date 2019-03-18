@@ -1,49 +1,21 @@
-from functools import partial
-
-from xelib.xedit.base import XEditGenericObject
+from xelib.xedit.base import XEditAttribute, XEditGenericObject
 
 
 class XEditTextureSet(XEditGenericObject):
     SIGNATURE = 'TXST'
 
-    def texture_slot_path(self, slot):
-        return f'Textures (RGB/A)\\TX{slot:0>2}'
+    obnd = XEditAttribute('OBND', read_only=True)
+    tx00 = XEditAttribute('Textures (RGB/A)\\TX00')
+    tx01 = XEditAttribute('Textures (RGB/A)\\TX01')
+    tx02 = XEditAttribute('Textures (RGB/A)\\TX02')
+    tx03 = XEditAttribute('Textures (RGB/A)\\TX03')
+    tx04 = XEditAttribute('Textures (RGB/A)\\TX04')
+    tx05 = XEditAttribute('Textures (RGB/A)\\TX05')
+    tx06 = XEditAttribute('Textures (RGB/A)\\TX06')
+    tx07 = XEditAttribute('Textures (RGB/A)\\TX07')
 
-    def get_texture_path(self, slot=0):
-        return self.get_value(path=self.texture_slot_path(slot))
-
-    def set_texture_path(self, path, slot=0):
-        return self.set_value(path,
-                              path=self.texture_slot_path(slot),
-                              create_node=True)
-
-    def delete_texture_path(self, slot=0):
-        self.delete(path=self.texture_slot_path(slot))
-
-    tx00 = property(fget=partial(get_texture_path, slot=0),
-                    fset=partial(set_texture_path, slot=0),
-                    fdel=partial(delete_texture_path, slot=0))
-    tx01 = property(fget=partial(get_texture_path, slot=1),
-                    fset=partial(set_texture_path, slot=1),
-                    fdel=partial(delete_texture_path, slot=1))
-    tx02 = property(fget=partial(get_texture_path, slot=2),
-                    fset=partial(set_texture_path, slot=2),
-                    fdel=partial(delete_texture_path, slot=2))
-    tx03 = property(fget=partial(get_texture_path, slot=3),
-                    fset=partial(set_texture_path, slot=3),
-                    fdel=partial(delete_texture_path, slot=3))
-    tx04 = property(fget=partial(get_texture_path, slot=4),
-                    fset=partial(set_texture_path, slot=4),
-                    fdel=partial(delete_texture_path, slot=4))
-    tx05 = property(fget=partial(get_texture_path, slot=5),
-                    fset=partial(set_texture_path, slot=5),
-                    fdel=partial(delete_texture_path, slot=5))
-    tx06 = property(fget=partial(get_texture_path, slot=6),
-                    fset=partial(set_texture_path, slot=6),
-                    fdel=partial(delete_texture_path, slot=6))
-    tx07 = property(fget=partial(get_texture_path, slot=7),
-                    fset=partial(set_texture_path, slot=7),
-                    fdel=partial(delete_texture_path, slot=7))
+    # aliases
+    object_bounds = obnd
 
     @property
     def texture_paths(self):
