@@ -8,6 +8,11 @@ class XEditError(Exception):
 
 
 class XEditAttribute:
+    '''
+    A descriptor class that can be used to quickly declare any sub-field of
+    a record as an xedit object property. This encapsulates the logic for
+    getting and setting a value at a subpath from the object.
+    '''
     def __init__(self, path, enum=None, read_only=False, create=True):
         self.path = path
         self.enum = enum
