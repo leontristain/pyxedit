@@ -36,13 +36,37 @@ class XEditBase:
     SmashTypes = Xelib.SmashTypes
     ValueTypes = Xelib.ValueTypes
 
+    # initializer
     def __init__(self, xelib, handle, handle_group):
+        '''
+        Initializer
+        '''
+        # each XEditBase-derived object wraps an xedit-lib handle
         self.handle = handle
+
+        # we keep a reference to the handle group (from the xelib object)
+        # containing the handle, in order to keep tabs on whether the handl
+        # is still valid. The Xelib object is responsible for depopulating
+        # the group as handles are released; if the group has been emptied,
+        # we should be able to detect that here
         self._handle_group = handle_group
+
+        # we keep a reference to the overarching xelib object
         self._xelib = xelib
 
+    # xelib-related methods
     @property
     def xelib(self):
+        '''
+        A property for gating the access of _xelib attribute with a check to
+        see whether the handle associated with this object has already been
+        released. Since all functionality ultimately comes down to a xelib
+        function within this class; an invalid handle effectively renders the
+        class unusable.
+
+        @return: self._xelib attribute, but only if handle is still valid
+                 (i.e. still exists in the handle group it's supposed to be in)
+        '''
         if self.handle and self.handle not in self._handle_group:
             raise XEditError(f'Accessing XEdit object of handle {self.handle} '
                              f'which has already been released from the '
@@ -51,43 +75,119 @@ class XEditBase:
 
     def xelib_run(self, method, *args, **kwargs):
         '''
-        Invokes a xelib method with the current handle
+        Helper that invokes a xelib method, passing into the method the object's
+        handle as the first parameter. There are many xelib methods like this,
+        which makes this helper very useful.
+
+        @param method: name of the method to invoke on xelib
+        @param *args, **kwargs: any positional or keyword arguments to pass to
+                                the method, _other_ than the first positional
+                                argument, which is expected to be `self.handle`
         '''
         return getattr(self.xelib, method)(self.handle, *args, **kwargs)
 
+    # dunderbar methods, implement native object functionalities
     def __eq__(self, other):
+        '''
+        Implements equality behavior (`==` operator)
+
+        Two xedit objects are equal if xelib.element_equals on the two handles
+        return true.
+        '''
         return self.xelib_run('element_equals', other.handle)
 
     def __getitem__(self, path):
+        '''
+        Implements indexing behavior (`[]` operator)
+
+        Indexing should be the same thing as a strict version of the `.get`
+        method.
+        '''
         return self.get(path, ex=True)
 
     def __iter__(self):
-        for handle in self.xelib_run('get_elements'):
-            yield self.objectify(handle)
+        '''
+        Implements iteration behavior (`for item in <obj>`)
+
+        Iterating over an object should produce each of the child objects
+        next-level down, by objectifying the handles returned with a
+        `xelib.get_elements` call.
+
+        Handles should be yielded one by one via an iterator within a handle
+        management context, with only the yielded handles promoted to parent
+        scope, such that any handles not yielded before the scope exits (e.g.
+        via a `break` by the caller) are automatically released.
+        '''
+        with self.manage_handles():
+            for handle in self.xelib_run('get_elements'):
+                obj = self.objectify(handle)
+                obj.promote()
+                yield obj
 
     @contextmanager
     def manage_handles(self):
+        '''
+        Forwards the .manage_handles context manager available on xelib
+        '''
         with self.xelib.manage_handles():
             yield self
 
+    def promote(self):
+        '''
+        Promote the handle associated with the current object to the parent
+        handle management scope. If this is invoked at the top scope, it should
+        harmlessly do nothing.
+        '''
+        parent_handles = self.xelib.promote_handle(self.handle)
+        if parent_handles:
+            self._handle_group = parent_handles
+
+    # basic type properties, these should be safely accessible and return
+    # a falsey value if inapplicable
     @property
     def element_type(self):
+        '''
+        Returns the element type
+        '''
         return self.xelib_run('element_type', ex=False)
 
     @property
     def def_type(self):
+        '''
+        Returns the def type
+        '''
         return self.xelib_run('def_type', ex=False)
 
     @property
     def smash_type(self):
+        '''
+        Returns the smash type
+        '''
         return self.xelib_run('smash_type', ex=False)
 
     @property
     def value_type(self):
+        '''
+        Returns the value type
+        '''
         return self.xelib_run('value_type', ex=False)
 
     def objectify(self, handle):
-        # first create a generic object out of it so we can inspect it
+        '''
+        Given a handle, create an appropriate object to wrap around the handle.
+
+        During initialization, we run a staticmethod stored on the class to
+        explicitly import all possible object classes. We then choose the
+        object class to use depending on the def type, the value type, and
+        the signature of the handle. Any xedit object will be able to call
+        this method to create objects of any appropriate xedit subclass to
+        match for a given handle.
+
+        @param handle: a xelib handle
+        @return: an object of some class derived from this base class, that
+                 wraps around the handle
+        '''
+        # first create a generic object out of it so we can easily inspect it
         generic_obj = XEditGenericObject.from_xedit_object(handle, self)
 
         # if object is a plugin, use the XEditPlugin class
@@ -116,6 +216,23 @@ class XEditBase:
         return generic_obj
 
     def get(self, path, default=None, ex=False):
+        '''
+        Return a descendent xedit object to the current object with a given
+        path.
+
+        This function can be likened to a dictionary's `.get` method. A default
+        can be provided which defaults to None, which also makes the method
+        harmless to call. We also support an `ex` switch that raises exception
+        on error, so that we can reuse the same code for __getitem__.
+
+        @param path: the path to access
+        @param default: the default value to return of something cannot be
+                        accessed at the given path
+        @param ex: if set to True, failure to access at given path will raise
+                   an exception
+        @return: the xedit object at the path from the current object, or
+                 the default value if failed to access
+        '''
         handle = self.xelib_run('get_element', path=path, ex=ex)
         if handle:
             return self.objectify(handle)
@@ -126,6 +243,12 @@ class XEditBase:
             return default
 
     def add(self, path):
+        '''
+        Adds an element at the given path and return it as an xedit object
+
+        @param path: the path to add element at
+        @return: xedit object of the element added
+        '''
         with self.manage_handles():
             if self.get(path):
                 raise XEditError(f'Cannot add object at path {path}; an object '
@@ -135,57 +258,121 @@ class XEditBase:
             return self.objectify(handle)
 
     def get_or_add(self, path):
+        '''
+        Return object at given path, object will be created if it does not
+        exist.
+
+        @param path: the path to get or create element at
+        @return: the gotten or created element as an xedit object
+        '''
         return self.get(path) or self.add(path)
 
     def delete(self, path=''):
+        '''
+        Delete the element at the given path. If the given path is an empty
+        string, the element associated with this object itself will be deleted.
+
+        @param path: path of element to delete
+        '''
         self.xelib_run('remove_element', path=path)
 
+    # other basic properties; these should all be safely retrievable where a
+    # None is returned if inapplicable
     @property
     def name(self):
+        '''
+        Returns the element name
+        '''
         return self.xelib_run('name', ex=False)
 
     @property
     def long_name(self):
+        '''
+        Returns the element long name
+        '''
         return self.xelib_run('long_name', ex=False)
 
     @property
     def display_name(self):
+        '''
+        Returns the element display name
+        '''
         return self.xelib_run('display_name', ex=False)
 
     @property
     def path(self):
+        '''
+        Returns the element path
+        '''
         return self.xelib_run('path', ex=False)
 
     @property
     def long_path(self):
+        '''
+        Returns the element long path
+        '''
         return self.xelib_run('long_path', ex=False)
 
     @property
     def local_path(self):
+        '''
+        Returns the element local path
+        '''
         return self.xelib_run('local_path', ex=False)
 
     @property
     def signature(self):
+        '''
+        Returns the element signature
+        '''
         return self.xelib_run('signature', ex=False)
 
     @property
     def signature_name(self):
+        '''
+        Returns any known human-readable name for the element's signature
+        '''
         signature = self.signature
         return (self.xelib.name_from_signature(signature, ex=False)
                 if signature else '')
 
     @property
     def num_children(self):
+        '''
+        Returns the number of direct child elements this element has
+        '''
         return self.xelib_run('element_count')
 
     @classmethod
     def get_imported_subclasses(cls):
+        '''
+        Recursively produces the subclasses that are derived from this class;
+        a subclass would only get yielded here if it has already been imported
+        into the global python namespace.
+        '''
         for subclass in cls.__subclasses__():
             yield from subclass.get_imported_subclasses()
             yield subclass
 
     @classmethod
     def from_xedit_object(cls, handle, xedit_obj):
+        '''
+        Create an object of this class from another xedit object. This is the
+        primary method in which new xedit objects are instantiated, which means
+        all objects are ultimately instantiated from the root xedit object the
+        user would use to enter the xedit context.
+
+        When new objects are created "off" of the existing object, the new
+        object inherit the xelib attribute pointing to the current overarching
+        xelib context. When each new object is created, it also saves the
+        xelib context's current handle group onto itself, in order to track its
+        own handle's validity against.
+
+        @param handle: the handle to create the new obj with
+        @param xedit_obj: the xedit object to create the new object "off" of;
+                          a handle to the xelib context can be "inherited" from
+                          it.
+        '''
         if not handle or handle not in xedit_obj._xelib._current_handles:
             raise XEditError(f'Attempting to create XEdit object from invalid '
                              f'handle {handle} with respect to source object '
@@ -195,6 +382,12 @@ class XEditBase:
 
     @staticmethod
     def import_all_object_classes():
+        '''
+        A staticmethod that simply imports all object classes into the python
+        namespace. When xelib handles are objectified into xedit objects,
+        one of the below object classes might be used, and thus must be
+        imported onto the namespace prior.
+        '''
         from xelib.xedit.object_classes.ARMA import XEditArmature  # NOQA
         from xelib.xedit.object_classes.ARMO import XEditArmor  # NOQA
         from xelib.xedit.object_classes.HDPT import XEditHeadPart  # NOQA
@@ -370,9 +563,10 @@ class XEditCollection(XEditGenericObject):
             yield self[index]
 
     def index(self, item):
-        for i, my_item in enumerate(self):
-            if item == my_item:
-                return i
+        with self.manage_handles():
+            for i, my_item in enumerate(self):
+                if item == my_item:
+                    return i
         raise ValueError(f'item equivalent to {item} is not in the list')
 
     def add_item_with(self, value, subpath=''):

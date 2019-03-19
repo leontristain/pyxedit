@@ -82,6 +82,41 @@ class TestXEditBase:
             assert obj1.handle == 1
             assert obj2.handle == 2
 
+    def test_promote(self, xedit):
+        with xedit.manage_handles():
+            # start a handle management scope and grab some handles; the handles
+            # should be active within the scope, but not once out of the scope
+            with xedit.manage_handles():
+                obj1 = xedit.get('Dawnguard.esm\\Head Part\\MaleEyesSnowElf')
+                obj2 = xedit['Dawnguard.esm\\Head Part\\MaleEyesSnowElf']
+                assert obj1.signature
+                assert obj2.signature
+
+            with pytest.raises(XEditError):
+                obj1.signature
+            with pytest.raises(XEditError):
+                obj2.signature
+
+            # however, we should be able to promote the objects to the parent
+            # scope and have them remain usable in the parent scope
+            with xedit.manage_handles():
+                obj1 = xedit.get('Dawnguard.esm\\Head Part\\MaleEyesSnowElf')
+                obj2 = xedit['Dawnguard.esm\\Head Part\\MaleEyesSnowElf']
+                assert obj1.signature
+                assert obj2.signature
+
+                obj1.promote()
+                obj2.promote()
+
+            assert obj1.signature
+            assert obj2.signature
+
+        # promotion should only be effective for one scope
+        with pytest.raises(XEditError):
+            obj1.signature
+        with pytest.raises(XEditError):
+            obj2.signature
+
     def test_type_fields(self, xedit):
         with xedit.manage_handles():
             # sanity check all four type fields, when inapplicable they should

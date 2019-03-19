@@ -96,6 +96,14 @@ class Xelib(ElementValuesMethods,
             self.release_handles()
             self._current_handles = self._handles_stack.pop()
 
+    def promote_handle(self, handle):
+        if handle in self._current_handles:
+            if self._handles_stack:
+                parent_scope_handles = self._handles_stack[-1]
+                parent_scope_handles.add(handle)
+                self._current_handles.remove(handle)
+                return parent_scope_handles
+
     @property
     def raw_api(self):
         if not self._raw_api:
