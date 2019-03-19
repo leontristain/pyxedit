@@ -101,7 +101,7 @@ class XEditBase:
         Implements indexing behavior (`[]` operator)
 
         Indexing should be the same thing as a strict version of the `.get`
-        method.
+        method. This mirrors python dictionary functionality.
         '''
         return self.get(path, ex=True)
 
