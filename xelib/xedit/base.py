@@ -60,9 +60,9 @@ class XEditBase:
         '''
         A property for gating the access of _xelib attribute with a check to
         see whether the handle associated with this object has already been
-        released. Since all functionality ultimately comes down to a xelib
-        function within this class; an invalid handle effectively renders the
-        class unusable.
+        released. Since all functionality within this class ultimately comes
+        down to a xelib library call with this attribute; an invalid handle
+        effectively renders the class unusable.
 
         @return: self._xelib attribute, but only if handle is still valid
                  (i.e. still exists in the handle group it's supposed to be in)
