@@ -127,7 +127,10 @@ class XEditBase:
     @contextmanager
     def manage_handles(self):
         '''
-        Forwards the .manage_handles context manager available on xelib
+        Forwards the .manage_handles context manager available on xelib. This
+        can be used to create sub-contexts for handle management, where
+        handles created within the context, if not promoted to parent scope,
+        will be released on exiting the context.
         '''
         with self.xelib.manage_handles():
             yield self
