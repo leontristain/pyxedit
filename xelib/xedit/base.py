@@ -45,7 +45,7 @@ class XEditBase:
         self.handle = handle
 
         # we keep a reference to the handle group (from the xelib object)
-        # containing the handle, in order to keep tabs on whether the handl
+        # containing the handle, in order to keep tabs on whether the handle
         # is still valid. The Xelib object is responsible for depopulating
         # the group as handles are released; if the group has been emptied,
         # we should be able to detect that here
