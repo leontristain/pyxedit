@@ -280,7 +280,7 @@ class XEditBase:
         self.xelib_run('remove_element', path=path)
 
     # other basic properties; these should all be safely retrievable where a
-    # None is returned if inapplicable
+    # falsey value is returned if inapplicable
     @property
     def name(self):
         '''
