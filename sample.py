@@ -39,13 +39,15 @@ def process_plugin(game_path,
             # we can manage handles per npc
             with xedit.manage_handles:
                 # loop through npc's head parts and track stuff
-                for head_part in npc.head_parts:
+                head_parts = list(npc.head_parts)
+                for head_part in head_parts:
                     tracked_records.add(head_part.long_path)
                     tracked_files.update(head_part.file_paths)
                     texture_set = head_part.texture_set
                     if texture_set:
                         tracked_records.add(texture_set.long_path)
                         tracked_files.update(texture_set.file_paths)
+                    head_parts.extend(head_part.extra_parts)
 
                 # track the worn armor
                 worn_armor = npc.worn_armor
