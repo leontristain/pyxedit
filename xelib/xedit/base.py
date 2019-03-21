@@ -401,6 +401,7 @@ class XEditBase:
         from xelib.xedit.object_classes.ARMO import XEditArmor  # NOQA
         from xelib.xedit.object_classes.HDPT import XEditHeadPart  # NOQA
         from xelib.xedit.object_classes.NPC_ import XEditNPC  # NOQA
+        from xelib.xedit.object_classes.OBND import XEditObjectBounds # NOQA
         from xelib.xedit.object_classes.TXST import XEditTextureSet  # NOQA
 
 
