@@ -56,7 +56,8 @@ class XEditBase:
         # we should be able to detect that here
         self._handle_group = handle_group
 
-        # we keep a reference to the overarching xelib object
+        # we keep a reference to the overarching xelib object; this is the
+        # gateway to the xelib API that lets us do just about everything.
         self._xelib = xelib
 
     # xelib-related methods
