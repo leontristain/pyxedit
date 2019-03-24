@@ -13,24 +13,110 @@ class XEditAttribute:
     a record as an xedit object property. This encapsulates the logic for
     getting and setting a value at a subpath from the object.
     '''
-    def __init__(self, path, enum=None, read_only=False, create=True):
+    def __init__(self, path, required=False, enum=None, read_only=False):
         self.path = path
         self.enum = enum
+        self.required = required
         self.read_only = read_only
-        self.create = create
 
     def __get__(self, obj, type=None):
-        value = obj.get_value(path=self.path)
-        if self.enum:
-            return self.enum(value)
-        return value
+        '''
+        Gets an attribute on a given object as defined by our path. Abides by
+        the following rules:
+          * if element at path does not exist, a None is returned
+          * if element at path exists but is a non-value element, the element
+              object itself is returned
+          * otherwise, the element value is returned
+          * if an enum has been provided for us, we will use the enum to
+              translate between enum values and raw values for the caller
+        '''
+        with obj.manage_handles():
+            # get the sub-object at the given path, if a sub_obj can't be
+            # gotten, just return None
+            sub_obj = obj.get(self.path)
+            if not sub_obj:
+                return None
+
+            # if the sub-object is a non-value object, just return the object
+            # itself
+            if self.is_non_value_object(sub_obj):
+                sub_obj.promote()
+                return sub_obj
+
+            # otherwise, get the value
+            value = sub_obj.value
+
+            # transform it via enum if necessary
+            if self.enum:
+                value = self.enum(value)
+
+            # promote it if value is an object derived from XEditBase
+            if isinstance(value, XEditBase):
+                value.promote()
+
+            # return the value
+            return value
 
     def __set__(self, obj, value):
+        '''
+        Sets an attribute on a given object with a given value as defined by our
+        path. Abides by the following rules:
+          * if a None is provided as value, the element at path is deleted if
+              the element can be deleted, otherwise an error will be raised
+          * otherwise, the element at path is created if it does not exist, and
+              then the value is set on it
+          * if the element at path is a non-value element, an error will be
+              raised as you cannot set a raw value on a non-value element
+          * if an enum has been provided for us, we will use the enum to
+              translate between enum values and raw values for the caller
+        '''
+        # read only attributes are not allowed to set
         if self.read_only:
             raise XEditError(f'Cannot set read-only attribute to {value}')
-        if self.enum:
-            value = value.value
-        return obj.set_value(value, path=self.path, create_node=self.create)
+
+        # prepare the value to be set
+        value = value.value if value and self.enum else value
+
+        with obj.manage_handles():
+            # get the sub object, keep track of its original existence
+            sub_obj = obj.get(self.path)
+            originally_exists = bool(sub_obj)
+
+            # if value is None, we delete the object we found and we're done
+            if value is None and sub_obj:
+                if sub_obj.is_removable:
+                    sub_obj.delete()
+                    return
+                else:
+                    raise XEditError(f'Cannot delete unremovable element '
+                                     f'{sub_obj} by setting it to None')
+
+            # otherwise, we are setting a real value, in which case we may
+            # need to add the object if it does not yet exist
+            if not sub_obj:
+                sub_obj = obj.add(self.path)
+
+            # try to set the object (and check if it's a non-value object);
+            # if value cannot be successfully set, we need to delete any object
+            # we just added
+            try:
+                if self.is_non_value_object(sub_obj):
+                    raise XEditError(f'Cannot set value of non-value '
+                                        f'object {sub_obj} to {value}')
+                else:
+                    sub_obj.value = value
+            except Exception:
+                if not originally_exists:
+                    sub_obj.delete()
+                raise
+
+    def is_non_value_object(self, obj):
+        return obj.def_type in (obj.DefTypes.dtRecord,
+                                obj.DefTypes.dtSubRecord,
+                                obj.DefTypes.dtSubRecordArray,
+                                obj.DefTypes.dtSubRecordStruct,
+                                obj.DefTypes.dtArray,
+                                obj.DefTypes.dtStruct)
 
 
 class XEditBase:
@@ -147,9 +233,10 @@ class XEditBase:
         handle management scope. If this is invoked at the top scope, it should
         harmlessly do nothing.
         '''
-        parent_handles = self.xelib.promote_handle(self.handle)
-        if parent_handles:
-            self._handle_group = parent_handles
+        if self.handle:
+            parent_handles = self.xelib.promote_handle(self.handle)
+            if parent_handles:
+                self._handle_group = parent_handles
 
     # basic type properties, these should be safely accessible and return
     # a falsey value if inapplicable
@@ -180,6 +267,41 @@ class XEditBase:
         Returns the value type
         '''
         return self.xelib_run('value_type', ex=False)
+
+    @property
+    def is_modified(self):
+        '''
+        Returns whether element has been modified in the current session
+        '''
+        return self.xelib_run('get_is_modified')
+
+    @property
+    def is_removable(self):
+        '''
+        Returns whether element is removable
+        '''
+        return self.xelib_run('get_is_removable')
+
+    @property
+    def can_add(self):
+        '''
+        Returns whether elements can be added to this element
+        '''
+        return self.xelib_run('get_can_add')
+
+    @property
+    def is_sorted(self):
+        '''
+        Returns whether elements is a sorted array
+        '''
+        return self.xelib_run('is_sorted')
+
+    @property
+    def is_flags(self):
+        '''
+        Returns whether element is a flag element containing flags
+        '''
+        return self.xelib_run('is_flags')
 
     def objectify(self, handle):
         '''
@@ -265,6 +387,15 @@ class XEditBase:
         handle = self.xelib_run('add_element', path=path)
         if handle:
             return self.objectify(handle)
+
+    def has(self, path):
+        '''
+        Checks whether a sub-element exists at the given path
+        @param path: the subpath to check for element existence at
+        @return: boolean of whether something is there
+        '''
+        with self.manage_handles():
+            return bool(self.get(path))
 
     def get_or_add(self, path):
         '''

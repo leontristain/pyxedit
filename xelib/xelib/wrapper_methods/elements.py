@@ -300,7 +300,7 @@ class ElementsMethods(WrapperMethodsBase):
 
     def get_is_removable(self, id_):
         return self.get_bool(
-            lambda res: self.raw_api.GetIsRemovable(id_, res),
+            lambda res: self.raw_api.GetIsRemoveable(id_, res),
             error_msg=f'Failed to get is removable for '
                       f'{self.element_context(id_)}')
 

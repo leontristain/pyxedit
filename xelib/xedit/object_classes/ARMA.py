@@ -4,7 +4,7 @@ from xelib.xedit.base import XEditAttribute, XEditGenericObject
 class XEditArmature(XEditGenericObject):
     SIGNATURE = 'ARMA'
 
-    bodt = body_template_12byte = XEditAttribute('BODT', read_only=True)
+    bodt = body_template_12byte = XEditAttribute('BODT')
     bod2 = body_template = XEditAttribute('BOD2', read_only=True)
     rnam = race = XEditAttribute('RNAM')
     dnam = data = XEditAttribute('DNAM')
