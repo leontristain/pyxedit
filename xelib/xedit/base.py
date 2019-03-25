@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from pathlib import Path
 
 from xelib.xelib import Xelib
 
@@ -13,9 +14,15 @@ class XEditAttribute:
     a record as an xedit object property. This encapsulates the logic for
     getting and setting a value at a subpath from the object.
     '''
-    def __init__(self, path, required=False, enum=None, read_only=False):
+    def __init__(self,
+                 path,
+                 required=False,
+                 enum=None,
+                 object_class=None,
+                 read_only=False):
         self.path = path
         self.enum = enum
+        self.object_class = object_class
         self.required = required
         self.read_only = read_only
 
@@ -38,20 +45,22 @@ class XEditAttribute:
                 return None
 
             # if the sub-object is a non-value object, just return the object
-            # itself
+            # itself, otherwise get the value and transform it via enum if
+            # necessary
             if self.is_non_value_object(sub_obj):
-                sub_obj.promote()
-                return sub_obj
+                value = sub_obj
+            else:
+                value = sub_obj.value
+                if self.enum:
+                    value = self.enum(value)
 
-            # otherwise, get the value
-            value = sub_obj.value
-
-            # transform it via enum if necessary
-            if self.enum:
-                value = self.enum(value)
-
-            # promote it if value is an object derived from XEditBase
+            # if the value ended up being an object derived from XEditBase,
+            # we will need to apply any explicitly-given object class, and
+            # make sure to promote it before we return it
             if isinstance(value, XEditBase):
+                if self.object_class:
+                    value = self.object_class.from_xedit_object(
+                                                  value.handle, value)
                 value.promote()
 
             # return the value
@@ -346,7 +355,7 @@ class XEditBase:
 
         return generic_obj
 
-    def get(self, path, default=None, ex=False):
+    def get(self, path, default=None, ex=False, absolute=False):
         '''
         Return a descendent xedit object to the current object with a given
         path.
@@ -361,15 +370,25 @@ class XEditBase:
                         accessed at the given path
         @param ex: if set to True, failure to access at given path will raise
                    an exception
+        @param absolute: if set to True, will query for the element from the
+                         root, expecting the given path to be an absolute path
         @return: the xedit object at the path from the current object, or
                  the default value if failed to access
         '''
-        handle = self.xelib_run('get_element', path=path, ex=ex)
+        if absolute:
+            handle = self.xelib.get_element(0, path=path, ex=ex)
+        else:
+            handle = self.xelib_run('get_element', path=path, ex=ex)
+
         if handle:
             return self.objectify(handle)
         elif ex:
-            raise XEditError(f'No object can be obtained at path {path} from '
-                             f'{self.long_path}')
+            if absolute:
+                raise XEditError(f'No object can be obtained with absolute '
+                                 f'path {path} from the root')
+            else:
+                raise XEditError(f'No object can be obtained at path {path} '
+                                 f'from {self.long_path}')
         else:
             return default
 
@@ -569,6 +588,68 @@ class XEditPlugin(XEditBase):
     def next_object(self, value):
         return self.xelib_run('set_next_object_id', value.handle)
 
+    @property
+    def num_records(self):
+        return self.xelib_run('get_record_count')
+
+    @property
+    def num_override_records(self):
+        return self.xelib_run('get_override_record_count')
+
+    @property
+    def md5(self):
+        return self.xelib_run('md5_hash')
+
+    @property
+    def crc(self):
+        return self.xelib_run('crc_hash')
+
+    @property
+    def load_order(self):
+        return self.xelib_run('get_file_load_order')
+
+    @property
+    def header(self):
+        return self.objectify(self.xelib_run('get_file_header'))
+
+    @property
+    def masters(self):
+        with self.manage_handles():
+            for handle in self.xelib_run('get_masters'):
+                master_obj = self.objectify(handle)
+                master_obj.promote()
+                yield master_obj
+
+    @property
+    def master_names(self):
+        return self.xelib_run('get_master_names')
+
+    def add_master(self, master_plugin):
+        return self.add_master_by_name(self, master_plugin.name)
+
+    def add_master_by_name(self, master_plugin_name):
+        return self.xelib_run('add_master', master_plugin_name)
+
+    def add_all_masters(self):
+        return self.xelib_run('add_all_masters')
+
+    def add_masters_needed_for_copying(self, obj, as_new=False):
+        return self.xelib.add_required_masters(obj.handle,
+                                               self.handle,
+                                               as_new=as_new)
+
+    def sort_masters(self):
+        return self.xelib_run('sort_masters')
+
+    def clean_masters(self):
+        return self.xelib_run('clean_masters')
+
+    def rename(self, new_file_name):
+        return self.xelib_run('rename_file', new_file_name)
+
+    def nuke(self):
+        return self.xelib_run('nuke_file')
+
     def save(self):
         return self.xelib_run('save_file')
 
@@ -577,6 +658,9 @@ class XEditPlugin(XEditBase):
 
 
 class XEditGenericObject(XEditBase):
+    def __repr__(self):
+        return f'<{self.__class__.__name__} {self.name}>'
+
     @property
     def value(self):
         def_type = self.def_type
@@ -675,6 +759,27 @@ class XEditGenericObject(XEditBase):
     @property
     def form_id(self):
         return self.xelib_run('get_int_value', path='Record Header\\FormID')
+
+    @property
+    def plugin(self):
+        return self.objectify(self.xelib_run('get_element_file'))
+
+    @property
+    def parent(self):
+        return self.get(str(Path(self.long_path).parent), absolute=True)
+
+    def copy_into(self, target_plugin, as_new=False):
+        # for this to work, self must be a record, and target must be a file
+        assert self.element_type == self.ElementTypes.etMainRecord
+        assert target_plugin.element_type == target_plugin.ElementTypes.etFile
+
+        # add required masters for copying self into the given plugin
+        target_plugin.add_masters_needed_for_copying(self, as_new=as_new)
+
+        # copy our element over as override
+        return self.objectify(self.xelib_run('copy_element',
+                                             target_plugin.handle,
+                                             as_new=as_new))
 
 
 class XEditCollection(XEditGenericObject):
