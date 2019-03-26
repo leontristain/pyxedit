@@ -1,7 +1,14 @@
 from contextlib import contextmanager
+from enum import Enum
 from pathlib import Path
 
 from xelib.xelib import Xelib
+
+
+class XEditTypes(Enum):
+    Ref = 1
+    Value = 2
+    Container = 3
 
 
 class XEditError(Exception):
@@ -131,6 +138,7 @@ class XEditAttribute:
 class XEditBase:
     SIGNATURE = None
     Games = Xelib.Games
+    Types = XEditTypes
     ElementTypes = Xelib.ElementTypes
     DefTypes = Xelib.DefTypes
     SmashTypes = Xelib.SmashTypes
@@ -257,6 +265,29 @@ class XEditBase:
         Returns the value type
         '''
         return self.xelib_run('value_type', ex=False)
+
+    @property
+    def type(self):
+        '''
+        Resolve an XEditType value for this element based on the various
+        other types.
+        '''
+        if self.def_type in (self.DefTypes.dtString,
+                             self.DefTypes.dtLString,
+                             self.DefTypes.dtLenString,
+                             self.DefTypes.dtByteArray,
+                             self.DefTypes.dtInteger,
+                             self.DefTypes.dtIntegerFormater,
+                             self.DefTypes.dtIntegerFormaterUnion,
+                             self.DefTypes.dtFlag,
+                             self.DefTypes.dtFloat):
+            if (self.def_type == self.DefTypes.dtInteger and
+                    self.value_type == self.ValueTypes.vtReference):
+                return self.Types.Ref
+            else:
+                return self.Types.Value
+        else:
+            return self.Types.Container
 
     @property
     def is_modified(self):
@@ -661,93 +692,51 @@ class XEditGenericObject(XEditBase):
     @property
     def value(self):
         '''
-        The value of a record, subrecord, array, struct, etc... is itself.
-        The value of a string, integer, float, etc... is the number
-        The value of a reference is the linked target of the reference
-
-        When this element is mapped via descriptor, descriptor get will
-        retrieve the value, or None if the object cannot be obtained. Descriptor
-        set will create the object if it does not exist, and set the value
-        if it can be set. Failure to set will delete any created object.
+        A <Types.Ref> element should return the linked object as the value.
+        A <Types.Value> element should return the appropriate typed value as
+            the value
+        Otherwise, a None should be returned.
         '''
-        def_type = self.def_type
-        if def_type is None or def_type in (
-                self.DefTypes.dtRecord,
-                self.DefTypes.dtSubRecord,
-                self.DefTypes.dtSubRecordArray,
-                self.DefTypes.dtSubRecordStruct,
-                self.DefTypes.dtSubRecordUnion,
-                self.DefTypes.dtFlag,
-                self.DefTypes.dtArray,
-                self.DefTypes.dtStruct,
-                self.DefTypes.dtUnion,
-                self.DefTypes.dtEmpty,
-                self.DefTypes.dtStructChapter):
-            return
-        elif def_type in (self.DefTypes.dtString,
-                          self.DefTypes.dtLString):
-            return self.xelib.get_value(self.handle)
-        elif def_type == self.DefTypes.dtInteger:
-            if self.value_type == self.ValueTypes.vtReference:
-                referenced = self.xelib.get_links_to(self.handle, ex=False)
-                return self.objectify(referenced) if referenced else None
-            else:
+        if self.type == self.Types.Ref:
+            referenced = self.xelib.get_links_to(self.handle, ex=False)
+            return self.objectify(referenced) if referenced else None
+        elif self.type == self.Types.Value:
+            if def_type in (self.DefTypes.dtString, self.DefTypes.dtLString):
+                return self.xelib.get_value(self.handle)
+            elif def_type == self.DefTypes.dtInteger:
                 return self.xelib.get_int_value(self.handle)
-        elif def_type == self.DefTypes.dtFloat:
-            return self.xelib.get_float_value(self.handle)
-        else:
-            raise NotImplementedError(f'Just encountered {def_type}, which is '
-                                      f'not yet supported as a gettable value; '
-                                      f'we should check it out and add it')
+            elif def_type == self.DefTypes.dtFloat:
+                return self.xelib.get_float_value(self.handle)
+            else:
+                raise NotImplementedError(
+                    f'Just encountered value type {def_type}, which is not yet '
+                    f'supported as a gettable value; we should check it out '
+                    f'and add it')
 
     @value.setter
     def value(self, value):
         '''
-        The value of a record, subrecord, array, struct, etc... cannot be set
-        The value of a string, integer, float, etc... can be set as-is
-        The value of a reference can be set via an object to link to, and is
-            set via the linked object using xelib.set_links_to for a handle-to-
-            handle set, and set using the hex string for array value methods
+        A <Types.Ref> element should be set an object to link to.
+        A <Types.Value> element should be set the raw value
+        Otherwise, setting should raise an error.
         '''
-        def_type = self.def_type
-        if def_type is None or def_type in (
-                self.DefTypes.dtRecord,
-                self.DefTypes.dtSubRecord,
-                self.DefTypes.dtSubRecordArray,
-                self.DefTypes.dtSubRecordStruct,
-                self.DefTypes.dtSubRecordUnion,
-                self.DefTypes.dtFlag,
-                self.DefTypes.dtArray,
-                self.DefTypes.dtStruct,
-                self.DefTypes.dtUnion,
-                self.DefTypes.dtEmpty,
-                self.DefTypes.dtStructChapter):
-            return
-        elif def_type in (self.DefTypes.dtString,
-                          self.DefTypes.dtLString):
-            return self.xelib.set_value(self.handle, str(value))
-        elif def_type == self.DefTypes.dtInteger:
-            if self.value_type == self.ValueTypes.vtReference:
-                if isinstance(value, XEditBase):
-                    return self.xelib.set_links_to(self.handle, value.handle)
-                else:
-                    raise XEditError(f'Setting a value for an object of type '
-                                     f'{self.ValueTypes.vtReference} requires '
-                                     f'another xedit object')
-            else:
+        if self.type == self.Types.Ref:
+            return self.xelib.set_links_to(self.handle, value.handle)
+        elif self.type == self.Types.Value:
+            if def_type in (self.DefTypes.dtString, self.DefTypes.dtLString):
+                return self.xelib.set_value(self.handle, str(value))
+            elif def_type == self.DefTypes.dtInteger:
                 return self.xelib.set_int_value(self.handle, int(value))
-        elif def_type == self.DefTypes.dtFloat:
-            return self.xelib.set_float_value(self.handle, float(value))
+            elif def_type == self.DefTypes.dtFloat:
+                return self.xelib.set_float_value(self.handle, float(value))
+            else:
+                raise NotImplementedError(
+                    f'Just encountered value type {def_type}, which is not yet '
+                    f'supported as a settable value; we should check it out '
+                    f'and add it')
         else:
-            raise NotImplementedError(f'Just encountered {def_type}, which is '
-                                      f'not yet supported as a settable value; '
-                                      f'we should check it out and add it')
-
-    def get_value(self, path=''):
-        with self.manage_handles():
-            obj = self.get(path) if path else self
-            if obj:
-                return obj.value
+            raise XEditError(f'Cannot set the value of element {self} with '
+                             f'type {self.type}')
 
     def set_value(self, value, path='', create_node=True):
         with self.manage_handles():
@@ -818,11 +807,57 @@ class XEditArray(XEditGenericObject):
         '''
         Implements indexing behavior (`[]` operator)
 
-        Indexing for an array type can be implemented with `get_element` and
-        the square-bracket paths supported by xelib. We also need to properly
-        detect out of range indexes using __len__, as well as supporting
-        negative indexes common in python code. The handle obtained via
-        `get_element` should be objectified.
+        Indexing for an array type, like all other 'python-native' behaviors
+        on this class, will attempt to operate based on the value of the array
+        item object if the array item object is a <Types.Value> or <Types.Ref>
+        object. Otherwise, it will operate on the array item object itself.
+
+        The implementation is built on top of the implementation of the
+        get_object_at_index method in this same class.
+        '''
+        # otherwise, get and objectify the array element
+        with self.manage_handles():
+            obj = self.get_object_at_index(index)
+
+            # the object will be returned as-is if it is a container type,
+            # otherwise, its value will be returned
+            if obj.type in (obj.Types.Value, obj.Types.Ref):
+                to_return = obj.value
+            else:
+                to_return = obj
+
+            # whatever returned needs to be promoted out of handle manager
+            # context if it is an XEditBase-derived object
+            if isinstance(to_return, XEditBase):
+                to_return.promote()
+
+            return to_return
+
+    def __iter__(self):
+        '''
+        Implements iteration behavior (`for item in <obj>`)
+
+        Iteration for an array type, like all other 'python-native' behaviors
+        on this class, will attempt to operate based on the value of the array
+        item object if the array item object is a <Types.Value> or <Types.Ref>
+        object. Otherwise, it will operate on the array item object itself.
+
+        The implementation is a simple for loop iterating over the index range,
+        yielding __getitem__-produced values
+        '''
+        for index in range(len(self)):
+            yield self[index]
+
+    def get_object_at_index(self, index):
+        '''
+        Retrieves the array item object at the given index. This serves as the
+        backbone implementation of __getitem__ but strictly works with array
+        item objects, so it also provides the user an alternative for when they
+        absolutely want the array item objects (instead of possibly their
+        values)
+
+        Should support negative indexing, and raise IndexError just like a
+        normal __getitem__ would. Probably no need to implement slicing syntax.
         '''
         len_ = len(self)
 
@@ -835,21 +870,19 @@ class XEditArray(XEditGenericObject):
             raise IndexError(f'XEditArray has {len_} items; resolved '
                              f'index {index} is out of range')
 
-        # in range, get and objectify the array element
+        # return the object at the index
         return self.objectify(self.xelib_run('get_element', path=f'[{index}]'))
 
-    def __iter__(self):
+    def objects(self):
         '''
-        Implements iteration behavior (`for item in <obj>`)
-
-        Iteration over an array type can be implemented with a simple for loop;
-        values should be yielded so that if the user breaks early, only values
-        produces are taking up handle space.
+        Yields the array item objects upon iteration. This is a version of
+        __iter__ that strictly works with array item objects (instead of
+        possibly their values)
         '''
         for index in range(len(self)):
-            yield self[index]
+            yield self.get_object_at_index(index)
 
-    def index(self, item):
+    def index(self, item, obj=False):
         '''
         Support the .index function found in python lists. (`obj.index(item)`)
 
@@ -858,10 +891,16 @@ class XEditArray(XEditGenericObject):
         search based on equality.
         '''
         with self.manage_handles():
-            for i, my_item in enumerate(self):
+            for i, my_item in enumerate(self.objects if obj else self):
                 if item == my_item:
                     return i
         raise ValueError(f'item equivalent to {item} is not in the list')
+
+    def add(self, value):
+        return self.add_item_with(value)
+
+    def remove(self, value):
+        return self.remove_item_with(value)
 
     def add_item_with(self, value, subpath=''):
         '''
@@ -911,77 +950,12 @@ class XEditArray(XEditGenericObject):
             value = value.form_id_str
         return self.xelib_run('remove_array_item', '', subpath, value)
 
-    def move_item(self, sub_item, to_index):
+    def move_item(self, sub_object, to_index):
         '''
-        Move an array item in the array to the given index.
+        Move an object in the array to the given index.
         '''
-        if sub_item not in self:
-            raise XEditError(f'Attempted to move array item {sub_item} within '
-                             f'array {self} of which it does not belong in')
-        return self.xelib.move_array_item(sub_item.handle, to_index)
-
-
-class XEditSortedValueArray(XEditArray):
-    '''
-    Collection class to use when the array is a sorted array of value elements
-    one-level deep. We can operate with the values of the value elements
-    directly. Also since collection is a sorted collection, it should emulate
-    the behavior of a set rather than a list since order cannot be controlled.
-    '''
-    def __getitem__(self, index):
-        '''
-        Implements indexing behavior (`[]` operator)
-
-        Indexing for a value collection should additional retrieve the value
-        from the object and yield that. If the retrieved value is an XEditBase-
-        derived object, it needs to be promoted prior to yielding.
-        '''
-        with self.manage_handles():
-            value = super().__getitem__(self, index).value
-            if isinstance(value, XEditBase):
-                value.promote()
-            return value
-
-    def __iter__(self):
-        '''
-        Implements iteration behavior (`for item in <obj>`)
-
-        Iteration for a value collection should additionally retrieve the
-        value from each yielded object and yield that. If the retrieved value
-        is an XEditBase-derived object, it needs to be promoted prior to
-        yielding.
-        '''
-        with self.manage_handles():
-            for item in super().__iter__(self):
-                value = item.value
-                if isinstance(value, XEditBase):
-                    value.promote()
-                yield value
-
-    def __contains__(self, value):
-        '''
-        Implements membership test (`x in <obj>`)
-
-        Membership test for a value collection can take advantage of the
-        has_item_with method with subpath defaulting to ''; this should return
-        whether the array has a first-level element of the given value.
-        '''
-        return self.has_item_with(value)
-
-    def add(self, value):
-        '''
-        A value collection can provide an `add` method. This emulates the
-        API of a native python set. Implementation can take advantage of the
-        add_item_with method with subpath defaulting to ''; this should add
-        a first-level object with the given value.
-        '''
-        return self.add_item_with(value)
-
-    def remove(self, value):
-        '''
-        A value collection can provide a `remove` method. This emulates the
-        API of a native python set. Implementation can take advantage of the
-        remove_item_with method with subpath defaulting to ''; this should
-        remove a first-level object with the given value.
-        '''
-        return self.remove_item_with(value)
+        if sub_object not in self.objects:
+            raise XEditError(f'Attempted to move array item {sub_object} '
+                             f'within array {self} of which it does not '
+                             f'belong in')
+        return self.xelib.move_array_item(sub_object.handle, to_index)
