@@ -660,6 +660,16 @@ class XEditGenericObject(XEditBase):
 
     @property
     def value(self):
+        '''
+        The value of a record, subrecord, array, struct, etc... is itself.
+        The value of a string, integer, float, etc... is the number
+        The value of a reference is the linked target of the reference
+
+        When this element is mapped via descriptor, descriptor get will
+        retrieve the value, or None if the object cannot be obtained. Descriptor
+        set will create the object if it does not exist, and set the value
+        if it can be set. Failure to set will delete any created object.
+        '''
         def_type = self.def_type
         if def_type is None or def_type in (
                 self.DefTypes.dtRecord,
@@ -692,6 +702,13 @@ class XEditGenericObject(XEditBase):
 
     @value.setter
     def value(self, value):
+        '''
+        The value of a record, subrecord, array, struct, etc... cannot be set
+        The value of a string, integer, float, etc... can be set as-is
+        The value of a reference can be set via an object to link to, and is
+            set via the linked object using xelib.set_links_to for a handle-to-
+            handle set, and set using the hex string for array value methods
+        '''
         def_type = self.def_type
         if def_type is None or def_type in (
                 self.DefTypes.dtRecord,
@@ -904,7 +921,7 @@ class XEditArray(XEditGenericObject):
         return self.xelib.move_array_item(sub_item.handle, to_index)
 
 
-class XEditSortedValueCollection(XEditArray):
+class XEditSortedValueArray(XEditArray):
     '''
     Collection class to use when the array is a sorted array of value elements
     one-level deep. We can operate with the values of the value elements
