@@ -93,26 +93,26 @@ class TestARMA:
             assert getattr(arma, alias)
 
             # should be able to futher access the model path
-            assert getattr(arma, sig).model == nifpath
+            assert getattr(arma, sig).model_filename == nifpath
 
             # this particular one doesn't have alternate textures
             assert getattr(arma, sig).alternate_textures is None
 
             # the nif path element should be editable
-            getattr(arma, sig).model = 'Some\\Other\\Path.nif'
-            assert getattr(arma, sig).model == 'Some\\Other\\Path.nif'
-            getattr(arma, sig).model = nifpath
-            assert getattr(arma, sig).model == nifpath
+            getattr(arma, sig).model_filename = 'Some\\Other\\Path.nif'
+            assert getattr(arma, sig).model_filename == 'Some\\Other\\Path.nif'
+            getattr(arma, sig).model_filename = nifpath
+            assert getattr(arma, sig).model_filename == nifpath
 
             # the nif path element should not be deletable since it is required
             with pytest.raises(XEditError):
-                getattr(arma, sig).model = None
+                getattr(arma, sig).model_filename = None
 
             # but we are free to set it to empty
-            getattr(arma, sig).model = ''
-            assert getattr(arma, sig).model == ''
-            getattr(arma, sig).model = nifpath
-            assert getattr(arma, sig).model == nifpath
+            getattr(arma, sig).model_filename = ''
+            assert getattr(arma, sig).model_filename == ''
+            getattr(arma, sig).model_filename = nifpath
+            assert getattr(arma, sig).model_filename == nifpath
 
             # cannot set the field itself since it is a non-value element
             with pytest.raises(XEditError):
@@ -124,8 +124,8 @@ class TestARMA:
 
             # we should be able to add it back
             arma.add(sig.upper())
-            getattr(arma, sig).model = nifpath
-            assert getattr(arma, sig).model == nifpath
+            getattr(arma, sig).model_filename = nifpath
+            assert getattr(arma, sig).model_filename == nifpath
 
     @pytest.mark.parametrize('n,texture_name',
                              [(0, 'SkinBodyMale_1'),
@@ -168,3 +168,133 @@ class TestARMA:
             assert getattr(foo_arma, sig) is None
             setattr(foo_arma, sig, texture)
             assert getattr(foo_arma, sig).name == texture_name
+
+    def test_modl(self, xedit):
+        with xedit.manage_handles():
+            # ensure there's an empty foo.esp
+            foo = xedit.get_or_add('foo.esp')
+            foo.nuke()
+
+            # copy onto esp the NakedTorso from Skyrim.esm
+            arma = xedit['Skyrim.esm\\ARMA\\NakedTorso']
+            foo_arma = arma.copy_into(foo)
+            assert foo_arma
+
+            # modl should be gettable, and it should be an array of size 10
+            modl = foo_arma.modl
+            assert modl
+            assert len(modl) == 10
+
+            # should also be able to access this via alias
+            aliased_modl = foo_arma.additional_races
+            assert len(aliased_modl) == 10
+            assert modl == aliased_modl
+
+            # check expected initial data
+            assert set(race.value.long_name.split()[0] for race in modl) == set(
+                ['BretonRace', 'BretonRaceVampire', 'ImperialRace',
+                 'ImperialRaceVampire', 'NordRace', 'NordRaceVampire',
+                 'OrcRace', 'OrcRaceVampire', 'RedguardRace',
+                 'RedguardRaceVampire'])
+
+            # add a race, should work
+            wolf_race = xedit['Skyrim.esm\\RACE\\WolfRace']
+            assert wolf_race
+
+            modl.add_item_with(wolf_race)
+            assert len(modl) == 11
+            assert set(race.value.long_name.split()[0] for race in modl) == set(
+                ['BretonRace', 'BretonRaceVampire', 'ImperialRace',
+                 'ImperialRaceVampire', 'NordRace', 'NordRaceVampire',
+                 'OrcRace', 'OrcRaceVampire', 'RedguardRace',
+                 'RedguardRaceVampire', 'WolfRace'])
+
+            # should be able to find the added race
+            assert modl.has_item_with(wolf_race)
+            assert (modl.find_item_with(wolf_race)
+                        .value.long_name.split()[0] == 'WolfRace')
+
+            # should be able to remove all races
+            races = [race.value for race in modl]
+            for race in races:
+                modl.remove_item_with(race)
+            assert len(modl) == 0
+
+            # should be able to add them back
+            for race in races:
+                if not race.long_name.startswith('WolfRace'):
+                    modl.add_item_with(race)
+            assert len(modl) == 10
+            assert set(race.value.long_name.split()[0] for race in modl) == set(
+                ['BretonRace', 'BretonRaceVampire', 'ImperialRace',
+                 'ImperialRaceVampire', 'NordRace', 'NordRaceVampire',
+                 'OrcRace', 'OrcRaceVampire', 'RedguardRace',
+                 'RedguardRaceVampire'])
+
+    def test_sndd(self, xedit):
+        with xedit.manage_handles():
+            # ensure there's an empty foo.esp
+            foo = xedit.get_or_add('foo.esp')
+            foo.nuke()
+
+            # copy onto esp the IronBootsAA from Skyrim.esm
+            arma = xedit['Skyrim.esm\\ARMA\\IronBootsAA']
+            foo_arma = arma.copy_into(foo)
+            assert foo_arma
+
+            # sndd should be gettable
+            sndd = foo_arma.sndd
+            assert sndd.long_name.startswith('FSTArmorHeavyFootstepSet')
+
+            # alias should work
+            aliased_sndd = foo_arma.footstep_sound
+            assert aliased_sndd == sndd
+
+            # should be able to set it to something else
+            light_steps = xedit['Skyrim.esm\\FSTS\\FSTArmorLightFootstepSet']
+            assert light_steps
+
+            foo_arma.sndd = light_steps
+            assert foo_arma.sndd == light_steps
+
+            # should be able to erase it
+            foo_arma.sndd = None
+            assert foo_arma.sndd is None
+
+            # should be able to set it back
+            foo_arma.sndd = sndd
+            assert foo_arma.sndd.long_name.startswith('FSTArmorHeavyFootstepSet')
+
+    def test_onam(self, xedit):
+        pytest.skip("can't seem to find a proper example")
+
+    def test_models(self, xedit):
+        with xedit.manage_handles():
+            # should be able to get all model paths
+            assert len(list(xedit['Skyrim.esm\\ARMA\\NakedTorso'].models)) == 4
+
+            # should be able to get less than 4 models when some of them are
+            # not set
+            assert len(list(xedit['Skyrim.esm\\ARMA\\IronGlovesAA'].models)) == 2
+
+    def test_textures(self, xedit):
+        with xedit.manage_handles():
+            # should be able to get all textures
+            assert len(list(xedit['Skyrim.esm\\ARMA\\NakedTorso'].textures)) == 4
+
+            # should be able to get less than 4 textures
+            assert len(list(xedit['Skyrim.esm\\ARMA\\NakedHands'].textures)) == 3
+
+    def test_file_paths(self, xedit):
+        with xedit.manage_handles():
+            # should be able to get all model paths
+            assert set(xedit['Skyrim.esm\\ARMA\\NakedTorso'].file_paths) == set(
+                ['Actors\\Character\\Character Assets\\MaleBody_1.NIF',
+                 'Actors\\Character\\Character Assets\\FemaleBody_1.nif',
+                 'Actors\\Character\\Character Assets\\1stPersonMaleBody_1.NIF',
+                 'Actors\\Character\\Character Assets\\1stPersonFemaleBody_1.nif'])
+
+            # should be able to get less than 4 paths when not everything is set
+            assert set(xedit['Skyrim.esm\\ARMA\\IronGlovesAA'].file_paths) == set(
+                ['Armor\\Iron\\Male\\Gauntlets_1.nif',
+                 'Armor\\Iron\\F\\Gauntlets_1.nif'])

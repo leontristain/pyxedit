@@ -13,7 +13,7 @@ def create_model_class(signature):
     attr_model = f'mod{n}'
     model_descriptor = XEditAttribute(attr_model.upper())
     setattr(XEditArmatureModel, attr_model, model_descriptor)
-    setattr(XEditArmatureModel, 'model', model_descriptor)
+    setattr(XEditArmatureModel, 'model_filename', model_descriptor)
 
     # set up property for `MO[n]T` on the class
     attr_model_data = f'mo{n}t'
@@ -55,6 +55,32 @@ class XEditArmature(XEditGenericObject):
     nam1 = base_female_texture = female_skin_texture = XEditAttribute('NAM1')
     nam2 = base_male_firstperson_texture = XEditAttribute('NAM2')
     nam3 = base_female_firstperson_texture = XEditAttribute('NAM3')
+
     modl = additional_races = included_races = XEditAttribute('MODL')
     sndd = footstep_sound = XEditAttribute('SNDD')
     onam = art_object = XEditAttribute('ONAM')
+
+    @property
+    def models(self):
+        with self.manage_handles():
+            for item in [self.mod2, self.mod3, self.mod4, self.mod5]:
+                if item:
+                    item.promote()
+                    yield item
+
+    @property
+    def textures(self):
+        with self.manage_handles():
+            for item in [self.nam0, self.nam1, self.nam2, self.nam3]:
+                if item:
+                    item.promote()
+                    yield item
+
+    @property
+    def file_paths(self):
+        paths = []
+        with self.manage_handles():
+            for model in self.models:
+                if model and model.model_filename:
+                    paths.append(model.model_filename)
+        return paths

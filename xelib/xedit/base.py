@@ -761,6 +761,10 @@ class XEditGenericObject(XEditBase):
         return self.xelib_run('get_int_value', path='Record Header\\FormID')
 
     @property
+    def form_id_str(self):
+        return f'{self.form_id:0>8X}'
+
+    @property
     def plugin(self):
         return self.objectify(self.xelib_run('get_element_file'))
 
@@ -800,8 +804,7 @@ class XEditCollection(XEditGenericObject):
                              f'index {index} is out of range')
 
         # in range, get and objectify the array element
-        return self.objectify(
-                   self.xelib.get_element(self.handle, path=f'[{index}]'))
+        return self.objectify(self.xelib_run('get_element', path=f'[{index}]'))
 
     def __iter__(self):
         # implements `for part in parts`
@@ -816,21 +819,28 @@ class XEditCollection(XEditGenericObject):
         raise ValueError(f'item equivalent to {item} is not in the list')
 
     def add_item_with(self, value, subpath=''):
+        if isinstance(value, XEditGenericObject):
+            value = value.form_id_str
         return self.objectify(
-                   self.xelib.add_array_item(self.handle, '', subpath, value))
+            self.xelib_run('add_array_item', '', subpath, value))
 
     def has_item_with(self, value, subpath=''):
-        return self.xelib.has_array_item(
-                   self.handle, '', subpath, value, ex=False)
+        if isinstance(value, XEditGenericObject):
+            value = value.form_id_str
+        return self.xelib_run('has_array_item', '', subpath, value, ex=False)
 
     def find_item_with(self, value, subpath=''):
-        item_handle = self.xelib.get_array_item(
-                          self.handle, '', subpath, value, ex=False)
+        if isinstance(value, XEditGenericObject):
+            value = value.form_id_str
+        item_handle = self.xelib_run(
+            'get_array_item', '', subpath, value, ex=False)
         if item_handle:
             return self.objectify(item_handle)
 
     def remove_item_with(self, value, subpath=''):
-        return self.xelib.remove_array_item(self.handle, '', subpath, value)
+        if isinstance(value, XEditGenericObject):
+            value = value.form_id_str
+        return self.xelib_run('remove_array_item', '', subpath, value)
 
     def move_item(self, sub_item, to_index):
         return self.xelib.move_array_item(sub_item.handle, to_index)
