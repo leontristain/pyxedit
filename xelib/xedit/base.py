@@ -206,25 +206,6 @@ class XEditBase:
         '''
         return self.get(path, ex=True)
 
-    def __iter__(self):
-        '''
-        Implements iteration behavior (`for item in <obj>`)
-
-        Iterating over an object should produce each of the child objects
-        next-level down, by objectifying the handles returned with a
-        `xelib.get_elements` call.
-
-        Handles should be yielded one by one via an iterator within a handle
-        management context, with only the yielded handles promoted to parent
-        scope, such that any handles not yielded before the scope exits (e.g.
-        via a `break` by the caller) are automatically released.
-        '''
-        with self.manage_handles():
-            for handle in self.xelib_run('get_elements'):
-                obj = self.objectify(handle)
-                obj.promote()
-                yield obj
-
     @contextmanager
     def manage_handles(self):
         '''
@@ -343,7 +324,7 @@ class XEditBase:
         # if object is an array or subrecord array, use the collection class
         if generic_obj.element_type in (self.ElementTypes.etArray,
                                         self.ElementTypes.etSubRecordArray):
-            return XEditCollection.from_xedit_object(handle, self)
+            return XEditArray.from_xedit_object(handle, self)
 
         # otherwise, see if we can find a subclass of XEditBase
         # corresponding to the signature; if so, use the subclass to make
@@ -501,6 +482,22 @@ class XEditBase:
         Returns the number of direct child elements this element has
         '''
         return self.xelib_run('element_count')
+
+    def children(self):
+        '''
+        Produces each of the child objects next-level down by objectifying the
+        handles returned with a `xelib.get_elements` call.
+
+        Handles should be yielded one by one via an iterator within a handle
+        management context, with only the yielded handles promoted to parent
+        scope, such that any handles not yielded before the scope exits (e.g.
+        via a `break` by the caller) are automatically released.
+        '''
+        with self.manage_handles():
+            for handle in self.xelib_run('get_elements'):
+                obj = self.objectify(handle)
+                obj.promote()
+                yield obj
 
     @classmethod
     def get_imported_subclasses(cls):
@@ -786,12 +783,30 @@ class XEditGenericObject(XEditBase):
                                              as_new=as_new))
 
 
-class XEditCollection(XEditGenericObject):
+class XEditArray(XEditGenericObject):
+    '''
+    The default array class for use by array types. Also serves as a base
+    class for more specialized arrays
+    '''
     def __len__(self):
+        '''
+        Implements length calculation (`len(obj)`)
+
+        Length calculation for an array class is the same as the num_children
+        property.
+        '''
         return self.num_children
 
     def __getitem__(self, index):
-        # implements `parts[2]`
+        '''
+        Implements indexing behavior (`[]` operator)
+
+        Indexing for an array type can be implemented with `get_element` and
+        the square-bracket paths supported by xelib. We also need to properly
+        detect out of range indexes using __len__, as well as supporting
+        negative indexes common in python code. The handle obtained via
+        `get_element` should be objectified.
+        '''
         len_ = len(self)
 
         # support negative indexing
@@ -800,18 +815,31 @@ class XEditCollection(XEditGenericObject):
 
         # raise IndexError on out of range resolved index
         if not 0 <= index < len_:
-            raise IndexError(f'XEditCollection has {len_} items; resolved '
+            raise IndexError(f'XEditArray has {len_} items; resolved '
                              f'index {index} is out of range')
 
         # in range, get and objectify the array element
         return self.objectify(self.xelib_run('get_element', path=f'[{index}]'))
 
     def __iter__(self):
-        # implements `for part in parts`
+        '''
+        Implements iteration behavior (`for item in <obj>`)
+
+        Iteration over an array type can be implemented with a simple for loop;
+        values should be yielded so that if the user breaks early, only values
+        produces are taking up handle space.
+        '''
         for index in range(len(self)):
             yield self[index]
 
     def index(self, item):
+        '''
+        Support the .index function found in python lists. (`obj.index(item)`)
+
+        The given item can be any XEditBase-derived object with a handle
+        equivalent to an array element here. Implementation is via iterative
+        search based on equality.
+        '''
         with self.manage_handles():
             for i, my_item in enumerate(self):
                 if item == my_item:
@@ -819,17 +847,35 @@ class XEditCollection(XEditGenericObject):
         raise ValueError(f'item equivalent to {item} is not in the list')
 
     def add_item_with(self, value, subpath=''):
+        '''
+        Adds an item to the array with the given value at the given subpath.
+
+        An xedit object can be given as the value, in which case its form id
+        will be set as the value at the given subpath under the array.
+        '''
         if isinstance(value, XEditGenericObject):
             value = value.form_id_str
         return self.objectify(
             self.xelib_run('add_array_item', '', subpath, value))
 
     def has_item_with(self, value, subpath=''):
+        '''
+        Checks whether an item exists with the given value at the given subpath.
+
+        An xedit object can be given as the value, in which case its form id
+        will be used as value for the check.
+        '''
         if isinstance(value, XEditGenericObject):
             value = value.form_id_str
         return self.xelib_run('has_array_item', '', subpath, value, ex=False)
 
     def find_item_with(self, value, subpath=''):
+        '''
+        Returns the array item with the given value at the given subpath.
+
+        An xedit object can be given as the value, in which case its form id
+        will be used as value for the retrieval.
+        '''
         if isinstance(value, XEditGenericObject):
             value = value.form_id_str
         item_handle = self.xelib_run(
@@ -838,9 +884,87 @@ class XEditCollection(XEditGenericObject):
             return self.objectify(item_handle)
 
     def remove_item_with(self, value, subpath=''):
+        '''
+        Removes the array item with the given value at the given subpath.
+
+        An xedit object can be given as the value, in which case its form id
+        will be used as value for the removal.
+        '''
         if isinstance(value, XEditGenericObject):
             value = value.form_id_str
         return self.xelib_run('remove_array_item', '', subpath, value)
 
     def move_item(self, sub_item, to_index):
+        '''
+        Move an array item in the array to the given index.
+        '''
+        if sub_item not in self:
+            raise XEditError(f'Attempted to move array item {sub_item} within '
+                             f'array {self} of which it does not belong in')
         return self.xelib.move_array_item(sub_item.handle, to_index)
+
+
+class XEditSortedValueCollection(XEditArray):
+    '''
+    Collection class to use when the array is a sorted array of value elements
+    one-level deep. We can operate with the values of the value elements
+    directly. Also since collection is a sorted collection, it should emulate
+    the behavior of a set rather than a list since order cannot be controlled.
+    '''
+    def __getitem__(self, index):
+        '''
+        Implements indexing behavior (`[]` operator)
+
+        Indexing for a value collection should additional retrieve the value
+        from the object and yield that. If the retrieved value is an XEditBase-
+        derived object, it needs to be promoted prior to yielding.
+        '''
+        with self.manage_handles():
+            value = super().__getitem__(self, index).value
+            if isinstance(value, XEditBase):
+                value.promote()
+            return value
+
+    def __iter__(self):
+        '''
+        Implements iteration behavior (`for item in <obj>`)
+
+        Iteration for a value collection should additionally retrieve the
+        value from each yielded object and yield that. If the retrieved value
+        is an XEditBase-derived object, it needs to be promoted prior to
+        yielding.
+        '''
+        with self.manage_handles():
+            for item in super().__iter__(self):
+                value = item.value
+                if isinstance(value, XEditBase):
+                    value.promote()
+                yield value
+
+    def __contains__(self, value):
+        '''
+        Implements membership test (`x in <obj>`)
+
+        Membership test for a value collection can take advantage of the
+        has_item_with method with subpath defaulting to ''; this should return
+        whether the array has a first-level element of the given value.
+        '''
+        return self.has_item_with(value)
+
+    def add(self, value):
+        '''
+        A value collection can provide an `add` method. This emulates the
+        API of a native python set. Implementation can take advantage of the
+        add_item_with method with subpath defaulting to ''; this should add
+        a first-level object with the given value.
+        '''
+        return self.add_item_with(value)
+
+    def remove(self, value):
+        '''
+        A value collection can provide a `remove` method. This emulates the
+        API of a native python set. Implementation can take advantage of the
+        remove_item_with method with subpath defaulting to ''; this should
+        remove a first-level object with the given value.
+        '''
+        return self.remove_item_with(value)

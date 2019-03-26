@@ -212,10 +212,10 @@ class TestXEditBase:
             assert txst.__class__.__name__ == 'XEditTextureSet'
 
             parts = xedit['Dawnguard.esm\\Head Part\\MaleEyesSnowElf\\Parts']
-            assert parts.__class__.__name__ == 'XEditCollection'
+            assert parts.__class__.__name__ == 'XEditArray'
 
 
-class TestXEditCollection:
+class TestXEditArray:
     def test_basic_functionality(self, xedit):
         with xedit.manage_handles():
             parts = xedit['Dawnguard.esm\\Head Part\\MaleHeadHighElfSnow\\'
