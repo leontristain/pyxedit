@@ -701,17 +701,18 @@ class XEditGenericObject(XEditBase):
             referenced = self.xelib.get_links_to(self.handle, ex=False)
             return self.objectify(referenced) if referenced else None
         elif self.type == self.Types.Value:
-            if def_type in (self.DefTypes.dtString, self.DefTypes.dtLString):
+            if self.def_type in (self.DefTypes.dtString,
+                                 self.DefTypes.dtLString):
                 return self.xelib.get_value(self.handle)
-            elif def_type == self.DefTypes.dtInteger:
+            elif self.def_type == self.DefTypes.dtInteger:
                 return self.xelib.get_int_value(self.handle)
-            elif def_type == self.DefTypes.dtFloat:
+            elif self.def_type == self.DefTypes.dtFloat:
                 return self.xelib.get_float_value(self.handle)
             else:
                 raise NotImplementedError(
-                    f'Just encountered value type {def_type}, which is not yet '
-                    f'supported as a gettable value; we should check it out '
-                    f'and add it')
+                    f'Just encountered value type {self.def_type}, which is '
+                    f'not yet supported as a gettable value; we should check '
+                    f'it out and add it')
 
     @value.setter
     def value(self, value):
@@ -723,17 +724,17 @@ class XEditGenericObject(XEditBase):
         if self.type == self.Types.Ref:
             return self.xelib.set_links_to(self.handle, value.handle)
         elif self.type == self.Types.Value:
-            if def_type in (self.DefTypes.dtString, self.DefTypes.dtLString):
+            if self.def_type in (self.DefTypes.dtString, self.DefTypes.dtLString):
                 return self.xelib.set_value(self.handle, str(value))
-            elif def_type == self.DefTypes.dtInteger:
+            elif self.def_type == self.DefTypes.dtInteger:
                 return self.xelib.set_int_value(self.handle, int(value))
-            elif def_type == self.DefTypes.dtFloat:
+            elif self.def_type == self.DefTypes.dtFloat:
                 return self.xelib.set_float_value(self.handle, float(value))
             else:
                 raise NotImplementedError(
-                    f'Just encountered value type {def_type}, which is not yet '
-                    f'supported as a settable value; we should check it out '
-                    f'and add it')
+                    f'Just encountered value type {self.def_type}, which is '
+                    f'not yet supported as a settable value; we should check '
+                    f'it out and add it')
         else:
             raise XEditError(f'Cannot set the value of element {self} with '
                              f'type {self.type}')
@@ -791,8 +792,7 @@ class XEditGenericObject(XEditBase):
 
 class XEditArray(XEditGenericObject):
     '''
-    The default array class for use by array types. Also serves as a base
-    class for more specialized arrays
+    The array class for use by array types.
     '''
     def __len__(self):
         '''
@@ -873,6 +873,7 @@ class XEditArray(XEditGenericObject):
         # return the object at the index
         return self.objectify(self.xelib_run('get_element', path=f'[{index}]'))
 
+    @property
     def objects(self):
         '''
         Yields the array item objects upon iteration. This is a version of
@@ -897,16 +898,31 @@ class XEditArray(XEditGenericObject):
         raise ValueError(f'item equivalent to {item} is not in the list')
 
     def add(self, value):
+        '''
+        Support a `.add` function for adding an item into the array.
+        Since we will almost never have standalone structs that aren't already
+        part of the array they should be in, this method is primarily used for
+        simple-value array items where the value can be provided to add as an
+        item into the array. For struct arrays, the user is expected to use
+        the `add_item_with` method instead.
+        '''
         return self.add_item_with(value)
 
     def remove(self, value):
+        '''
+        Support a `.add` function for removing an item from the array.
+        This method is primarily used for simple-value array items where the
+        value can be provided to remove a matching item from the array. For
+        struct arrays, the user is expected to use the `remove_item_with`
+        method instead.
+        '''
         return self.remove_item_with(value)
 
     def add_item_with(self, value, subpath=''):
         '''
         Adds an item to the array with the given value at the given subpath.
 
-        An xedit object can be given as the value, in which case its form id
+        An xedit object can be given as the value, in which case its form_id_str
         will be set as the value at the given subpath under the array.
         '''
         if isinstance(value, XEditGenericObject):
@@ -918,7 +934,7 @@ class XEditArray(XEditGenericObject):
         '''
         Checks whether an item exists with the given value at the given subpath.
 
-        An xedit object can be given as the value, in which case its form id
+        An xedit object can be given as the value, in which case its form_id_str
         will be used as value for the check.
         '''
         if isinstance(value, XEditGenericObject):
@@ -929,7 +945,7 @@ class XEditArray(XEditGenericObject):
         '''
         Returns the array item with the given value at the given subpath.
 
-        An xedit object can be given as the value, in which case its form id
+        An xedit object can be given as the value, in which case its form_id_str
         will be used as value for the retrieval.
         '''
         if isinstance(value, XEditGenericObject):
@@ -943,7 +959,7 @@ class XEditArray(XEditGenericObject):
         '''
         Removes the array item with the given value at the given subpath.
 
-        An xedit object can be given as the value, in which case its form id
+        An xedit object can be given as the value, in which case its form_id_str
         will be used as value for the removal.
         '''
         if isinstance(value, XEditGenericObject):
@@ -954,8 +970,9 @@ class XEditArray(XEditGenericObject):
         '''
         Move an object in the array to the given index.
         '''
-        if sub_object not in self.objects:
-            raise XEditError(f'Attempted to move array item {sub_object} '
-                             f'within array {self} of which it does not '
-                             f'belong in')
+        with self.manage_handles():
+            if sub_object not in self.objects:
+                raise XEditError(f'Attempted to move array item {sub_object} '
+                                 f'within array {self} of which it does not '
+                                 f'belong in')
         return self.xelib.move_array_item(sub_object.handle, to_index)
