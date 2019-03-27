@@ -42,11 +42,14 @@ class RecordsMethods(WrapperMethodsBase):
     ConflictAll = ConflictAll
     GetRefrsFlags = GetRefrsFlags
 
-    def get_form_id(self, id_, native=False, local=False):
+    def get_form_id(self, id_, native=False, local=False, ex=True):
         form_id = self.get_unsigned_integer(
             lambda res: self.raw_api.GetFormID(id_, res, native),
-            error_msg=f'Failed to get FormID for {self.element_context(id_)}')
-        return form_id & 0xFFFFFF if local else form_id
+            error_msg=f'Failed to get FormID for {self.element_context(id_)}',
+            ex=ex)
+        if form_id and local:
+            return form_id & 0xFFFFFF
+        return form_id
 
     def get_hex_form_id(self, id_, native=False, local=False):
         form_id = self.get_form_id(id_, native, local)

@@ -127,12 +127,13 @@ class ElementsMethods(WrapperMethodsBase):
                       f'{self.element_context(id2)} to '
                       f'{self.element_context(id1)}')
 
-    def get_elements(self, id_=0, path='', sort=False, filter=False):
+    def get_elements(self, id_=0, path='', sort=False, filter=False, ex=True):
         return self.get_array(
             lambda len_:
                 self.raw_api.GetElements(id_, path, sort, filter, len_),
             error_msg=f'Failed to get child elements at '
-                      f'{self.element_context(id_, path)}')
+                      f'{self.element_context(id_, path)}',
+            ex=ex)
 
     def get_def_names(self, id_):
         return self.get_string_array(
@@ -183,11 +184,12 @@ class ElementsMethods(WrapperMethodsBase):
             error_msg=f'Failed to get element record for: '
                       f'{self.element_context(id_)}')
 
-    def element_count(self, id_):
+    def element_count(self, id_, ex=True):
         return self.get_integer(
             lambda res: self.raw_api.ElementCount(id_, res),
             error_msg=f'Failed to get element count for '
-                      f'{self.element_context(id_)}')
+                      f'{self.element_context(id_)}',
+            ex=ex)
 
     def element_equals(self, id_, id2):
         return self.get_bool(

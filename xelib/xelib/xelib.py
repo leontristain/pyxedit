@@ -1,6 +1,7 @@
 import ctypes
 from contextlib import contextmanager
 from ctypes import wintypes
+from itertools import tee
 from pathlib import Path
 
 from xelib.xelib.definitions import DelphiTypes, XEditLibSignatures
@@ -24,6 +25,16 @@ from xelib.xelib.wrapper_methods.setup import SetupMethods
 __all__ = ['DLL_PATH', 'Xelib', 'XelibError']
 
 DLL_PATH = Path(__file__).parent / '../../XEditLib/XEditLib.dll'
+
+
+def pairwise(iterable):
+    '''
+    A pairwise iterator, copied from:
+        https://docs.python.org/3/library/itertools.html
+    '''
+    a, b = tee(iterable)
+    next(b, None)
+    return zip(a, b)
 
 
 class Xelib(ElementValuesMethods,
@@ -96,13 +107,21 @@ class Xelib(ElementValuesMethods,
             self.release_handles()
             self._current_handles = self._handles_stack.pop()
 
+    def print_handle_management_stack(self):
+        for i, handles in enumerate(self._handles_stack):
+            print(f'{i}: {handles}')
+        print(f'{len(self._handles_stack)}: {self._current_handles}')
+
     def promote_handle(self, handle):
-        if handle in self._current_handles:
-            if self._handles_stack:
-                parent_scope_handles = self._handles_stack[-1]
+        full_stack = self._handles_stack + [self._current_handles]
+        for (current_handles,
+             parent_scope_handles) in pairwise(reversed(full_stack)):
+            if handle in current_handles:
+                current_handles.remove(handle)
                 parent_scope_handles.add(handle)
-                self._current_handles.remove(handle)
                 return parent_scope_handles
+
+        print(f'failed to promote handle {handle}')
 
     @property
     def raw_api(self):

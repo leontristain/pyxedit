@@ -5,7 +5,10 @@ from xelib.xedit.misc import XEditError
 
 class XEditGenericObject(XEditBase):
     def __repr__(self):
-        return f'<{self.__class__.__name__} {self.name}>'
+        return (f'<{self.__class__.__name__} '
+                f'{self.signature or "----"} '
+                f'{self.form_id_str or "--------"} '
+                f'{self.name} {self.handle}>')
 
     @property
     def value(self):
@@ -79,11 +82,27 @@ class XEditGenericObject(XEditBase):
 
     @property
     def form_id(self):
-        return self.xelib_run('get_int_value', path='Record Header\\FormID')
+        form_id = self.xelib_run('get_form_id', ex=False)
+        if form_id:
+            return form_id
 
     @property
     def form_id_str(self):
-        return f'{self.form_id:0>8X}'
+        form_id = self.form_id
+        if form_id:
+            return f'{form_id:0>8X}'
+
+    @property
+    def local_form_id(self):
+        form_id = self.xelib_run('get_form_id', local=True, ex=False)
+        if form_id:
+            return form_id
+
+    @property
+    def local_form_id_str(self):
+        local_form_id = self.local_form_id
+        if local_form_id:
+            return f'{local_form_id:0>8X}'
 
     @property
     def plugin(self):

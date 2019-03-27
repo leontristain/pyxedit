@@ -389,7 +389,7 @@ class XEditBase:
         '''
         Returns the number of direct child elements this element has
         '''
-        return self.xelib_run('element_count')
+        return self.xelib_run('element_count', ex=False)
 
     @property
     def children(self):
@@ -403,10 +403,34 @@ class XEditBase:
         via a `break` by the caller) are automatically released.
         '''
         with self.manage_handles():
-            for handle in self.xelib_run('get_elements'):
+            for handle in self.xelib_run('get_elements', ex=False):
                 obj = self.objectify(handle)
                 obj.promote()
                 yield obj
+
+    @property
+    def descendants(self):
+        if self.num_children:
+            with self.manage_handles():
+                for child in list(self.children):
+                    for descendant in child.descendants:
+                        descendant.promote()
+                        yield descendant
+                    child.promote()
+                    yield child
+
+    @property
+    def ls(self):
+        '''
+        Prints a list of children to stdout; this can be useful when browsing
+        the xedit session. This isn't actually a property; instead it's meant
+        to be similar to a shell `ls` command in a python interpreter.
+        '''
+        with self.manage_handles():
+            children = list(self.children)
+            longest_name_length = max([len(child.name) for child in children])
+            for child in self.children:
+                print(f'{child.name.rjust(longest_name_length)}: {child}')
 
     @property
     def parent(self):

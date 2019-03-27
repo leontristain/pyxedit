@@ -28,7 +28,7 @@ def process_plugin(game_path,
         records_to_delete = set()
 
         # time to get to work, we loop over npcs
-        for npc in npcs:
+        for npc in npcs.children:
             # choose one of the two sets to add records to, depending on whether
             # the npc is to be kept or deleted
             tracked_records = (records_to_keep if npc.name in npcs_to_keep
@@ -37,7 +37,7 @@ def process_plugin(game_path,
                              else files_to_delete)
 
             # we can manage handles per npc
-            with xedit.manage_handles:
+            with xedit.manage_handles():
                 # loop through npc's head parts and track stuff
                 head_parts = list(npc.head_parts)
                 for head_part in head_parts:
@@ -59,7 +59,7 @@ def process_plugin(game_path,
                     tracked_files = (files_to_delete if relink_vanilla
                                      else tracked_files)
 
-                    tracked_records.append(worn_armor.long_path)
+                    tracked_records.add(worn_armor.long_path)
                     for armature in worn_armor.armature:
                         tracked_records.add(armature.long_path)
                         tracked_files.update(armature.file_paths)
