@@ -5,7 +5,7 @@ from xelib.xedit.generic import XEditGenericObject
 class XEditTextureSet(XEditGenericObject):
     SIGNATURE = 'TXST'
 
-    obnd = XEditAttribute('OBND', read_only=True)
+    obnd = XEditAttribute('OBND')
     tx00 = XEditAttribute('Textures (RGB/A)\\TX00')
     tx01 = XEditAttribute('Textures (RGB/A)\\TX01')
     tx02 = XEditAttribute('Textures (RGB/A)\\TX02')

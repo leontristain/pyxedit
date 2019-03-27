@@ -12,13 +12,11 @@ class XEditAttribute:
                  path,
                  required=False,
                  enum=None,
-                 object_class=None,
-                 read_only=False):
+                 object_class=None):
         self.path = path
         self.enum = enum
         self.object_class = object_class
         self.required = required
-        self.read_only = read_only
 
     def __get__(self, obj, type=None):
         '''
@@ -73,10 +71,6 @@ class XEditAttribute:
           * if an enum has been provided for us, we will use the enum to
               translate between enum values and raw values for the caller
         '''
-        # read only attributes are not allowed to set
-        if self.read_only:
-            raise XEditError(f'Cannot set read-only attribute to {value}')
-
         # prepare the value to be set
         value = value.value if value and self.enum else value
 

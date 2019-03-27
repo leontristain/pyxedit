@@ -5,21 +5,21 @@ from xelib.xedit.generic import XEditGenericObject
 class XEditArmor(XEditGenericObject):
     SIGNATURE = 'ARMO'
 
-    vmad = script_info = XEditAttribute('VMAD', read_only=True)
-    obnd = object_bounds = XEditAttribute('OBND', read_only=True)
+    vmad = script_info = XEditAttribute('VMAD')
+    obnd = object_bounds = XEditAttribute('OBND')
     full = full_name = XEditAttribute('FULL')
     eitm = enchantment = object_effect = XEditAttribute('EITM')
     eamt = enchantment_amount = XEditAttribute('EAMT')
 
-    mod2 = male_model = XEditAttribute('MOD2', read_only=True)
+    mod2 = male_model = XEditAttribute('MOD2')
     icon = male_inventory_image = XEditAttribute('ICON')
     mico = male_message_image = XEditAttribute('MICO')
-    mod4 = female_model = XEditAttribute('MOD4', read_only=True)
+    mod4 = female_model = XEditAttribute('MOD4')
     ico2 = female_inventory_image = XEditAttribute('ICO2')
     mic2 = female_message_image = XEditAttribute('MIC2')
 
-    bodt = body_template_12byte = XEditAttribute('BODT', read_only=True)
-    bod2 = body_template = XEditAttribute('BOD2', read_only=True)
+    bodt = body_template_12byte = XEditAttribute('BODT')
+    bod2 = body_template = XEditAttribute('BOD2')
     dest = destructible = destruction_data = XEditAttribute('DEST')
 
     ynam = pickup_sound = XEditAttribute('YNAM')
@@ -35,7 +35,7 @@ class XEditArmor(XEditGenericObject):
     kwda = keywords = XEditAttribute('KWDA')
 
     desc = description = XEditAttribute('DESC')
-    modl = armature = XEditAttribute('MODL', read_only=True)
-    data = XEditAttribute('DATA', read_only=True)
+    modl = armature = XEditAttribute('MODL')
+    data = XEditAttribute('DATA')
     dnam = armor_rating = XEditAttribute('DNAM')
     tnam = template = template_armor = XEditAttribute('TNAM')

@@ -73,9 +73,9 @@ class XEditGenericObject(XEditBase):
             raise XEditError(f'Cannot set the value of element {self} with '
                              f'type {self.type}')
 
-    data_size = XEditAttribute('Record Header\\Data Size', read_only=True)
-    form_version = XEditAttribute('Record Header\\Form Version', read_only=True)
-    editor_id = XEditAttribute('EDID', read_only=True)
+    data_size = XEditAttribute('Record Header\\Data Size')
+    form_version = XEditAttribute('Record Header\\Form Version')
+    editor_id = XEditAttribute('EDID')
 
     @property
     def form_id(self):

@@ -20,10 +20,10 @@ class XEditHeadPart(XEditGenericObject):
 
     full = full_name = XEditAttribute('FULL')
     modl = model_filename = XEditAttribute('Model\\MODL')
-    data = flags = XEditAttribute('DATA', read_only=True)
+    data = flags = XEditAttribute('DATA')
     pnam = headpart_type = XEditAttribute('PNAM', enum=HeadPartTypes)
     hnam = extra_parts = XEditAttribute('HNAM')
-    nam0 = parts = XEditAttribute('Parts', read_only=True)
+    nam0 = parts = XEditAttribute('Parts')
     tnam = texture_set = base_texture = XEditAttribute('TNAM')
     cnam = color = XEditAttribute('CNAM')
     rnam = valid_races = resource_list = XEditAttribute('RNAM')
