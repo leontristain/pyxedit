@@ -12,6 +12,9 @@ class XEditTypes(Enum):
 
 
 class XEditError(Exception):
+    '''
+    Exception class to raise for xedit-related errors
+    '''
     pass
 
 
@@ -514,6 +517,7 @@ class XEditBase:
         '''
         return self.xelib_run('element_count')
 
+    @property
     def children(self):
         '''
         Produces each of the child objects next-level down by objectifying the
@@ -529,6 +533,11 @@ class XEditBase:
                 obj = self.objectify(handle)
                 obj.promote()
                 yield obj
+
+    @property
+    def parent(self):
+        if self.long_path:
+            return self.get(str(Path(self.long_path).parent), absolute=True)
 
     @classmethod
     def get_imported_subclasses(cls):
@@ -692,10 +701,23 @@ class XEditGenericObject(XEditBase):
     @property
     def value(self):
         '''
-        A <Types.Ref> element should return the linked object as the value.
-        A <Types.Value> element should return the appropriate typed value as
-            the value
-        Otherwise, a None should be returned.
+        The value property.
+
+        Xelib handles point to elements that may or may not be an element that
+        stores a value. If stored, the value will have a type, and for integer
+        values it may be a reference to a record. All of this can be determined
+        based on some combination of element_type, def_type, smash_type, and
+        value_type.
+
+        The `.type` property already does the work of inspecting the record to
+        figure out whether it is a `Value` or `Ref` element. Here, we will
+        retrieve the value based on the `.type` property and the value's def
+        type.
+
+          - A <Types.Ref> element should return the linked object as the value.
+          - A <Types.Value> element should return the appropriately typed value
+                based on the DefType
+          - Otherwise, a None should be returned.
         '''
         if self.type == self.Types.Ref:
             referenced = self.xelib.get_links_to(self.handle, ex=False)
@@ -717,9 +739,12 @@ class XEditGenericObject(XEditBase):
     @value.setter
     def value(self, value):
         '''
-        A <Types.Ref> element should be set an object to link to.
-        A <Types.Value> element should be set the raw value
-        Otherwise, setting should raise an error.
+        Setter for the value property.
+          - A <Types.Ref> element should expect another object to be provided
+                and link to it.
+          - A <Types.Value> element should be set the appropriately typed value
+                based on the DefType
+          - Otherwise, attempting to set the value should result in an error.
         '''
         if self.type == self.Types.Ref:
             return self.xelib.set_links_to(self.handle, value.handle)
@@ -739,23 +764,6 @@ class XEditGenericObject(XEditBase):
             raise XEditError(f'Cannot set the value of element {self} with '
                              f'type {self.type}')
 
-    def set_value(self, value, path='', create_node=True):
-        with self.manage_handles():
-            if value is None:
-                if not path or self.get(path=path):
-                    self.delete(path=path)
-            else:
-                if path and not self.get(path=path):
-                    if create_node:
-                        self.add(path=path)
-                    else:
-                        raise XEditError(
-                            f'Cannot set value at {path} from {self.long_path}; '
-                            f'node does not exist; you can specify '
-                            f'create_node=True to create one; just make sure '
-                            f'you have not misspelled anything')
-                (self[path] if path else self).value = value
-
     data_size = XEditAttribute('Record Header\\Data Size', read_only=True)
     form_version = XEditAttribute('Record Header\\Form Version', read_only=True)
     editor_id = XEditAttribute('EDID', read_only=True)
@@ -771,10 +779,6 @@ class XEditGenericObject(XEditBase):
     @property
     def plugin(self):
         return self.objectify(self.xelib_run('get_element_file'))
-
-    @property
-    def parent(self):
-        return self.get(str(Path(self.long_path).parent), absolute=True)
 
     def copy_into(self, target_plugin, as_new=False):
         # for this to work, self must be a record, and target must be a file
