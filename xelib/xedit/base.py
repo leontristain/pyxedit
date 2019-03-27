@@ -410,6 +410,14 @@ class XEditBase:
 
     @property
     def parent(self):
+        '''
+        Produces an object of the element that contains this one.
+
+        There doesn't seem to be a xelib method for this, so implementation
+        is done by treating the `long_path` as a windows path object and
+        running a global `.get` on the parent path. This might not be the
+        best solution.
+        '''
         if self.long_path:
             return self.get(str(Path(self.long_path).parent), absolute=True)
 
