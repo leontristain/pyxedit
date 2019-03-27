@@ -36,15 +36,15 @@ class XEditAttribute:
             if not sub_obj:
                 return None
 
-            # if the sub-object is a non-value object, just return the object
-            # itself, otherwise get the value and transform it via enum if
-            # necessary
-            if self.is_non_value_object(sub_obj):
-                value = sub_obj
-            else:
+            # if the sub-object is a value-based object, we will need to return
+            # its value (and transform it via enum if provided); otherwise,
+            # we will be returning the sub-object as-is
+            if sub_obj.type in (sub_obj.Types.Ref, sub_obj.Types.Value):
                 value = sub_obj.value
                 if self.enum:
                     value = self.enum(value)
+            else:
+                value = sub_obj
 
             # if the value ended up being an object derived from XEditBase,
             # we will need to apply any explicitly-given object class, and
@@ -93,24 +93,17 @@ class XEditAttribute:
             if not sub_obj:
                 sub_obj = obj.add(self.path)
 
-            # try to set the object (and check if it's a non-value object);
-            # if value cannot be successfully set, we need to delete any object
-            # we just added
+            # try to set the value on the sub-object (translate value via enum
+            # if one is provided); this requires the sub-object to be a value
+            # object to be successful; if unsuccessful, delete the sub-object
+            # if we just created it
             try:
-                if self.is_non_value_object(sub_obj):
-                    raise XEditError(f'Cannot set value of non-value '
-                                        f'object {sub_obj} to {value}')
-                else:
+                if sub_obj.type in (sub_obj.Types.Ref, sub_obj.Types.Value):
                     sub_obj.value = value
+                else:
+                    raise XEditError(f'Cannot set value of non-value object '
+                                     f'{sub_obj} to {value}')
             except Exception:
                 if not originally_exists:
                     sub_obj.delete()
                 raise
-
-    def is_non_value_object(self, obj):
-        return obj.def_type in (obj.DefTypes.dtRecord,
-                                obj.DefTypes.dtSubRecord,
-                                obj.DefTypes.dtSubRecordArray,
-                                obj.DefTypes.dtSubRecordStruct,
-                                obj.DefTypes.dtArray,
-                                obj.DefTypes.dtStruct)
