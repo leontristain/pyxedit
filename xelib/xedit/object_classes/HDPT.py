@@ -1,6 +1,7 @@
 from enum import Enum
 
-from xelib.xedit.base import XEditAttribute, XEditGenericObject
+from xelib.xedit.attribute import XEditAttribute
+from xelib.xedit.generic import XEditGenericObject
 
 
 class HeadPartTypes(Enum):

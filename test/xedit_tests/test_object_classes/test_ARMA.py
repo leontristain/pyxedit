@@ -191,7 +191,7 @@ class TestARMA:
             assert modl == aliased_modl
 
             # check expected initial data
-            assert set(race.value.long_name.split()[0] for race in modl) == set(
+            assert set(race.long_name.split()[0] for race in modl) == set(
                 ['BretonRace', 'BretonRaceVampire', 'ImperialRace',
                  'ImperialRaceVampire', 'NordRace', 'NordRaceVampire',
                  'OrcRace', 'OrcRaceVampire', 'RedguardRace',
@@ -201,31 +201,30 @@ class TestARMA:
             wolf_race = xedit['Skyrim.esm\\RACE\\WolfRace']
             assert wolf_race
 
-            modl.add_item_with(wolf_race)
+            modl.add(wolf_race)
             assert len(modl) == 11
-            assert set(race.value.long_name.split()[0] for race in modl) == set(
+            assert set(race.long_name.split()[0] for race in modl) == set(
                 ['BretonRace', 'BretonRaceVampire', 'ImperialRace',
                  'ImperialRaceVampire', 'NordRace', 'NordRaceVampire',
                  'OrcRace', 'OrcRaceVampire', 'RedguardRace',
                  'RedguardRaceVampire', 'WolfRace'])
 
             # should be able to find the added race
-            assert modl.has_item_with(wolf_race)
-            assert (modl.find_item_with(wolf_race)
-                        .value.long_name.split()[0] == 'WolfRace')
+            assert wolf_race in modl
+            assert modl[modl.index(wolf_race)] == wolf_race
 
             # should be able to remove all races
-            races = [race.value for race in modl]
+            races = [race for race in modl]
             for race in races:
-                modl.remove_item_with(race)
+                modl.remove(race)
             assert len(modl) == 0
 
             # should be able to add them back
             for race in races:
                 if not race.long_name.startswith('WolfRace'):
-                    modl.add_item_with(race)
+                    modl.add(race)
             assert len(modl) == 10
-            assert set(race.value.long_name.split()[0] for race in modl) == set(
+            assert set(race.long_name.split()[0] for race in modl) == set(
                 ['BretonRace', 'BretonRaceVampire', 'ImperialRace',
                  'ImperialRaceVampire', 'NordRace', 'NordRaceVampire',
                  'OrcRace', 'OrcRaceVampire', 'RedguardRace',
