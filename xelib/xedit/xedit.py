@@ -18,6 +18,7 @@ class XEdit(XEditBase):
         self._xelib = Xelib()
 
         self.handle = 0
+        self.auto_release = False
 
     @property
     def game_path(self):

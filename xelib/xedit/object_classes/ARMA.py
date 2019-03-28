@@ -63,25 +63,17 @@ class XEditArmature(XEditGenericObject):
 
     @property
     def models(self):
-        with self.manage_handles():
-            for item in [self.mod2, self.mod3, self.mod4, self.mod5]:
-                if item:
-                    item.promote()
-                    yield item
+        for item in [self.mod2, self.mod3, self.mod4, self.mod5]:
+            if item:
+                yield item
 
     @property
     def textures(self):
-        with self.manage_handles():
-            for item in [self.nam0, self.nam1, self.nam2, self.nam3]:
-                if item:
-                    item.promote()
-                    yield item
+        for item in [self.nam0, self.nam1, self.nam2, self.nam3]:
+            if item:
+                yield item
 
     @property
     def file_paths(self):
-        paths = []
-        with self.manage_handles():
-            for model in self.models:
-                if model and model.model_filename:
-                    paths.append(model.model_filename)
-        return paths
+        return [model.model_filename for model in self.models
+                if model and model.model_filename]

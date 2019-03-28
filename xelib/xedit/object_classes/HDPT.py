@@ -30,7 +30,6 @@ class XEditHeadPart(XEditGenericObject):
 
     @property
     def file_paths(self):
-        files = [self.model_filename]
-        with self.manage_handles():
-            files.extend([part['NAM1'].value for part in self.parts])
+        files = ([self.model_filename] +
+                 [part['NAM1'].value for part in self.parts])
         return sorted(set([file_ for file_ in files if file_]))

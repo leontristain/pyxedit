@@ -90,6 +90,19 @@ class Xelib(ElementValuesMethods,
     def track_handle(self, handle):
         self._current_handles.add(handle)
 
+    def release_handle(self, handle):
+        found_layers = [
+            layer for layer in self._handles_stack + [self._current_handles]
+            if handle in layer]
+        if found_layers:
+            for layer in found_layers:
+                layer.remove(handle)
+            try:
+                print(f'releasing handle {handle} due to out of scope')
+                self.release(handle)
+            except XelibError:
+                pass
+
     def release_handles(self):
         while self._current_handles:
             try:

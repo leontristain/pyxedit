@@ -1,3 +1,4 @@
+from functools import wraps
 import hashlib
 from pathlib import Path
 import pytest
@@ -54,6 +55,15 @@ def xedit():
         backup_md5 = compute_file_md5(backup)
         if file_md5 != backup_md5:
             shutil.copyfile(backup, file_)
+
+
+def check_handles_after(method):
+    @wraps(method)
+    def new_method(self, xedit, *args, **kwargs):
+        returned = method(self, xedit, *args, **kwargs)
+        assert xedit.xelib.opened_handles == set()
+        return returned
+    return new_method
 
 
 def compute_file_md5(file_path):

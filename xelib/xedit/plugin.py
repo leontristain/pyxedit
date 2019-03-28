@@ -60,11 +60,8 @@ class XEditPlugin(XEditBase):
 
     @property
     def masters(self):
-        with self.manage_handles():
-            for handle in self.xelib_run('get_masters'):
-                master_obj = self.objectify(handle)
-                master_obj.promote()
-                yield master_obj
+        for handle in self.xelib_run('get_masters'):
+            yield self.objectify(handle)
 
     @property
     def master_names(self):

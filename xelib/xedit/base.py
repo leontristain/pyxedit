@@ -15,7 +15,7 @@ class XEditBase:
     ValueTypes = Xelib.ValueTypes
 
     # initializer
-    def __init__(self, xelib, handle, handle_group):
+    def __init__(self, xelib, handle, handle_group, auto_release=True):
         '''
         Initializer
         '''
@@ -32,6 +32,17 @@ class XEditBase:
         # we keep a reference to the overarching xelib object; this is the
         # gateway to the xelib API that lets us do just about everything.
         self._xelib = xelib
+
+        self.auto_release = auto_release
+
+    # finalizer
+    def __del__(self):
+        '''
+        Finalizer. It should release the handle and remove the handle from
+        any tracked handle groups (this is what Xelib.release_handle does)
+        '''
+        if self.auto_release:
+            self._xelib.release_handle(self.handle)
 
     # xelib-related methods
     @property
@@ -91,6 +102,9 @@ class XEditBase:
         can be used to create sub-contexts for handle management, where
         handles created within the context, if not promoted to parent scope,
         will be released on exiting the context.
+
+        NOTE: usage of this is now deprecated since the handle management
+              based on __del__ seems to be working very well
         '''
         with self.xelib.manage_handles():
             yield self
@@ -216,8 +230,12 @@ class XEditBase:
         from xelib.xedit.array import XEditArray
         from xelib.xedit.plugin import XEditPlugin
 
-        # first create a generic object out of it so we can easily inspect it
-        generic_obj = XEditGenericObject.from_xedit_object(handle, self)
+        # first create a generic object out of it so we can easily inspect it;
+        # this object may not be the final produced object, so make sure it does
+        # not enable auto-release until we're sure it is the final produced
+        # object
+        generic_obj = XEditGenericObject.from_xedit_object(
+                                              handle, self, auto_release=False)
 
         # if object is a plugin, use the XEditPlugin class
         if generic_obj.element_type == self.ElementTypes.etFile:
@@ -227,6 +245,7 @@ class XEditBase:
         # it's going to have a signature that is same as the records in the
         # group, but won't have anything of substance
         if generic_obj.element_type == self.ElementTypes.etGroupRecord:
+            generic_obj.auto_release = True
             return generic_obj
 
         # if object is an array or subrecord array, use the collection class
@@ -242,6 +261,7 @@ class XEditBase:
                 if subclass.SIGNATURE == generic_obj.signature:
                     return subclass.from_xedit_object(handle, self)
 
+        generic_obj.auto_release = True
         return generic_obj
 
     def get(self, path, default=None, ex=False, absolute=False):
@@ -288,10 +308,9 @@ class XEditBase:
         @param path: the path to add element at
         @return: xedit object of the element added
         '''
-        with self.manage_handles():
-            if self.get(path):
-                raise XEditError(f'Cannot add object at path {path}; an object '
-                                 f'already exists there')
+        if self.get(path):
+            raise XEditError(f'Cannot add object at path {path}; an object '
+                                f'already exists there')
         handle = self.xelib_run('add_element', path=path)
         if handle:
             return self.objectify(handle)
@@ -302,8 +321,7 @@ class XEditBase:
         @param path: the subpath to check for element existence at
         @return: boolean of whether something is there
         '''
-        with self.manage_handles():
-            return bool(self.get(path))
+        return bool(self.get(path))
 
     def get_or_add(self, path):
         '''
@@ -396,28 +414,18 @@ class XEditBase:
         '''
         Produces each of the child objects next-level down by objectifying the
         handles returned with a `xelib.get_elements` call.
-
-        Handles should be yielded one by one via an iterator within a handle
-        management context, with only the yielded handles promoted to parent
-        scope, such that any handles not yielded before the scope exits (e.g.
-        via a `break` by the caller) are automatically released.
         '''
-        with self.manage_handles():
-            for handle in self.xelib_run('get_elements', ex=False):
-                obj = self.objectify(handle)
-                obj.promote()
-                yield obj
+        for handle in self.xelib_run('get_elements', ex=False):
+            obj = self.objectify(handle)
+            yield obj
 
     @property
     def descendants(self):
         if self.num_children:
-            with self.manage_handles():
-                for child in list(self.children):
-                    for descendant in child.descendants:
-                        descendant.promote()
-                        yield descendant
-                    child.promote()
-                    yield child
+            for child in list(self.children):
+                for descendant in child.descendants:
+                    yield descendant
+                yield child
 
     @property
     def ls(self):
@@ -426,11 +434,10 @@ class XEditBase:
         the xedit session. This isn't actually a property; instead it's meant
         to be similar to a shell `ls` command in a python interpreter.
         '''
-        with self.manage_handles():
-            children = list(self.children)
-            longest_name_length = max([len(child.name) for child in children])
-            for child in self.children:
-                print(f'{child.name.rjust(longest_name_length)}: {child}')
+        children = list(self.children)
+        longest_name_length = max([len(child.name) for child in children])
+        for child in self.children:
+            print(f'{child.name.rjust(longest_name_length)}: {child}')
 
     @property
     def parent(self):
@@ -457,7 +464,7 @@ class XEditBase:
             yield subclass
 
     @classmethod
-    def from_xedit_object(cls, handle, xedit_obj):
+    def from_xedit_object(cls, handle, xedit_obj, auto_release=True):
         '''
         Create an object of this class from another xedit object. This is the
         primary method in which new xedit objects are instantiated, which means
@@ -480,7 +487,10 @@ class XEditBase:
                              f'handle {handle} with respect to source object '
                              f'{xedit_obj}; handle not managed by the current '
                              f'manage_handles context of the object')
-        return cls(xedit_obj.xelib, handle, xedit_obj._xelib._current_handles)
+        return cls(xedit_obj.xelib,
+                   handle,
+                   xedit_obj._xelib._current_handles,
+                   auto_release=auto_release)
 
     @staticmethod
     def import_all_object_classes():

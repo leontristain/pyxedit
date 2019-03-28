@@ -1,4 +1,3 @@
-from xelib.xedit.base import XEditBase
 from xelib.xedit.generic import XEditGenericObject
 from xelib.xedit.misc import XEditError
 
@@ -28,23 +27,14 @@ class XEditArray(XEditGenericObject):
         The implementation is built on top of the implementation of the
         get_object_at_index method in this same class.
         '''
-        # otherwise, get and objectify the array element
-        with self.manage_handles():
-            obj = self.get_object_at_index(index)
+        obj = self.get_object_at_index(index)
 
-            # the object will be returned as-is if it is a container type,
-            # otherwise, its value will be returned
-            if obj.type in (obj.Types.Value, obj.Types.Ref):
-                to_return = obj.value
-            else:
-                to_return = obj
+        if obj.type in (obj.Types.Value, obj.Types.Ref):
+            to_return = obj.value
+        else:
+            to_return = obj
 
-            # whatever returned needs to be promoted out of handle manager
-            # context if it is an XEditBase-derived object
-            if isinstance(to_return, XEditBase):
-                to_return.promote()
-
-            return to_return
+        return to_return
 
     def __iter__(self):
         '''
@@ -104,10 +94,9 @@ class XEditArray(XEditGenericObject):
         equivalent to an array element here. Implementation is via iterative
         search based on equality.
         '''
-        with self.manage_handles():
-            for i, my_item in enumerate(self.objects if obj else self):
-                if item == my_item:
-                    return i
+        for i, my_item in enumerate(self.objects if obj else self):
+            if item == my_item:
+                return i
         raise ValueError(f'item equivalent to {item} is not in the list')
 
     def add(self, value):
@@ -183,9 +172,8 @@ class XEditArray(XEditGenericObject):
         '''
         Move an object in the array to the given index.
         '''
-        with self.manage_handles():
-            if sub_object not in self.objects:
-                raise XEditError(f'Attempted to move array item {sub_object} '
-                                 f'within array {self} of which it does not '
-                                 f'belong in')
+        if sub_object not in self.objects:
+            raise XEditError(f'Attempted to move array item {sub_object} '
+                                f'within array {self} of which it does not '
+                                f'belong in')
         return self.xelib.move_array_item(sub_object.handle, to_index)
