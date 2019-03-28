@@ -2,11 +2,11 @@ import pytest
 
 from xelib import XEditError
 
-from .. fixtures import xedit, check_handles_after  # NOQA: for pytest
+from .. fixtures import xedit, assert_no_opened_handles_after  # NOQA: pytest
 
 
 class TestARMA:
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_bodt(self, xedit):
         arma = xedit['Skyrim.esm\\ARMA\\NakedFeet']
 
@@ -24,11 +24,11 @@ class TestARMA:
         with pytest.raises(XEditError):
             arma.bodt = None
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_bod2(self, xedit):
         pytest.skip('Not sure I understand this field')
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_rnam(self, xedit):
         arma = xedit['Skyrim.esm\\ARMA\\NakedFeet']
 
@@ -53,7 +53,7 @@ class TestARMA:
         with pytest.raises(XEditError):
             arma.race = None
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_dnam(self, xedit):
         arma = xedit['Skyrim.esm\\ARMA\\NakedFeet']
 
@@ -77,7 +77,7 @@ class TestARMA:
          (3, 'DLC01\\Clothes\\Vampire\\VampireRobesF_1.nif'),
          (4, 'DLC01\\Clothes\\Vampire\\1stPersonVampireRobes_1.nif'),
          (5, 'DLC01\\Clothes\\Vampire\\1stPersonVampireRobesF_1.nif')])
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_mod(self, xedit, n, nifpath):
         sig = f'mod{n}'
         alias = {'mod2': 'male_model',
@@ -133,7 +133,7 @@ class TestARMA:
                               (1, 'SkinBodyFemale_1'),
                               (2, 'SkinMaleHumanBody'),
                               (3, 'SkinFemaleHumanBody')])
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_nam(self, xedit, n, texture_name):
         sig = f'nam{n}'
         alias = {'nam0': 'base_male_texture',
@@ -171,7 +171,7 @@ class TestARMA:
         setattr(foo_arma, sig, texture)
         assert getattr(foo_arma, sig).name == texture_name
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_modl(self, xedit):
         # ensure there's an empty foo.esp
         foo = xedit.get_or_add('foo.esp')
@@ -232,7 +232,7 @@ class TestARMA:
                 'OrcRace', 'OrcRaceVampire', 'RedguardRace',
                 'RedguardRaceVampire'])
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_sndd(self, xedit):
         # ensure there's an empty foo.esp
         foo = xedit.get_or_add('foo.esp')
@@ -266,11 +266,11 @@ class TestARMA:
         foo_arma.sndd = sndd
         assert foo_arma.sndd.long_name.startswith('FSTArmorHeavyFootstepSet')
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_onam(self, xedit):
         pytest.skip("can't seem to find a proper example")
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_models(self, xedit):
         # should be able to get all model paths
         assert len(list(xedit['Skyrim.esm\\ARMA\\NakedTorso'].models)) == 4
@@ -279,7 +279,7 @@ class TestARMA:
         # not set
         assert len(list(xedit['Skyrim.esm\\ARMA\\IronGlovesAA'].models)) == 2
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_textures(self, xedit):
         # should be able to get all textures
         assert len(list(xedit['Skyrim.esm\\ARMA\\NakedTorso'].textures)) == 4
@@ -287,7 +287,7 @@ class TestARMA:
         # should be able to get less than 4 textures
         assert len(list(xedit['Skyrim.esm\\ARMA\\NakedHands'].textures)) == 3
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_file_paths(self, xedit):
         # should be able to get all model paths
         assert set(xedit['Skyrim.esm\\ARMA\\NakedTorso'].file_paths) == set(

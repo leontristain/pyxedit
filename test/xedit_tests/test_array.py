@@ -1,10 +1,10 @@
 import pytest
 
-from . fixtures import xedit, check_handles_after  # NOQA: for pytest
+from . fixtures import xedit, assert_no_opened_handles_after  # NOQA: pytest
 
 
 class TestXEditArray:
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test___len__(self, xedit):
         a1 = xedit['Dawnguard.esm\\HDPT\\MaleHeadHighElfSnow\\Parts']
         a2 = xedit['Dawnguard.esm\\ARMA\\VampireWolfAA\\MODL']
@@ -13,7 +13,7 @@ class TestXEditArray:
         assert len(a1) == 3
         assert len(a2) == 3
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test___getitem__(self, xedit):
         a1 = xedit['Dawnguard.esm\\HDPT\\MaleHeadHighElfSnow\\Parts']
         a2 = xedit['Dawnguard.esm\\ARMA\\VampireWolfAA\\MODL']
@@ -48,7 +48,7 @@ class TestXEditArray:
         with pytest.raises(IndexError):
             a1[-4]
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test___iter__(self, xedit):
         a1 = xedit['Dawnguard.esm\\HDPT\\MaleHeadHighElfSnow\\Parts']
         a2 = xedit['Dawnguard.esm\\ARMA\\VampireWolfAA\\MODL']
@@ -66,7 +66,7 @@ class TestXEditArray:
         for i, item in enumerate(a2):
             assert item.display_name == ['Wolf', 'Deathhound', 'Dog'][i]
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_membership(self, xedit):
         a1 = xedit['Dawnguard.esm\\HDPT\\MaleHeadHighElfSnow\\Parts']
         a2 = xedit['Dawnguard.esm\\ARMA\\VampireWolfAA\\MODL']
@@ -97,7 +97,7 @@ class TestXEditArray:
         item = a2.find_item_with(a2[0])
         assert item.value in a2
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_index(self, xedit):
         a1 = xedit['Dawnguard.esm\\HDPT\\MaleHeadHighElfSnow\\Parts']
         a2 = xedit['Dawnguard.esm\\ARMA\\VampireWolfAA\\MODL']
@@ -127,7 +127,7 @@ class TestXEditArray:
         item = a2.find_item_with(a2[1])
         assert a2.index(item.value) == 1
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_add_remove(self, xedit):
         a2 = xedit['Dawnguard.esm\\ARMA\\VampireWolfAA\\MODL']
         assert len(a2) == 3
@@ -158,7 +158,7 @@ class TestXEditArray:
         assert a2[1].display_name == 'Deathhound'
         assert a2[2].display_name == 'Dog'
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_objects(self, xedit):
         a1 = xedit['Dawnguard.esm\\HDPT\\MaleHeadHighElfSnow\\Parts']
         a2 = xedit['Dawnguard.esm\\ARMA\\VampireWolfAA\\MODL']
@@ -177,7 +177,7 @@ class TestXEditArray:
                                                 'Deathhound',
                                                 'Dog'][i]
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_get_object_at_index(self, xedit):
         a1 = xedit['Dawnguard.esm\\HDPT\\MaleHeadHighElfSnow\\Parts']
         a2 = xedit['Dawnguard.esm\\ARMA\\VampireWolfAA\\MODL']
@@ -213,7 +213,7 @@ class TestXEditArray:
         with pytest.raises(IndexError):
             a2.get_object_at_index(-4)
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_has_item_with(self, xedit):
         a1 = xedit['Dawnguard.esm\\HDPT\\MaleHeadHighElfSnow\\Parts']
         a2 = xedit['Dawnguard.esm\\ARMA\\VampireWolfAA\\MODL']
@@ -236,7 +236,7 @@ class TestXEditArray:
         assert fox_race.display_name == 'Fox'
         assert not a2.has_item_with(fox_race)
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_find_item_with(self, xedit):
         a1 = xedit['Dawnguard.esm\\HDPT\\MaleHeadHighElfSnow\\Parts']
         a2 = xedit['Dawnguard.esm\\ARMA\\VampireWolfAA\\MODL']
@@ -260,7 +260,7 @@ class TestXEditArray:
         assert fox_race.display_name == 'Fox'
         assert not a2.find_item_with(fox_race)
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_add_move_remove_item_with(self, xedit):
         # check initial state of struct array
         a1 = xedit['Dawnguard.esm\\HDPT\\MaleHeadHighElfSnow\\Parts']

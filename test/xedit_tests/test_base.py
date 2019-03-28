@@ -2,11 +2,11 @@ import pytest
 
 from xelib import XelibError, XEditError
 
-from . fixtures import xedit, check_handles_after  # NOQA: for pytest
+from . fixtures import xedit, assert_no_opened_handles_after  # NOQA: pytest
 
 
 class TestXEditBase:
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_basic_attributes(self, xedit):
         # enums on the xelib class should have been forwarded
         assert xedit.Games
@@ -21,7 +21,7 @@ class TestXEditBase:
         # should have an attribute to access the xelib low-level API
         assert xedit.xelib
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_indexing(self, xedit):
         # try a combination of indexing patterns, they should all work
         assert xedit['Dawnguard.esm']
@@ -34,7 +34,7 @@ class TestXEditBase:
         with pytest.raises(XelibError):
             assert head_part['NonexistentPath']
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_get(self, xedit):
         # try the same indexing patterns but with .get(), should all work
         assert xedit.get('Dawnguard.esm')
@@ -49,7 +49,7 @@ class TestXEditBase:
         # and if you give it a default it'll return that default
         assert head_part.get('NonexistentPath', 3) == 3
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_equality(self, xedit):
         # obj1 == obj2 should be determined via xelib's equality abilities
         obj1 = xedit.get('Dawnguard.esm\\Head Part\\MaleEyesSnowElf')
@@ -57,7 +57,7 @@ class TestXEditBase:
         assert obj1.handle != obj2.handle
         assert obj1 == obj2
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_manage_handles(self, xedit):
         with xedit.manage_handles():
             # we just started, so obj1 and obj2 should get handles 1 and 2
@@ -84,7 +84,7 @@ class TestXEditBase:
             assert obj3.handle == 1
             assert obj4.handle == 2
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_promote(self, xedit):
         with xedit.manage_handles():
             # start a handle management scope and grab some handles; the handles
@@ -120,7 +120,7 @@ class TestXEditBase:
         with pytest.raises(XEditError):
             obj2.signature
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_type_fields(self, xedit):
         # sanity check all four type fields, when inapplicable they should
         # return None
@@ -136,7 +136,7 @@ class TestXEditBase:
         assert pnam.value_type == xedit.ValueTypes.vtEnum
         assert pnam.smash_type == xedit.SmashTypes.stInteger
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_add_delete(self, xedit):
         tx = xedit['Dawnguard.esm\\Texture Set\\EyesSnowElf\\'
                     'Textures (RGB/A)']
@@ -159,7 +159,7 @@ class TestXEditBase:
         tx03.delete()
         assert not tx.get('TX03')
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_names_paths_signatures(self, xedit):
         dawnguard = xedit['Dawnguard.esm']
         assert dawnguard.name == 'Dawnguard.esm'
@@ -201,7 +201,7 @@ class TestXEditBase:
         assert tx.signature == 'TX00'
         assert tx.signature_name == ''
 
-    @check_handles_after
+    @assert_no_opened_handles_after
     def test_objectify(self, xedit):
         assert xedit.__class__.__name__ == 'XEdit'
 

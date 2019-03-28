@@ -57,7 +57,7 @@ def xedit():
             shutil.copyfile(backup, file_)
 
 
-def check_handles_after(test):
+def assert_no_opened_handles_after(test):
     @wraps(test)
     def wrapped_test(self, xedit, *args, **kwargs):
         # run the test
