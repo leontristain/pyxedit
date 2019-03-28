@@ -427,18 +427,6 @@ class XEditBase:
                 yield from child.descendants
 
     @property
-    def ls(self):
-        '''
-        Prints a list of children to stdout; this can be useful when browsing
-        the xedit session. This isn't actually a property; instead it's meant
-        to be similar to a shell `ls` command in a python interpreter.
-        '''
-        children = list(self.children)
-        longest_name_length = max([len(child.name) for child in children])
-        for child in self.children:
-            print(f'{child.name.rjust(longest_name_length)}: {child}')
-
-    @property
     def parent(self):
         '''
         Produces an object of the element that contains this one.
@@ -450,6 +438,18 @@ class XEditBase:
         '''
         if self.long_path:
             return self.get(str(Path(self.long_path).parent), absolute=True)
+
+    @property
+    def ls(self):
+        '''
+        Prints a list of children to stdout; this can be useful when browsing
+        the xedit session. This isn't actually a property; instead it's meant
+        to be similar to a shell `ls` command in a python interpreter.
+        '''
+        children = list(self.children)
+        longest_name_length = max([len(child.name) for child in children])
+        for child in self.children:
+            print(f'{child.name.rjust(longest_name_length)}: {child}')
 
     @classmethod
     def get_imported_subclasses(cls):
