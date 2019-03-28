@@ -423,9 +423,8 @@ class XEditBase:
     def descendants(self):
         if self.num_children:
             for child in list(self.children):
-                for descendant in child.descendants:
-                    yield descendant
                 yield child
+                yield from child.descendants
 
     @property
     def ls(self):
