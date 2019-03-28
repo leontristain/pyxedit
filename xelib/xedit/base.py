@@ -33,13 +33,24 @@ class XEditBase:
         # gateway to the xelib API that lets us do just about everything.
         self._xelib = xelib
 
+        # if this is set to True (and it should be set to True most of the
+        # time), then it enables the handle to be automatically released
+        # whenever this object goes out of scope.
+        #
+        # exceptions for when we may want to disable this behavior include
+        # when we are creating another object to inherit a handle, in which
+        # case the previous object need to set auto_release to False before
+        # handing the handle over to the new object. This usually happens
+        # when we want to switch to a different subclass of XEditBase to
+        # start managing this handle
         self.auto_release = auto_release
 
     # finalizer
     def __del__(self):
         '''
         Finalizer. It should release the handle and remove the handle from
-        any tracked handle groups (this is what Xelib.release_handle does)
+        any tracked handle groups (this is what Xelib.release_handle does).
+        Respects an auto-release switch that can be used to disable it.
         '''
         if self.auto_release:
             self._xelib.release_handle(self.handle)
