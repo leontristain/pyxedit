@@ -57,13 +57,23 @@ def xedit():
             shutil.copyfile(backup, file_)
 
 
-def check_handles_after(method):
-    @wraps(method)
-    def new_method(self, xedit, *args, **kwargs):
-        returned = method(self, xedit, *args, **kwargs)
+def check_handles_after(test):
+    @wraps(test)
+    def wrapped_test(self, xedit, *args, **kwargs):
+        # run the test
+        returned = test(self, xedit, *args, **kwargs)
+
+        # The test method should now be out of scope, meaning all objects
+        # in its scope should have been cleaned up, which in turn means
+        # all XEditBase-derived classes should have released all their
+        # handles. At this point, there should be no opened handles tracked
+        # by xelib. If there is, then something somewhere is failing to
+        # release handle during finalization. This could happen if, say,
+        # an object has errorneously set auto_release to False.
         assert xedit.xelib.opened_handles == set()
+
         return returned
-    return new_method
+    return wrapped_test
 
 
 def compute_file_md5(file_path):
