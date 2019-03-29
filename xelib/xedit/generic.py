@@ -122,6 +122,10 @@ class XEditGenericObject(XEditBase):
                                              as_new=as_new))
 
     def find_text_values(self):
+        '''
+        Iterate over all descendants of the current node and yields any
+        non-empty text values found.
+        '''
         for descendant in self.descendants:
             if descendant.def_type in (descendant.DefTypes.dtString,
                                        descendant.DefTypes.dtLString):
@@ -129,16 +133,65 @@ class XEditGenericObject(XEditBase):
                 if value:
                     yield value
 
-    def find_related_objects(self, signatures=None, recurse=False):
+    def find_related_objects(self,
+                             signatures=None,
+                             recurse=False,
+                             same_plugin=False):
+        '''
+        Iterates over all descendants of the current node and yields any
+        non-empty reference targets.
+
+        @param signatures: a list of signatures can be provided here to
+                           limit the target types traversed and yielded
+        @param recurse: whether to further traverse from any found valid target
+        @param same_plugin: if set to True, only reference targets belonging
+                            to the same plugin as this object will be considered
+                            valid for yielding and recursing
+        '''
         signatures = signatures or []
 
+        # start by finding related objects for `self`; we may add to this
+        # list if recurse is set to True
         to_visit = [self]
+
         for item in to_visit:
-            for descendant in self.descendants:
-                if descendant.type == descendant.Types.Ref:
-                    ref_target = descendant.value
-                    if ref_target:
-                        if not signatures or ref_target.signature in signatures:
-                            if recurse:
-                                to_visit.append(ref_target)
-                            yield ref_target
+            # iterate over item's descendants
+            for descendant in item.descendants:
+
+                # if descendant element is not a reference, ignore
+                if descendant.type != descendant.Types.Ref:
+                    continue
+
+                # if the descendent element is the 'FormID' element, ignore
+                # (since all records have a 'FormID' element that just points
+                #  to itself)
+                if descendant.name == 'FormID':
+                    continue
+
+                # attempt to retrieve the reference target, if there's nothing
+                # there, ignore
+                ref_target = descendant.value
+                if not ref_target:
+                    continue
+
+                # if we have already walked over this record, ignore
+                if ref_target in to_visit:
+                    continue
+
+                # if we specified a list of signatures, and the ref target is
+                # not one of the signatures, ignore
+                if signatures and ref_target.signature not in signatures:
+                    continue
+
+                # if we specified same_plugin, and the ref target does not
+                # belong to the same plugin, ignore
+                if same_plugin and ref_target.plugin != self.plugin:
+                    continue
+
+                # okay, by this point the reference is a valid one we care
+                # about; if we are recursing, add it back to the visit list
+                if recurse:
+                    to_visit.append(ref_target)
+
+                # and finally, yield it to the caller
+                yield ref_target
