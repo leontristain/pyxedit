@@ -98,7 +98,6 @@ class Xelib(ElementValuesMethods,
             for layer in found_layers:
                 layer.remove(handle)
             try:
-                print(f'releasing handle {handle} due to out of scope')
                 self.release(handle)
             except XelibError:
                 pass

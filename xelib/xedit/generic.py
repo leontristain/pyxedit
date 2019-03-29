@@ -120,3 +120,25 @@ class XEditGenericObject(XEditBase):
         return self.objectify(self.xelib_run('copy_element',
                                              target_plugin.handle,
                                              as_new=as_new))
+
+    def find_text_values(self):
+        for descendant in self.descendants:
+            if descendant.def_type in (descendant.DefTypes.dtString,
+                                       descendant.DefTypes.dtLString):
+                value = descendant.value
+                if value:
+                    yield value
+
+    def find_related_objects(self, signatures=None, recurse=False):
+        signatures = signatures or []
+
+        to_visit = [self]
+        for item in to_visit:
+            for descendant in self.descendants:
+                if descendant.type == descendant.Types.Ref:
+                    ref_target = descendant.value
+                    if ref_target:
+                        if not signatures or ref_target.signature in signatures:
+                            if recurse:
+                                to_visit.append(ref_target)
+                            yield ref_target
