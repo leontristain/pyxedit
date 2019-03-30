@@ -414,28 +414,74 @@ class XEditBase:
                 if signature else '')
 
     @property
-    def num_children(self):
+    def has_child_group(self):
+        '''
+        Returns whether this element has a child group
+        '''
+        return self.has('Child Group')
+
+    @property
+    def child_group(self):
+        '''
+        Retrieves the child group for this element if any
+        '''
+        return self.get('Child Group')
+
+    @property
+    def num_child_elements(self):
         '''
         Returns the number of direct child elements this element has
         '''
         return self.xelib_run('element_count', ex=False)
 
     @property
-    def children(self):
+    def child_elements(self):
         '''
-        Produces each of the child objects next-level down by objectifying the
-        handles returned with a `xelib.get_elements` call.
+        Produces each child element underneath this element
         '''
         for handle in self.xelib_run('get_elements', ex=False):
             obj = self.objectify(handle)
             yield obj
 
     @property
-    def descendants(self):
-        if self.num_children:
-            for child in self.children:
+    def num_children(self):
+        '''
+        Returns how many children this element has, including both child
+        elements and child groups
+        '''
+        if self.has_child_group:
+            return self.num_child_elements + 1
+        else:
+            return self.num_child_elements
+
+    @property
+    def children(self):
+        '''
+        Produces each of the child objects next-level down, including both
+        child elements and child groups
+        '''
+        # yield all child elements
+        for child_element in self.child_elements:
+            yield child_element
+
+        # yield the child group if one exists
+        child_group = self.child_group
+        if child_group:
+            yield child_group
+
+    def descendants(self, iter_groups=False):
+        '''
+        Produces objects underneath this element
+        '''
+        if self.num_child_elements:
+            for child in self.child_elements:
                 yield child
-                yield from child.descendants
+                yield from child.descendants(iter_groups=iter_groups)
+
+        if iter_groups and self.has_child_group:
+            child = self.child_group
+            yield child
+            yield from child.descendants(iter_groups=iter_groups)
 
     @property
     def parent(self):

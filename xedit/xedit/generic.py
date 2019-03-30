@@ -121,12 +121,12 @@ class XEditGenericObject(XEditBase):
                                              target_plugin.handle,
                                              as_new=as_new))
 
-    def find_text_values(self):
+    def find_text_values(self, iter_groups=False):
         '''
         Iterate over all descendants of the current node and yields any
         non-empty text values found.
         '''
-        for descendant in self.descendants:
+        for descendant in self.descendants(iter_groups=iter_groups):
             if descendant.def_type in (descendant.DefTypes.dtString,
                                        descendant.DefTypes.dtLString):
                 value = descendant.value
@@ -136,6 +136,7 @@ class XEditGenericObject(XEditBase):
     def find_related_objects(self,
                              signatures=None,
                              recurse=False,
+                             iter_groups=False,
                              same_plugin=False):
         '''
         Iterates over all descendants of the current node and yields any
@@ -156,7 +157,7 @@ class XEditGenericObject(XEditBase):
 
         for item in to_visit:
             # iterate over item's descendants
-            for descendant in item.descendants:
+            for descendant in item.descendants(iter_groups=iter_groups):
 
                 # if descendant element is not a reference, ignore
                 if descendant.type != descendant.Types.Ref:
