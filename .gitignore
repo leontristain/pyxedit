@@ -9,3 +9,4 @@ XEditLib
 venv
 xelib_log.txt
 vim*
+docs/_build
