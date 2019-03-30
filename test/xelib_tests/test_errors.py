@@ -1,7 +1,7 @@
 import pytest
 import time
 
-from xelib import XelibError
+from xedit import XelibError
 
 from . fixtures import xelib  # NOQA: for pytest
 

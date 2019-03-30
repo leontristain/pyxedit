@@ -5,7 +5,7 @@ import shutil
 import tempfile
 import time
 
-from xelib import Xelib, XelibError
+from xedit import Xelib, XelibError
 
 from . fixtures import xelib  # NOQA: for pytest
 from . utils import stripped_block

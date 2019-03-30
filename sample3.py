@@ -1,7 +1,7 @@
-import xelib
+from xedit import XEdit
 from pathlib import Path
 
-xedit = xelib.XEdit.quickstart(plugins=['The Ordinary Women.esp'])
+xedit = XEdit.quickstart(plugins=['The Ordinary Women.esp'])
 erdi = xedit['The Ordinary Women.esp\\NPC_\\DLC1Valerica']
 
 for i, obj in enumerate(erdi.find_related_objects(

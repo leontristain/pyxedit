@@ -2,7 +2,7 @@ import argparse
 from pathlib import Path
 import os
 
-from xelib import XEdit
+from xedit import XEdit
 
 
 def process_plugin(game_path,

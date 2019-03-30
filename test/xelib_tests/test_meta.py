@@ -1,6 +1,6 @@
 import pytest
 
-from xelib import XelibError
+from xedit import XelibError
 
 from . fixtures import xelib  # NOQA: for pytest
 
