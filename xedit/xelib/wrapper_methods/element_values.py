@@ -105,13 +105,13 @@ class ElementValuesMethods(WrapperMethodsBase):
             error_msg=f'Failed to set uint value at '
                       f'{self.element_context(id_, path)}')
 
-    def set_flag(self, id_, path, name, state):
+    def set_flag(self, id_, name, state, path=''):
         return self.verify_execution(
             self.raw_api.SetFlag(id_, path, name, state),
             error_msg=f'Failed to set flag value at '
                       f'{self.flag_context(id_, path, name)} to {state}')
 
-    def get_flag(self, id_, path, name):
+    def get_flag(self, id_, name, path=''):
         return self.get_bool(
             lambda res: self.raw_api.GetFlag(id_, path, name, res),
             error_msg=f'Failed to get flag value at: '
@@ -124,7 +124,7 @@ class ElementValuesMethods(WrapperMethodsBase):
                       f'{self.element_context(id_, path)}')
         return comma_separated_flags.split(',') if comma_separated_flags else []
 
-    def set_enabled_flags(self, id_, path, flags):
+    def set_enabled_flags(self, id_, flags, path=''):
         return self.verify_execution(
             self.raw_api.SetEnabledFlags(id_, path, ','.join(flags)),
             error_msg=f'Failed to set enabled flags at '

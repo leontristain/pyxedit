@@ -217,7 +217,7 @@ class XEditBase:
         '''
         Returns whether element is a flag element containing flags
         '''
-        return self.xelib_run('is_flags')
+        return self.value_type == self.ValueTypes.vtFlags
 
     def objectify(self, handle):
         '''
@@ -237,8 +237,9 @@ class XEditBase:
         # import the following at runtime; they are only needed at method
         # runtime, and putting these imports at the top of this module would
         # result in circular imports
-        from xedit.xedit.generic import XEditGenericObject
         from xedit.xedit.array import XEditArray
+        from xedit.xedit.flags import XEditFlags
+        from xedit.xedit.generic import XEditGenericObject
         from xedit.xedit.plugin import XEditPlugin
 
         # first create a generic object out of it so we can easily inspect it;
@@ -247,6 +248,10 @@ class XEditBase:
         # object
         generic_obj = XEditGenericObject.from_xedit_object(
                                               handle, self, auto_release=False)
+
+        # if object is flags, use the XEditFlags class
+        if generic_obj.is_flags:
+            return XEditFlags.from_xedit_object(handle, self)
 
         # if object is a plugin, use the XEditPlugin class
         if generic_obj.element_type == self.ElementTypes.etFile:
@@ -503,10 +508,8 @@ class XEditBase:
         the xedit session. This isn't actually a property; instead it's meant
         to be similar to a shell `ls` command in a python interpreter.
         '''
-        children = list(self.children)
-        longest_name_length = max([len(child.name) for child in children])
         for child in self.children:
-            print(f'{child.name.rjust(longest_name_length)}: {child}')
+            print(f'{child}')
 
     @classmethod
     def get_imported_subclasses(cls):
