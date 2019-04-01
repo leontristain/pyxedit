@@ -7,7 +7,7 @@ from xedit.xelib import Xelib
 
 class XEdit(XEditBase):
     def __init__(self,
-                 game_mode=Xelib.GameModes.gmSSE,
+                 game_mode=XEditBase.Games.SkyrimSE,
                  game_path=None,
                  plugins=None):
         self.import_all_object_classes()

@@ -108,6 +108,49 @@ class XEditGenericObject(XEditBase):
     def plugin(self):
         return self.objectify(self.xelib_run('get_element_file'))
 
+    @property
+    def is_master(self):
+        return self.xelib_run('is_master')
+
+    @property
+    def is_injected(self):
+        return self.xelib_run('is_injected')
+
+    @property
+    def is_override(self):
+        return self.xelib_run('is_override')
+
+    @property
+    def is_winning_override(self):
+        return self.xelib_run('is_winning_override')
+
+    @property
+    def master(self):
+        if self.is_override:
+            return self.objectify(self.xelib_run('get_master_record'))
+
+    @property
+    def overrides(self):
+        for handle in self.xelib_run('get_overrides'):
+            yield self.objectify(handle)
+
+    @property
+    def winning_override(self):
+        if self.is_winning_override(self):
+            return self
+        return self.objectify(self.xelib_run('get_winning_override'))
+
+    @property
+    def previous_override(self):
+        if self.is_override:
+            return self.objectify(self.xelib_run('get_previous_override',
+                                                 self.plugin.handle))
+
+    @property
+    def injection_target(self):
+        if self.is_injected:
+            return self.objectify(self.xelib_run('get_injection_target'))
+
     def copy_into(self, target_plugin, as_new=False):
         # for this to work, self must be a record, and target must be a file
         assert self.element_type == self.ElementTypes.etMainRecord
