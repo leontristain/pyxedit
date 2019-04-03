@@ -1,0 +1,1471 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>xedit.xedit package &mdash; pyxedit 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pyxedit
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">xedit.xedit package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-xedit.xedit.array">xedit.xedit.array module</a></li>
+<li><a class="reference internal" href="#module-xedit.xedit.attribute">xedit.xedit.attribute module</a></li>
+<li><a class="reference internal" href="#module-xedit.xedit.base">xedit.xedit.base module</a></li>
+<li><a class="reference internal" href="#module-xedit.xedit.flags">xedit.xedit.flags module</a></li>
+<li><a class="reference internal" href="#module-xedit.xedit.generic">xedit.xedit.generic module</a></li>
+<li><a class="reference internal" href="#module-xedit.xedit.misc">xedit.xedit.misc module</a></li>
+<li><a class="reference internal" href="#module-xedit.xedit.plugin">xedit.xedit.plugin module</a></li>
+<li><a class="reference internal" href="#module-xedit.xedit.xedit">xedit.xedit.xedit module</a></li>
+<li><a class="reference internal" href="#module-xedit.xedit">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyxedit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>xedit.xedit package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/xedit.xedit.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="xedit-xedit-package">
+<h1>xedit.xedit package<a class="headerlink" href="#xedit-xedit-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-xedit.xedit.array">
+<span id="xedit-xedit-array-module"></span><h2>xedit.xedit.array module<a class="headerlink" href="#module-xedit.xedit.array" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xedit.array.XEditArray">
+<em class="property">class </em><code class="descclassname">xedit.xedit.array.</code><code class="descname">XEditArray</code><span class="sig-paren">(</span><em>xelib</em>, <em>handle</em>, <em>handle_group</em>, <em>auto_release=True</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.array.XEditArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xedit.xedit.generic.XEditGenericObject" title="xedit.xedit.generic.XEditGenericObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xedit.generic.XEditGenericObject</span></code></a></p>
+<p>The array class for use by array types.</p>
+<dl class="method">
+<dt id="xedit.xedit.array.XEditArray.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.array.XEditArray.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Support a <cite>.add</cite> function for adding an item into the array.
+Since we will almost never have standalone structs that aren't already
+part of the array they should be in, this method is primarily used for
+simple-value array items where the value can be provided to add as an
+item into the array. For struct arrays, the user is expected to use
+the <cite>add_item_with</cite> method instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.array.XEditArray.add_item_with">
+<code class="descname">add_item_with</code><span class="sig-paren">(</span><em>value</em>, <em>subpath=''</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.array.XEditArray.add_item_with" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an item to the array with the given value at the given subpath.</p>
+<p>An xedit object can be given as the value, in which case its form_id_str
+will be set as the value at the given subpath under the array.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.array.XEditArray.find_item_with">
+<code class="descname">find_item_with</code><span class="sig-paren">(</span><em>value</em>, <em>subpath=''</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.array.XEditArray.find_item_with" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the array item with the given value at the given subpath.</p>
+<p>An xedit object can be given as the value, in which case its form_id_str
+will be used as value for the retrieval.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.array.XEditArray.get_object_at_index">
+<code class="descname">get_object_at_index</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.array.XEditArray.get_object_at_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the array item object at the given index. This serves as the
+backbone implementation of __getitem__ but strictly works with array
+item objects, so it also provides the user an alternative for when they
+absolutely want the array item objects (instead of possibly their
+values)</p>
+<p>Should support negative indexing, and raise IndexError just like a
+normal __getitem__ would. Probably no need to implement slicing syntax.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.array.XEditArray.has_item_with">
+<code class="descname">has_item_with</code><span class="sig-paren">(</span><em>value</em>, <em>subpath=''</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.array.XEditArray.has_item_with" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether an item exists with the given value at the given subpath.</p>
+<p>An xedit object can be given as the value, in which case its form_id_str
+will be used as value for the check.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.array.XEditArray.index">
+<code class="descname">index</code><span class="sig-paren">(</span><em>item</em>, <em>obj=False</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.array.XEditArray.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Support the .index function found in python lists. (<cite>obj.index(item)</cite>)</p>
+<p>The given item can be any XEditBase-derived object with a handle
+equivalent to an array element here. Implementation is via iterative
+search based on equality.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.array.XEditArray.move_item">
+<code class="descname">move_item</code><span class="sig-paren">(</span><em>sub_object</em>, <em>to_index</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.array.XEditArray.move_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move an object in the array to the given index.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.array.XEditArray.objects">
+<code class="descname">objects</code><a class="headerlink" href="#xedit.xedit.array.XEditArray.objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields the array item objects upon iteration. This is a version of
+__iter__ that strictly works with array item objects (instead of
+possibly their values)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.array.XEditArray.remove">
+<code class="descname">remove</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.array.XEditArray.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Support a <cite>.add</cite> function for removing an item from the array.
+This method is primarily used for simple-value array items where the
+value can be provided to remove a matching item from the array. For
+struct arrays, the user is expected to use the <cite>remove_item_with</cite>
+method instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.array.XEditArray.remove_item_with">
+<code class="descname">remove_item_with</code><span class="sig-paren">(</span><em>value</em>, <em>subpath=''</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.array.XEditArray.remove_item_with" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the array item with the given value at the given subpath.</p>
+<p>An xedit object can be given as the value, in which case its form_id_str
+will be used as value for the removal.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-xedit.xedit.attribute">
+<span id="xedit-xedit-attribute-module"></span><h2>xedit.xedit.attribute module<a class="headerlink" href="#module-xedit.xedit.attribute" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xedit.attribute.XEditAttribute">
+<em class="property">class </em><code class="descclassname">xedit.xedit.attribute.</code><code class="descname">XEditAttribute</code><span class="sig-paren">(</span><em>path</em>, <em>required=False</em>, <em>enum=None</em>, <em>object_class=None</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.attribute.XEditAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A descriptor class that can be used to quickly declare any sub-field of
+a record as an xedit object property. This encapsulates the logic for
+getting and setting a value at a subpath from the object.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-xedit.xedit.base">
+<span id="xedit-xedit-base-module"></span><h2>xedit.xedit.base module<a class="headerlink" href="#module-xedit.xedit.base" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xedit.base.XEditBase">
+<em class="property">class </em><code class="descclassname">xedit.xedit.base.</code><code class="descname">XEditBase</code><span class="sig-paren">(</span><em>xelib</em>, <em>handle</em>, <em>handle_group</em>, <em>auto_release=True</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="class">
+<dt id="xedit.xedit.base.XEditBase.DefTypes">
+<em class="property">class </em><code class="descname">DefTypes</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtArray">
+<code class="descname">dtArray</code><em class="property"> = 14</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtByteArray">
+<code class="descname">dtByteArray</code><em class="property"> = 8</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtByteArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtEmpty">
+<code class="descname">dtEmpty</code><em class="property"> = 17</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtEmpty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtFlag">
+<code class="descname">dtFlag</code><em class="property"> = 12</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtFloat">
+<code class="descname">dtFloat</code><em class="property"> = 13</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtFloat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtInteger">
+<code class="descname">dtInteger</code><em class="property"> = 9</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtInteger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtIntegerFormater">
+<code class="descname">dtIntegerFormater</code><em class="property"> = 10</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtIntegerFormater" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtIntegerFormaterUnion">
+<code class="descname">dtIntegerFormaterUnion</code><em class="property"> = 11</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtIntegerFormaterUnion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtLString">
+<code class="descname">dtLString</code><em class="property"> = 6</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtLString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtLenString">
+<code class="descname">dtLenString</code><em class="property"> = 7</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtLenString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtRecord">
+<code class="descname">dtRecord</code><em class="property"> = 0</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtString">
+<code class="descname">dtString</code><em class="property"> = 5</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtStruct">
+<code class="descname">dtStruct</code><em class="property"> = 15</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtStruct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtStructChapter">
+<code class="descname">dtStructChapter</code><em class="property"> = 18</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtStructChapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtSubRecord">
+<code class="descname">dtSubRecord</code><em class="property"> = 1</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtSubRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtSubRecordArray">
+<code class="descname">dtSubRecordArray</code><em class="property"> = 2</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtSubRecordArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtSubRecordStruct">
+<code class="descname">dtSubRecordStruct</code><em class="property"> = 3</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtSubRecordStruct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtSubRecordUnion">
+<code class="descname">dtSubRecordUnion</code><em class="property"> = 4</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtSubRecordUnion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.DefTypes.dtUnion">
+<code class="descname">dtUnion</code><em class="property"> = 16</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.DefTypes.dtUnion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes">
+<em class="property">class </em><code class="descname">ElementTypes</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etArray">
+<code class="descname">etArray</code><em class="property"> = 7</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etFile">
+<code class="descname">etFile</code><em class="property"> = 0</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etFlag">
+<code class="descname">etFlag</code><em class="property"> = 10</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etGroupRecord">
+<code class="descname">etGroupRecord</code><em class="property"> = 2</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etGroupRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etMainRecord">
+<code class="descname">etMainRecord</code><em class="property"> = 1</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etMainRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etStringListTerminator">
+<code class="descname">etStringListTerminator</code><em class="property"> = 11</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etStringListTerminator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etStruct">
+<code class="descname">etStruct</code><em class="property"> = 8</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etStruct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etStructChapter">
+<code class="descname">etStructChapter</code><em class="property"> = 13</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etStructChapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etSubRecord">
+<code class="descname">etSubRecord</code><em class="property"> = 3</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etSubRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etSubRecordArray">
+<code class="descname">etSubRecordArray</code><em class="property"> = 5</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etSubRecordArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etSubRecordStruct">
+<code class="descname">etSubRecordStruct</code><em class="property"> = 4</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etSubRecordStruct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etSubRecordUnion">
+<code class="descname">etSubRecordUnion</code><em class="property"> = 6</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etSubRecordUnion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etUnion">
+<code class="descname">etUnion</code><em class="property"> = 12</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etUnion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ElementTypes.etValue">
+<code class="descname">etValue</code><em class="property"> = 9</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ElementTypes.etValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="xedit.xedit.base.XEditBase.Games">
+<em class="property">class </em><code class="descname">Games</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.Games" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.Games.Fallout3">
+<code class="descname">Fallout3</code><em class="property"> = GameInfo(name='Fallout 3', short_name='Fallout3', mode=1, exe_name='Fallout3.exe')</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.Games.Fallout3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.Games.Fallout4">
+<code class="descname">Fallout4</code><em class="property"> = GameInfo(name='Fallout 4', short_name='Fallout4', mode=5, exe_name='Fallout4.exe')</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.Games.Fallout4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.Games.FalloutNV">
+<code class="descname">FalloutNV</code><em class="property"> = GameInfo(name='Fallout NV', short_name='FalloutNV', mode=0, exe_name='FalloutNV.exe')</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.Games.FalloutNV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.Games.Oblivion">
+<code class="descname">Oblivion</code><em class="property"> = GameInfo(name='Oblivion', short_name='Oblivion', mode=2, exe_name='Oblivion.exe')</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.Games.Oblivion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.Games.Skyrim">
+<code class="descname">Skyrim</code><em class="property"> = GameInfo(name='Skyrim', short_name='Skyrim', mode=3, exe_name='TESV.exe')</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.Games.Skyrim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.Games.SkyrimSE">
+<code class="descname">SkyrimSE</code><em class="property"> = GameInfo(name='Skyrim SE', short_name='Skyrim', mode=4, exe_name='SkyrimSE.exe')</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.Games.SkyrimSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SIGNATURE">
+<code class="descname">SIGNATURE</code><em class="property"> = None</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SIGNATURE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes">
+<em class="property">class </em><code class="descname">SmashTypes</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stByteArray">
+<code class="descname">stByteArray</code><em class="property"> = 11</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stByteArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stFlag">
+<code class="descname">stFlag</code><em class="property"> = 4</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stFloat">
+<code class="descname">stFloat</code><em class="property"> = 5</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stFloat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stInteger">
+<code class="descname">stInteger</code><em class="property"> = 3</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stInteger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stRecord">
+<code class="descname">stRecord</code><em class="property"> = 1</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stSortedArray">
+<code class="descname">stSortedArray</code><em class="property"> = 9</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stSortedArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stSortedStructArray">
+<code class="descname">stSortedStructArray</code><em class="property"> = 10</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stSortedStructArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stString">
+<code class="descname">stString</code><em class="property"> = 2</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stStruct">
+<code class="descname">stStruct</code><em class="property"> = 6</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stStruct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stUnion">
+<code class="descname">stUnion</code><em class="property"> = 12</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stUnion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stUnknown">
+<code class="descname">stUnknown</code><em class="property"> = 0</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stUnknown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stUnsortedArray">
+<code class="descname">stUnsortedArray</code><em class="property"> = 7</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stUnsortedArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.SmashTypes.stUnsortedStructArray">
+<code class="descname">stUnsortedStructArray</code><em class="property"> = 8</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.SmashTypes.stUnsortedStructArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.Types">
+<code class="descname">Types</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.Types" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#xedit.xedit.misc.XEditTypes" title="xedit.xedit.misc.XEditTypes"><code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xedit.misc.XEditTypes</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes">
+<em class="property">class </em><code class="descname">ValueTypes</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtArray">
+<code class="descname">vtArray</code><em class="property"> = 9</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtBytes">
+<code class="descname">vtBytes</code><em class="property"> = 1</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtBytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtColor">
+<code class="descname">vtColor</code><em class="property"> = 8</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtColor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtEnum">
+<code class="descname">vtEnum</code><em class="property"> = 7</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtEnum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtFlags">
+<code class="descname">vtFlags</code><em class="property"> = 6</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtNumber">
+<code class="descname">vtNumber</code><em class="property"> = 2</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtNumber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtReference">
+<code class="descname">vtReference</code><em class="property"> = 5</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtReference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtString">
+<code class="descname">vtString</code><em class="property"> = 3</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtStruct">
+<code class="descname">vtStruct</code><em class="property"> = 10</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtStruct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtText">
+<code class="descname">vtText</code><em class="property"> = 4</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ValueTypes.vtUnknown">
+<code class="descname">vtUnknown</code><em class="property"> = 0</em><a class="headerlink" href="#xedit.xedit.base.XEditBase.ValueTypes.vtUnknown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.base.XEditBase.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an element at the given path and return it as an xedit object</p>
+<p>&#64;param path: the path to add element at
+&#64;return: xedit object of the element added</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.can_add">
+<code class="descname">can_add</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.can_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether elements can be added to this element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.child_elements">
+<code class="descname">child_elements</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.child_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produces each child element underneath this element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.child_group">
+<code class="descname">child_group</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.child_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the child group for this element if any</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.children">
+<code class="descname">children</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produces each of the child objects next-level down, including both
+child elements and child groups</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.def_type">
+<code class="descname">def_type</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.def_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the def type</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.base.XEditBase.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>path=''</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the element at the given path. If the given path is an empty
+string, the element associated with this object itself will be deleted.</p>
+<p>&#64;param path: path of element to delete</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.base.XEditBase.descendants">
+<code class="descname">descendants</code><span class="sig-paren">(</span><em>iter_groups=False</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.descendants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produces objects underneath this element</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.display_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the element display name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.element_type">
+<code class="descname">element_type</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.element_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the element type</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="xedit.xedit.base.XEditBase.from_xedit_object">
+<em class="property">classmethod </em><code class="descname">from_xedit_object</code><span class="sig-paren">(</span><em>handle</em>, <em>xedit_obj</em>, <em>auto_release=True</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.from_xedit_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an object of this class from another xedit object. This is the
+primary method in which new xedit objects are instantiated, which means
+all objects are ultimately instantiated from the root xedit object the
+user would use to enter the xedit context.</p>
+<p>When new objects are created &quot;off&quot; of the existing object, the new
+object inherit the xelib attribute pointing to the current overarching
+xelib context. When each new object is created, it also saves the
+xelib context's current handle group onto itself, in order to track its
+own handle's validity against.</p>
+<p>&#64;param handle: the handle to create the new obj with
+&#64;param xedit_obj: the xedit object to create the new object &quot;off&quot; of;</p>
+<blockquote>
+<div><p>a handle to the xelib context can be &quot;inherited&quot; from
+it.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.base.XEditBase.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>path</em>, <em>default=None</em>, <em>ex=False</em>, <em>absolute=False</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a descendent xedit object to the current object with a given
+path.</p>
+<p>This function can be likened to a dictionary's <cite>.get</cite> method. A default
+can be provided which defaults to None, which also makes the method
+harmless to call. We also support an <cite>ex</cite> switch that raises exception
+on error, so that we can reuse the same code for __getitem__.</p>
+<p>&#64;param path: the path to access
+&#64;param default: the default value to return of something cannot be</p>
+<blockquote>
+<div><p>accessed at the given path</p>
+</div></blockquote>
+<dl class="simple">
+<dt>&#64;param ex: if set to True, failure to access at given path will raise</dt><dd><p>an exception</p>
+</dd>
+<dt>&#64;param absolute: if set to True, will query for the element from the</dt><dd><p>root, expecting the given path to be an absolute path</p>
+</dd>
+<dt>&#64;return: the xedit object at the path from the current object, or</dt><dd><p>the default value if failed to access</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="xedit.xedit.base.XEditBase.get_imported_subclasses">
+<em class="property">classmethod </em><code class="descname">get_imported_subclasses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.get_imported_subclasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively produces the subclasses that are derived from this class;
+a subclass would only get yielded here if it has already been imported
+into the global python namespace.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.base.XEditBase.get_or_add">
+<code class="descname">get_or_add</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.get_or_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return object at given path, object will be created if it does not
+exist.</p>
+<p>&#64;param path: the path to get or create element at
+&#64;return: the gotten or created element as an xedit object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.base.XEditBase.has">
+<code class="descname">has</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.has" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a sub-element exists at the given path
+&#64;param path: the subpath to check for element existence at
+&#64;return: boolean of whether something is there</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.has_child_group">
+<code class="descname">has_child_group</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.has_child_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether this element has a child group</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="xedit.xedit.base.XEditBase.import_all_object_classes">
+<em class="property">static </em><code class="descname">import_all_object_classes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.import_all_object_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>A staticmethod that simply imports all object classes into the python
+namespace. When xelib handles are objectified into xedit objects,
+one of the below object classes might be used, and thus must be
+imported onto the namespace prior.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.is_flags">
+<code class="descname">is_flags</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.is_flags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether element is a flag element containing flags</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.is_modified">
+<code class="descname">is_modified</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.is_modified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether element has been modified in the current session</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.is_removable">
+<code class="descname">is_removable</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.is_removable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether element is removable</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.is_sorted">
+<code class="descname">is_sorted</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.is_sorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether elements is a sorted array</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.local_path">
+<code class="descname">local_path</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.local_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the element local path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.long_name">
+<code class="descname">long_name</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.long_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the element long name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.long_path">
+<code class="descname">long_path</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.long_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the element long path</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.ls">
+<code class="descname">ls</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.ls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a list of children to stdout; this can be useful when browsing
+the xedit session. This isn't actually a property; instead it's meant
+to be similar to a shell <cite>ls</cite> command in a python interpreter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.base.XEditBase.manage_handles">
+<code class="descname">manage_handles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.manage_handles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forwards the .manage_handles context manager available on xelib. This
+can be used to create sub-contexts for handle management, where
+handles created within the context, if not promoted to parent scope,
+will be released on exiting the context.</p>
+<dl class="simple">
+<dt>NOTE: usage of this is now deprecated since the handle management</dt><dd><p>based on __del__ seems to be working very well</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.name">
+<code class="descname">name</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the element name</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.num_child_elements">
+<code class="descname">num_child_elements</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.num_child_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of direct child elements this element has</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.num_children">
+<code class="descname">num_children</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.num_children" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns how many children this element has, including both child
+elements and child groups</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.base.XEditBase.objectify">
+<code class="descname">objectify</code><span class="sig-paren">(</span><em>handle</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.objectify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a handle, create an appropriate object to wrap around the handle.</p>
+<p>During initialization, we run a staticmethod stored on the class to
+explicitly import all possible object classes. We then choose the
+object class to use depending on the def type, the value type, and
+the signature of the handle. Any xedit object will be able to call
+this method to create objects of any appropriate xedit subclass to
+match for a given handle.</p>
+<p>&#64;param handle: a xelib handle
+&#64;return: an object of some class derived from this base class, that</p>
+<blockquote>
+<div><p>wraps around the handle</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.parent">
+<code class="descname">parent</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produces an object of the element that contains this one.</p>
+<p>There doesn't seem to be a xelib method for this, so implementation
+is done by treating the <cite>long_path</cite> as a windows path object and
+running a global <cite>.get</cite> on the parent path. This might not be the
+best solution.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.path">
+<code class="descname">path</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the element path</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.base.XEditBase.promote">
+<code class="descname">promote</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.promote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Promote the handle associated with the current object to the parent
+handle management scope. If this is invoked at the top scope, it should
+harmlessly do nothing.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.signature">
+<code class="descname">signature</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.signature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the element signature</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.signature_name">
+<code class="descname">signature_name</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.signature_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns any known human-readable name for the element's signature</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.smash_type">
+<code class="descname">smash_type</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.smash_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the smash type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.type">
+<code class="descname">type</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolve an XEditType value for this element based on the various
+other types.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.value_type">
+<code class="descname">value_type</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.value_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the value type</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.base.XEditBase.xelib">
+<code class="descname">xelib</code><a class="headerlink" href="#xedit.xedit.base.XEditBase.xelib" title="Permalink to this definition">¶</a></dt>
+<dd><p>A property for gating the access of _xelib attribute with a check to
+see whether the handle associated with this object has already been
+released. Since all functionality within this class ultimately comes
+down to a xelib library call with this attribute; an invalid handle
+effectively renders the class unusable.</p>
+<dl class="simple">
+<dt>&#64;return: self._xelib attribute, but only if handle is still valid</dt><dd><p>(i.e. still exists in the handle group it's supposed to be in)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.base.XEditBase.xelib_run">
+<code class="descname">xelib_run</code><span class="sig-paren">(</span><em>method</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.base.XEditBase.xelib_run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper that invokes a xelib method, passing into the method the object's
+handle as the first parameter. There are many xelib methods like this,
+which makes this helper very useful.</p>
+<p>&#64;param method: name of the method to invoke on xelib
+&#64;param <a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs: any positional or keyword arguments to pass to</p>
+<blockquote>
+<div><p>the method, _other_ than the first positional
+argument, which is expected to be <cite>self.handle</cite></p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-xedit.xedit.flags">
+<span id="xedit-xedit-flags-module"></span><h2>xedit.xedit.flags module<a class="headerlink" href="#module-xedit.xedit.flags" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xedit.flags.XEditFlags">
+<em class="property">class </em><code class="descclassname">xedit.xedit.flags.</code><code class="descname">XEditFlags</code><span class="sig-paren">(</span><em>xelib</em>, <em>handle</em>, <em>handle_group</em>, <em>auto_release=True</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.flags.XEditFlags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xedit.xedit.generic.XEditGenericObject" title="xedit.xedit.generic.XEditGenericObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xedit.generic.XEditGenericObject</span></code></a></p>
+<p>Used for flag types</p>
+<dl class="attribute">
+<dt id="xedit.xedit.flags.XEditFlags.all_flags">
+<code class="descname">all_flags</code><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.all_flags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.flags.XEditFlags.disable">
+<code class="descname">disable</code><span class="sig-paren">(</span><em>flag_name</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.disable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.flags.XEditFlags.enable">
+<code class="descname">enable</code><span class="sig-paren">(</span><em>flag_name</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.enable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.flags.XEditFlags.enabled">
+<code class="descname">enabled</code><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.flags.XEditFlags.from_dict">
+<code class="descname">from_dict</code><span class="sig-paren">(</span><em>dict_</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.flags.XEditFlags.get_flag">
+<code class="descname">get_flag</code><span class="sig-paren">(</span><em>flag_name</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.get_flag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.flags.XEditFlags.items">
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.flags.XEditFlags.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.flags.XEditFlags.set_flag">
+<code class="descname">set_flag</code><span class="sig-paren">(</span><em>flag_name</em>, <em>state</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.set_flag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.flags.XEditFlags.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.flags.XEditFlags.values">
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.flags.XEditFlags.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-xedit.xedit.generic">
+<span id="xedit-xedit-generic-module"></span><h2>xedit.xedit.generic module<a class="headerlink" href="#module-xedit.xedit.generic" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xedit.generic.XEditGenericObject">
+<em class="property">class </em><code class="descclassname">xedit.xedit.generic.</code><code class="descname">XEditGenericObject</code><span class="sig-paren">(</span><em>xelib</em>, <em>handle</em>, <em>handle_group</em>, <em>auto_release=True</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xedit.xedit.base.XEditBase" title="xedit.xedit.base.XEditBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xedit.base.XEditBase</span></code></a></p>
+<dl class="method">
+<dt id="xedit.xedit.generic.XEditGenericObject.copy_into">
+<code class="descname">copy_into</code><span class="sig-paren">(</span><em>target_plugin</em>, <em>as_new=False</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.copy_into" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.data_size">
+<code class="descname">data_size</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.data_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>A descriptor class that can be used to quickly declare any sub-field of
+a record as an xedit object property. This encapsulates the logic for
+getting and setting a value at a subpath from the object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.editor_id">
+<code class="descname">editor_id</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.editor_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A descriptor class that can be used to quickly declare any sub-field of
+a record as an xedit object property. This encapsulates the logic for
+getting and setting a value at a subpath from the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.generic.XEditGenericObject.find_related_objects">
+<code class="descname">find_related_objects</code><span class="sig-paren">(</span><em>signatures=None</em>, <em>recurse=False</em>, <em>iter_groups=False</em>, <em>same_plugin=False</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.find_related_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over all descendants of the current node and yields any
+non-empty reference targets.</p>
+<dl class="simple">
+<dt>&#64;param signatures: a list of signatures can be provided here to</dt><dd><p>limit the target types traversed and yielded</p>
+</dd>
+</dl>
+<p>&#64;param recurse: whether to further traverse from any found valid target
+&#64;param same_plugin: if set to True, only reference targets belonging</p>
+<blockquote>
+<div><p>to the same plugin as this object will be considered
+valid for yielding and recursing</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.generic.XEditGenericObject.find_text_values">
+<code class="descname">find_text_values</code><span class="sig-paren">(</span><em>iter_groups=False</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.find_text_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over all descendants of the current node and yields any
+non-empty text values found.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.form_id">
+<code class="descname">form_id</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.form_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.form_id_str">
+<code class="descname">form_id_str</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.form_id_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.form_version">
+<code class="descname">form_version</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.form_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>A descriptor class that can be used to quickly declare any sub-field of
+a record as an xedit object property. This encapsulates the logic for
+getting and setting a value at a subpath from the object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.injection_target">
+<code class="descname">injection_target</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.injection_target" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.is_injected">
+<code class="descname">is_injected</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.is_injected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.is_master">
+<code class="descname">is_master</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.is_master" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.is_override">
+<code class="descname">is_override</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.is_override" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.is_winning_override">
+<code class="descname">is_winning_override</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.is_winning_override" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.local_form_id">
+<code class="descname">local_form_id</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.local_form_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.local_form_id_str">
+<code class="descname">local_form_id_str</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.local_form_id_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.master">
+<code class="descname">master</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.master" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.overrides">
+<code class="descname">overrides</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.overrides" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.plugin">
+<code class="descname">plugin</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.plugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.previous_override">
+<code class="descname">previous_override</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.previous_override" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.value">
+<code class="descname">value</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>The value property.</p>
+<p>Xelib handles point to elements that may or may not be an element that
+stores a value. If stored, the value will have a type, and for integer
+values it may be a reference to a record. All of this can be determined
+based on some combination of element_type, def_type, smash_type, and
+value_type.</p>
+<p>The <cite>.type</cite> property already does the work of inspecting the record to
+figure out whether it is a <cite>Value</cite> or <cite>Ref</cite> element. Here, we will
+retrieve the value based on the <cite>.type</cite> property and the value's def
+type.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A &lt;Types.Ref&gt; element should return the linked object as the value.</p></li>
+<li><dl class="simple">
+<dt>A &lt;Types.Value&gt; element should return the appropriately typed value</dt><dd><p>based on the DefType</p>
+</dd>
+</dl>
+</li>
+<li><p>Otherwise, a None should be returned.</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.generic.XEditGenericObject.winning_override">
+<code class="descname">winning_override</code><a class="headerlink" href="#xedit.xedit.generic.XEditGenericObject.winning_override" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-xedit.xedit.misc">
+<span id="xedit-xedit-misc-module"></span><h2>xedit.xedit.misc module<a class="headerlink" href="#module-xedit.xedit.misc" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="xedit.xedit.misc.XEditError">
+<em class="property">exception </em><code class="descclassname">xedit.xedit.misc.</code><code class="descname">XEditError</code><a class="headerlink" href="#xedit.xedit.misc.XEditError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception class to raise for xedit-related errors</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="xedit.xedit.misc.XEditTypes">
+<em class="property">class </em><code class="descclassname">xedit.xedit.misc.</code><code class="descname">XEditTypes</code><a class="headerlink" href="#xedit.xedit.misc.XEditTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="xedit.xedit.misc.XEditTypes.Container">
+<code class="descname">Container</code><em class="property"> = 3</em><a class="headerlink" href="#xedit.xedit.misc.XEditTypes.Container" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.misc.XEditTypes.Ref">
+<code class="descname">Ref</code><em class="property"> = 1</em><a class="headerlink" href="#xedit.xedit.misc.XEditTypes.Ref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.misc.XEditTypes.Value">
+<code class="descname">Value</code><em class="property"> = 2</em><a class="headerlink" href="#xedit.xedit.misc.XEditTypes.Value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-xedit.xedit.plugin">
+<span id="xedit-xedit-plugin-module"></span><h2>xedit.xedit.plugin module<a class="headerlink" href="#module-xedit.xedit.plugin" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xedit.plugin.XEditPlugin">
+<em class="property">class </em><code class="descclassname">xedit.xedit.plugin.</code><code class="descname">XEditPlugin</code><span class="sig-paren">(</span><em>xelib</em>, <em>handle</em>, <em>handle_group</em>, <em>auto_release=True</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xedit.xedit.base.XEditBase" title="xedit.xedit.base.XEditBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xedit.base.XEditBase</span></code></a></p>
+<dl class="method">
+<dt id="xedit.xedit.plugin.XEditPlugin.add_all_masters">
+<code class="descname">add_all_masters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.add_all_masters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.plugin.XEditPlugin.add_master">
+<code class="descname">add_master</code><span class="sig-paren">(</span><em>master_plugin</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.add_master" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.plugin.XEditPlugin.add_master_by_name">
+<code class="descname">add_master_by_name</code><span class="sig-paren">(</span><em>master_plugin_name</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.add_master_by_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.plugin.XEditPlugin.add_masters_needed_for_copying">
+<code class="descname">add_masters_needed_for_copying</code><span class="sig-paren">(</span><em>obj</em>, <em>as_new=False</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.add_masters_needed_for_copying" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.author">
+<code class="descname">author</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.author" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.plugin.XEditPlugin.clean_masters">
+<code class="descname">clean_masters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.clean_masters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.crc">
+<code class="descname">crc</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.crc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.description">
+<code class="descname">description</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.header">
+<code class="descname">header</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.header" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.is_esm">
+<code class="descname">is_esm</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.is_esm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.load_order">
+<code class="descname">load_order</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.load_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.master_names">
+<code class="descname">master_names</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.master_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.masters">
+<code class="descname">masters</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.masters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.md5">
+<code class="descname">md5</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.md5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.next_object">
+<code class="descname">next_object</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.next_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.plugin.XEditPlugin.nuke">
+<code class="descname">nuke</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.nuke" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.num_override_records">
+<code class="descname">num_override_records</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.num_override_records" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.plugin.XEditPlugin.num_records">
+<code class="descname">num_records</code><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.num_records" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.plugin.XEditPlugin.rename">
+<code class="descname">rename</code><span class="sig-paren">(</span><em>new_file_name</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.rename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.plugin.XEditPlugin.save">
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.plugin.XEditPlugin.save_as">
+<code class="descname">save_as</code><span class="sig-paren">(</span><em>file_path</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.save_as" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.plugin.XEditPlugin.sort_masters">
+<code class="descname">sort_masters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.plugin.XEditPlugin.sort_masters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-xedit.xedit.xedit">
+<span id="xedit-xedit-xedit-module"></span><h2>xedit.xedit.xedit module<a class="headerlink" href="#module-xedit.xedit.xedit" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xedit.xedit.XEdit">
+<em class="property">class </em><code class="descclassname">xedit.xedit.xedit.</code><code class="descname">XEdit</code><span class="sig-paren">(</span><em>game_mode=&lt;Games.SkyrimSE: GameInfo(name='Skyrim SE'</em>, <em>short_name='Skyrim'</em>, <em>mode=4</em>, <em>exe_name='SkyrimSE.exe')&gt;</em>, <em>game_path=None</em>, <em>plugins=None</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.xedit.XEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xedit.xedit.base.XEditBase" title="xedit.xedit.base.XEditBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xedit.base.XEditBase</span></code></a></p>
+<dl class="attribute">
+<dt id="xedit.xedit.xedit.XEdit.game_path">
+<code class="descname">game_path</code><a class="headerlink" href="#xedit.xedit.xedit.XEdit.game_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.xedit.XEdit.plugin_count">
+<code class="descname">plugin_count</code><a class="headerlink" href="#xedit.xedit.xedit.XEdit.plugin_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.xedit.XEdit.plugin_names">
+<code class="descname">plugin_names</code><a class="headerlink" href="#xedit.xedit.xedit.XEdit.plugin_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="xedit.xedit.xedit.XEdit.quickstart">
+<em class="property">classmethod </em><code class="descname">quickstart</code><span class="sig-paren">(</span><em>game=&lt;Games.SkyrimSE: GameInfo(name='Skyrim SE'</em>, <em>short_name='Skyrim'</em>, <em>mode=4</em>, <em>exe_name='SkyrimSE.exe')&gt;</em>, <em>plugins=None</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.xedit.XEdit.quickstart" title="Permalink to this definition">¶</a></dt>
+<dd><p>For when you want to play around with an xedit session in the
+interpreter quickly</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.xedit.XEdit.session">
+<code class="descname">session</code><span class="sig-paren">(</span><em>load_plugins=True</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.xedit.XEdit.session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-xedit.xedit">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-xedit.xedit" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xedit.XEdit">
+<em class="property">class </em><code class="descclassname">xedit.xedit.</code><code class="descname">XEdit</code><span class="sig-paren">(</span><em>game_mode=&lt;Games.SkyrimSE: GameInfo(name='Skyrim SE'</em>, <em>short_name='Skyrim'</em>, <em>mode=4</em>, <em>exe_name='SkyrimSE.exe')&gt;</em>, <em>game_path=None</em>, <em>plugins=None</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.XEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xedit.xedit.base.XEditBase" title="xedit.xedit.base.XEditBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xedit.base.XEditBase</span></code></a></p>
+<dl class="attribute">
+<dt id="xedit.xedit.XEdit.game_path">
+<code class="descname">game_path</code><a class="headerlink" href="#xedit.xedit.XEdit.game_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.XEdit.plugin_count">
+<code class="descname">plugin_count</code><a class="headerlink" href="#xedit.xedit.XEdit.plugin_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xedit.XEdit.plugin_names">
+<code class="descname">plugin_names</code><a class="headerlink" href="#xedit.xedit.XEdit.plugin_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="xedit.xedit.XEdit.quickstart">
+<em class="property">classmethod </em><code class="descname">quickstart</code><span class="sig-paren">(</span><em>game=&lt;Games.SkyrimSE: GameInfo(name='Skyrim SE'</em>, <em>short_name='Skyrim'</em>, <em>mode=4</em>, <em>exe_name='SkyrimSE.exe')&gt;</em>, <em>plugins=None</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.XEdit.quickstart" title="Permalink to this definition">¶</a></dt>
+<dd><p>For when you want to play around with an xedit session in the
+interpreter quickly</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xedit.xedit.XEdit.session">
+<code class="descname">session</code><span class="sig-paren">(</span><em>load_plugins=True</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xedit.XEdit.session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="xedit.xedit.XEditError">
+<em class="property">exception </em><code class="descclassname">xedit.xedit.</code><code class="descname">XEditError</code><a class="headerlink" href="#xedit.xedit.XEditError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exception class to raise for xedit-related errors</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, leontristain
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

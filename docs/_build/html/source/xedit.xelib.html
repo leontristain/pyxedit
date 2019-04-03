@@ -1,0 +1,1231 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="python" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="python" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>xedit.xelib package &mdash; pyxedit 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> pyxedit
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">xedit.xelib package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-xedit.xelib.definitions">xedit.xelib.definitions module</a></li>
+<li><a class="reference internal" href="#module-xedit.xelib.xelib">xedit.xelib.xelib module</a></li>
+<li><a class="reference internal" href="#module-xedit.xelib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyxedit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>xedit.xelib package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/xedit.xelib.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="xedit-xelib-package">
+<h1>xedit.xelib package<a class="headerlink" href="#xedit-xelib-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-xedit.xelib.definitions">
+<span id="xedit-xelib-definitions-module"></span><h2>xedit.xelib.definitions module<a class="headerlink" href="#module-xedit.xelib.definitions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xelib.definitions.DelphiTypes">
+<em class="property">class </em><code class="descclassname">xedit.xelib.definitions.</code><code class="descname">DelphiTypes</code><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>A lookup table that returns the python ctypes type give a delphi type</p>
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.Byte">
+<code class="descname">Byte</code><em class="property"> = &lt;class 'ctypes.c_ubyte'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.Byte" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.Cardinal">
+<code class="descname">Cardinal</code><em class="property"> = &lt;class 'ctypes.c_ulong'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.Cardinal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.Double">
+<code class="descname">Double</code><em class="property"> = &lt;class 'ctypes.c_double'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.Double" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.Integer">
+<code class="descname">Integer</code><em class="property"> = &lt;class 'ctypes.c_long'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.Integer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.PByte">
+<code class="descname">PByte</code><em class="property"> = &lt;class 'xedit.xelib.definitions.LP_c_ubyte'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.PByte" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.PCardinal">
+<code class="descname">PCardinal</code><em class="property"> = &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.PCardinal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.PDouble">
+<code class="descname">PDouble</code><em class="property"> = &lt;class 'xedit.xelib.definitions.LP_c_double'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.PDouble" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.PInteger">
+<code class="descname">PInteger</code><em class="property"> = &lt;class 'ctypes.wintypes.LP_c_long'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.PInteger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.PWideChar">
+<code class="descname">PWideChar</code><em class="property"> = &lt;class 'ctypes.c_wchar_p'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.PWideChar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.PWordBool">
+<code class="descname">PWordBool</code><em class="property"> = &lt;class 'ctypes.wintypes.LP_c_ushort'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.PWordBool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.DelphiTypes.WordBool">
+<code class="descname">WordBool</code><em class="property"> = &lt;class 'ctypes.c_ushort'&gt;</em><a class="headerlink" href="#xedit.xelib.definitions.DelphiTypes.WordBool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="xedit.xelib.definitions.XEditLibSignatures">
+<em class="property">class </em><code class="descclassname">xedit.xelib.definitions.</code><code class="descname">XEditLibSignatures</code><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>A lookup table that returns the parameter names and types, and the return
+types, of each xedit-lib method</p>
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.AddArrayItem">
+<code class="descname">AddArrayItem</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'subpath': 'PWideChar', 'value': 'PWideChar', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.AddArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.AddElement">
+<code class="descname">AddElement</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.AddElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.AddElementValue">
+<code class="descname">AddElementValue</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'value': 'PWideChar', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.AddElementValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.AddFile">
+<code class="descname">AddFile</code><em class="property"> = ({'filename': 'PWideChar', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.AddFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.AddMaster">
+<code class="descname">AddMaster</code><em class="property"> = ({'_id': 'Cardinal', 'masterName': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.AddMaster" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.AddMasters">
+<code class="descname">AddMasters</code><em class="property"> = ({'_id': 'Cardinal', 'masters': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.AddMasters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.AddRequiredMasters">
+<code class="descname">AddRequiredMasters</code><em class="property"> = ({'_id': 'Cardinal', '_id2': 'Cardinal', 'asNew': 'WordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.AddRequiredMasters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.BuildArchive">
+<code class="descname">BuildArchive</code><em class="property"> = ({'name': 'PWideChar', 'folder': 'PWideChar', 'filePaths': 'PWideChar', 'archiveType': 'Integer', 'bCompress': 'WordBool', 'bShare': 'WordBool', 'af': 'PWideChar', 'ff': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.BuildArchive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.BuildReferences">
+<code class="descname">BuildReferences</code><em class="property"> = ({'_id': 'Cardinal', 'synchronous': 'WordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.BuildReferences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.CRCHash">
+<code class="descname">CRCHash</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.CRCHash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.CheckForErrors">
+<code class="descname">CheckForErrors</code><em class="property"> = ({'_id': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.CheckForErrors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.CleanMasters">
+<code class="descname">CleanMasters</code><em class="property"> = ({'_id': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.CleanMasters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.CleanStore">
+<code class="descname">CleanStore</code><em class="property"> = ({}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.CleanStore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ClearMessages">
+<code class="descname">ClearMessages</code><em class="property"> = ({}, None)</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ClearMessages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.CloseXEdit">
+<code class="descname">CloseXEdit</code><em class="property"> = ({}, None)</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.CloseXEdit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.CopyElement">
+<code class="descname">CopyElement</code><em class="property"> = ({'_id': 'Cardinal', '_id2': 'Cardinal', 'aAsNew': 'WordBool', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.CopyElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.DefType">
+<code class="descname">DefType</code><em class="property"> = ({'_id': 'Cardinal', 'enum': 'PByte'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.DefType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.DisplayName">
+<code class="descname">DisplayName</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.DisplayName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ElementCount">
+<code class="descname">ElementCount</code><em class="property"> = ({'_id': 'Cardinal', 'count': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ElementCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ElementEquals">
+<code class="descname">ElementEquals</code><em class="property"> = ({'_id': 'Cardinal', '_id2': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ElementEquals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ElementFromJson">
+<code class="descname">ElementFromJson</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'json': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ElementFromJson" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ElementMatches">
+<code class="descname">ElementMatches</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'value': 'PWideChar', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ElementMatches" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ElementToJson">
+<code class="descname">ElementToJson</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ElementToJson" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ElementType">
+<code class="descname">ElementType</code><em class="property"> = ({'_id': 'Cardinal', 'enum': 'PByte'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ElementType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ExchangeReferences">
+<code class="descname">ExchangeReferences</code><em class="property"> = ({'_id': 'Cardinal', 'oldFormID': 'Cardinal', 'newFormID': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ExchangeReferences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ExtractContainer">
+<code class="descname">ExtractContainer</code><em class="property"> = ({'name': 'PWideChar', 'destination': 'PWideChar', 'replace': 'WordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ExtractContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ExtractFile">
+<code class="descname">ExtractFile</code><em class="property"> = ({'name': 'PWideChar', 'source': 'PWideChar', 'destination': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ExtractFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.FileByAuthor">
+<code class="descname">FileByAuthor</code><em class="property"> = ({'author': 'PWideChar', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.FileByAuthor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.FileByIndex">
+<code class="descname">FileByIndex</code><em class="property"> = ({'index': 'Integer', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.FileByIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.FileByLoadOrder">
+<code class="descname">FileByLoadOrder</code><em class="property"> = ({'loadOrder': 'Integer', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.FileByLoadOrder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.FileByName">
+<code class="descname">FileByName</code><em class="property"> = ({'name': 'PWideChar', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.FileByName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.FilterRecord">
+<code class="descname">FilterRecord</code><em class="property"> = ({'_id': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.FilterRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.FindNextElement">
+<code class="descname">FindNextElement</code><em class="property"> = ({'_id': 'Cardinal', 'search': 'PWideChar', 'byPath': 'WordBool', 'byValue': 'WordBool', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.FindNextElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.FindNextRecord">
+<code class="descname">FindNextRecord</code><em class="property"> = ({'_id': 'Cardinal', 'search': 'PWideChar', 'byEdid': 'WordBool', 'byName': 'WordBool', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.FindNextRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.FindPreviousElement">
+<code class="descname">FindPreviousElement</code><em class="property"> = ({'_id': 'Cardinal', 'search': 'PWideChar', 'byPath': 'WordBool', 'byValue': 'WordBool', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.FindPreviousElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.FindPreviousRecord">
+<code class="descname">FindPreviousRecord</code><em class="property"> = ({'_id': 'Cardinal', 'search': 'PWideChar', 'byEdid': 'WordBool', 'byName': 'WordBool', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.FindPreviousRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.FindValidReferences">
+<code class="descname">FindValidReferences</code><em class="property"> = ({'_id': 'Cardinal', 'signature': 'PWideChar', 'search': 'PWideChar', 'limitTo': 'Integer', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.FindValidReferences" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetActivePlugins">
+<code class="descname">GetActivePlugins</code><em class="property"> = ({'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetActivePlugins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetAddList">
+<code class="descname">GetAddList</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetAddList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetAllFlags">
+<code class="descname">GetAllFlags</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetAllFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetAllowedSignatures">
+<code class="descname">GetAllowedSignatures</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetAllowedSignatures" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetArrayItem">
+<code class="descname">GetArrayItem</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'subpath': 'PWideChar', 'value': 'PWideChar', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetCanAdd">
+<code class="descname">GetCanAdd</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetCanAdd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetConflictData">
+<code class="descname">GetConflictData</code><em class="property"> = ({'_id': 'Cardinal', '_id2': 'Cardinal', 'conflictAll': 'PByte', 'conflictThis': 'PByte'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetConflictData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetContainer">
+<code class="descname">GetContainer</code><em class="property"> = ({'_id': 'Cardinal', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetContainerFiles">
+<code class="descname">GetContainerFiles</code><em class="property"> = ({'name': 'PWideChar', 'path': 'PWideChar', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetContainerFiles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetDefNames">
+<code class="descname">GetDefNames</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetDefNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetDuplicateHandles">
+<code class="descname">GetDuplicateHandles</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetDuplicateHandles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetElement">
+<code class="descname">GetElement</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetElementFile">
+<code class="descname">GetElementFile</code><em class="property"> = ({'_id': 'Cardinal', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetElementFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetElementGroup">
+<code class="descname">GetElementGroup</code><em class="property"> = ({'_id': 'Cardinal', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetElementGroup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetElementIndex">
+<code class="descname">GetElementIndex</code><em class="property"> = ({'_id': 'Cardinal', 'index': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetElementIndex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetElementRecord">
+<code class="descname">GetElementRecord</code><em class="property"> = ({'_id': 'Cardinal', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetElementRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetElements">
+<code class="descname">GetElements</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'sort': 'WordBool', 'filter': 'WordBool', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetElements" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetEnabledFlags">
+<code class="descname">GetEnabledFlags</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetEnabledFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetEnumOptions">
+<code class="descname">GetEnumOptions</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetEnumOptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetErrorThreadDone">
+<code class="descname">GetErrorThreadDone</code><em class="property"> = ({}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetErrorThreadDone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetErrors">
+<code class="descname">GetErrors</code><em class="property"> = ({'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetErrors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetExceptionMessage">
+<code class="descname">GetExceptionMessage</code><em class="property"> = ({'str': 'PWideChar', 'len': 'Integer'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetExceptionMessage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetExceptionMessageLength">
+<code class="descname">GetExceptionMessageLength</code><em class="property"> = ({}, None)</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetExceptionMessageLength" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetExceptionStack">
+<code class="descname">GetExceptionStack</code><em class="property"> = ({'str': 'PWideChar', 'len': 'Integer'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetExceptionStack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetExceptionStackLength">
+<code class="descname">GetExceptionStackLength</code><em class="property"> = ({}, None)</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetExceptionStackLength" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetFileContainer">
+<code class="descname">GetFileContainer</code><em class="property"> = ({'path': 'PWideChar', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetFileContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetFileLoadOrder">
+<code class="descname">GetFileLoadOrder</code><em class="property"> = ({'_id': 'Cardinal', 'loadOrder': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetFileLoadOrder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetFlag">
+<code class="descname">GetFlag</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'name': 'PWideChar', 'enabled': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetFloatValue">
+<code class="descname">GetFloatValue</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'value': 'PDouble'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetFloatValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetFormID">
+<code class="descname">GetFormID</code><em class="property"> = ({'_id': 'Cardinal', 'formID': 'PCardinal', 'native': 'WordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetFormID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetGameLanguage">
+<code class="descname">GetGameLanguage</code><em class="property"> = ({'mode': 'Integer', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetGameLanguage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetGamePath">
+<code class="descname">GetGamePath</code><em class="property"> = ({'mode': 'Integer', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetGamePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetGlobal">
+<code class="descname">GetGlobal</code><em class="property"> = ({'key': 'PWideChar', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetGlobal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetGlobals">
+<code class="descname">GetGlobals</code><em class="property"> = ({'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetGlobals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetInjectionTarget">
+<code class="descname">GetInjectionTarget</code><em class="property"> = ({'_id': 'Cardinal', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetInjectionTarget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetIntValue">
+<code class="descname">GetIntValue</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'value': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetIntValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetIsEditable">
+<code class="descname">GetIsEditable</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetIsEditable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetIsModified">
+<code class="descname">GetIsModified</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetIsModified" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetIsRemoveable">
+<code class="descname">GetIsRemoveable</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetIsRemoveable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetLinksTo">
+<code class="descname">GetLinksTo</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetLinksTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetLoadOrder">
+<code class="descname">GetLoadOrder</code><em class="property"> = ({'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetLoadOrder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetLoadedContainers">
+<code class="descname">GetLoadedContainers</code><em class="property"> = ({'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetLoadedContainers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetLoaderStatus">
+<code class="descname">GetLoaderStatus</code><em class="property"> = ({'status': 'PByte'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetLoaderStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetMasterNames">
+<code class="descname">GetMasterNames</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetMasterNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetMasterRecord">
+<code class="descname">GetMasterRecord</code><em class="property"> = ({'_id': 'Cardinal', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetMasterRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetMasters">
+<code class="descname">GetMasters</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetMasters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetMessages">
+<code class="descname">GetMessages</code><em class="property"> = ({'str': 'PWideChar', 'maxLen': 'Integer'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetMessages" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetMessagesLength">
+<code class="descname">GetMessagesLength</code><em class="property"> = ({}, None)</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetMessagesLength" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetNodeElements">
+<code class="descname">GetNodeElements</code><em class="property"> = ({'_id': 'Cardinal', '_id2': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetNodeElements" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetNodes">
+<code class="descname">GetNodes</code><em class="property"> = ({'_id': 'Cardinal', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetNodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetOverrideRecordCount">
+<code class="descname">GetOverrideRecordCount</code><em class="property"> = ({'_id': 'Cardinal', 'count': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetOverrideRecordCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetOverrides">
+<code class="descname">GetOverrides</code><em class="property"> = ({'_id': 'Cardinal', 'count': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetOverrides" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetPreviousOverride">
+<code class="descname">GetPreviousOverride</code><em class="property"> = ({'_id': 'Cardinal', '_id2': 'Cardinal', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetPreviousOverride" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetREFRs">
+<code class="descname">GetREFRs</code><em class="property"> = ({'_id': 'Cardinal', 'search': 'PWideChar', 'flags': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetREFRs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetRecord">
+<code class="descname">GetRecord</code><em class="property"> = ({'_id': 'Cardinal', 'formID': 'Cardinal', 'searchMasters': 'WordBool', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetRecord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetRecordCount">
+<code class="descname">GetRecordCount</code><em class="property"> = ({'_id': 'Cardinal', 'count': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetRecordCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetRecords">
+<code class="descname">GetRecords</code><em class="property"> = ({'_id': 'Cardinal', 'search': 'PWideChar', 'includeOverrides': 'WordBool', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetRecords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetReferencedBy">
+<code class="descname">GetReferencedBy</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetReferencedBy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetRequiredBy">
+<code class="descname">GetRequiredBy</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetRequiredBy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetResultArray">
+<code class="descname">GetResultArray</code><em class="property"> = ({'_res': 'PCardinal', 'maxLen': 'Integer'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetResultArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetResultBytes">
+<code class="descname">GetResultBytes</code><em class="property"> = ({'_res': 'PByte', 'maxLen': 'Integer'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetResultBytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetResultString">
+<code class="descname">GetResultString</code><em class="property"> = ({'str': 'PWideChar', 'maxLen': 'Integer'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetResultString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetSignatureAllowed">
+<code class="descname">GetSignatureAllowed</code><em class="property"> = ({'_id': 'Cardinal', 'sig': 'PWideChar', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetSignatureAllowed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetSignatureNameMap">
+<code class="descname">GetSignatureNameMap</code><em class="property"> = ({'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetSignatureNameMap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetTextureData">
+<code class="descname">GetTextureData</code><em class="property"> = ({'resourceName': 'PWideChar', 'width': 'PInteger', 'height': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetTextureData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetUIntValue">
+<code class="descname">GetUIntValue</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'value': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetUIntValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetValue">
+<code class="descname">GetValue</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.GetWinningOverride">
+<code class="descname">GetWinningOverride</code><em class="property"> = ({'_id': 'Cardinal', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.GetWinningOverride" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.HasArrayItem">
+<code class="descname">HasArrayItem</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'subpath': 'PWideChar', 'value': 'PWideChar', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.HasArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.HasElement">
+<code class="descname">HasElement</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.HasElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.InitXEdit">
+<code class="descname">InitXEdit</code><em class="property"> = ({}, None)</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.InitXEdit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.IsFixed">
+<code class="descname">IsFixed</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.IsFixed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.IsInjected">
+<code class="descname">IsInjected</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.IsInjected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.IsMaster">
+<code class="descname">IsMaster</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.IsMaster" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.IsOverride">
+<code class="descname">IsOverride</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.IsOverride" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.IsSorted">
+<code class="descname">IsSorted</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.IsSorted" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.IsWinningOverride">
+<code class="descname">IsWinningOverride</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'PWordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.IsWinningOverride" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.LoadContainer">
+<code class="descname">LoadContainer</code><em class="property"> = ({'filePath': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.LoadContainer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.LoadPlugin">
+<code class="descname">LoadPlugin</code><em class="property"> = ({'filename': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.LoadPlugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.LoadPluginHeader">
+<code class="descname">LoadPluginHeader</code><em class="property"> = ({'fileName': 'PWideChar', '_res': 'PCardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.LoadPluginHeader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.LoadPlugins">
+<code class="descname">LoadPlugins</code><em class="property"> = ({'loadOrder': 'PWideChar', 'smartLoad': 'WordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.LoadPlugins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.LongName">
+<code class="descname">LongName</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.LongName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.MD5Hash">
+<code class="descname">MD5Hash</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.MD5Hash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.MoveArrayItem">
+<code class="descname">MoveArrayItem</code><em class="property"> = ({'_id': 'Cardinal', 'index': 'Integer'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.MoveArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.Name">
+<code class="descname">Name</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.Name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.NameFromSignature">
+<code class="descname">NameFromSignature</code><em class="property"> = ({'sig': 'PWideChar', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.NameFromSignature" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.NukeFile">
+<code class="descname">NukeFile</code><em class="property"> = ({'_id': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.NukeFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.Path">
+<code class="descname">Path</code><em class="property"> = ({'_id': 'Cardinal', 'short': 'WordBool', 'local': 'WordBool', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.Path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.Release">
+<code class="descname">Release</code><em class="property"> = ({'_id': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.Release" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ReleaseNodes">
+<code class="descname">ReleaseNodes</code><em class="property"> = ({'_id': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ReleaseNodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.RemoveArrayItem">
+<code class="descname">RemoveArrayItem</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'subpath': 'PWideChar', 'value': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.RemoveArrayItem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.RemoveElement">
+<code class="descname">RemoveElement</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.RemoveElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.RemoveElementOrParent">
+<code class="descname">RemoveElementOrParent</code><em class="property"> = ({'_id': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.RemoveElementOrParent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.RemoveIdenticalRecords">
+<code class="descname">RemoveIdenticalRecords</code><em class="property"> = ({'_id': 'Cardinal', 'removeITMs': 'WordBool', 'removeITPOs': 'WordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.RemoveIdenticalRecords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.RenameFile">
+<code class="descname">RenameFile</code><em class="property"> = ({'_id': 'Cardinal', 'filename': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.RenameFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ResetFilter">
+<code class="descname">ResetFilter</code><em class="property"> = ({}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ResetFilter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ResetStore">
+<code class="descname">ResetStore</code><em class="property"> = ({}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ResetStore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SaveFile">
+<code class="descname">SaveFile</code><em class="property"> = ({'_id': 'Cardinal', 'filePath': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SaveFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetBackupPath">
+<code class="descname">SetBackupPath</code><em class="property"> = ({'path': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetBackupPath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetElement">
+<code class="descname">SetElement</code><em class="property"> = ({'_id': 'Cardinal', '_id2': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetEnabledFlags">
+<code class="descname">SetEnabledFlags</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'flags': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetEnabledFlags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetFlag">
+<code class="descname">SetFlag</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'name': 'PWideChar', 'enabled': 'WordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetFlag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetFloatValue">
+<code class="descname">SetFloatValue</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'value': 'Double'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetFloatValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetFormID">
+<code class="descname">SetFormID</code><em class="property"> = ({'_id': 'Cardinal', 'formID': 'Cardinal', 'native': 'WordBool', 'fixReferences': 'WordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetFormID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetGameMode">
+<code class="descname">SetGameMode</code><em class="property"> = ({'mode': 'Integer'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetGameMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetGamePath">
+<code class="descname">SetGamePath</code><em class="property"> = ({'path': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetGamePath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetIntValue">
+<code class="descname">SetIntValue</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'value': 'Integer'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetIntValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetIsEditable">
+<code class="descname">SetIsEditable</code><em class="property"> = ({'_id': 'Cardinal', 'bool': 'WordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetIsEditable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetLanguage">
+<code class="descname">SetLanguage</code><em class="property"> = ({'lang': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetLanguage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetLinksTo">
+<code class="descname">SetLinksTo</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', '_id2': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetLinksTo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetSortMode">
+<code class="descname">SetSortMode</code><em class="property"> = ({'_sortBy': 'Byte', '_reverse': 'WordBool'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetSortMode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetUIntValue">
+<code class="descname">SetUIntValue</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'value': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetUIntValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SetValue">
+<code class="descname">SetValue</code><em class="property"> = ({'_id': 'Cardinal', 'path': 'PWideChar', 'value': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SetValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.Signature">
+<code class="descname">Signature</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.Signature" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SignatureFromName">
+<code class="descname">SignatureFromName</code><em class="property"> = ({'name': 'PWideChar', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SignatureFromName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SmashType">
+<code class="descname">SmashType</code><em class="property"> = ({'_id': 'Cardinal', 'enum': 'PByte'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SmashType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SortEditorIDs">
+<code class="descname">SortEditorIDs</code><em class="property"> = ({'_id': 'Cardinal', 'sig': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SortEditorIDs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SortKey">
+<code class="descname">SortKey</code><em class="property"> = ({'_id': 'Cardinal', 'len': 'PInteger'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SortKey" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SortMasters">
+<code class="descname">SortMasters</code><em class="property"> = ({'_id': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SortMasters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.SortNames">
+<code class="descname">SortNames</code><em class="property"> = ({'_id': 'Cardinal', 'sig': 'PWideChar'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.SortNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.Switch">
+<code class="descname">Switch</code><em class="property"> = ({'_id': 'Cardinal', '_id2': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.Switch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.UnloadPlugin">
+<code class="descname">UnloadPlugin</code><em class="property"> = ({'_id': 'Cardinal'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.UnloadPlugin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.definitions.XEditLibSignatures.ValueType">
+<code class="descname">ValueType</code><em class="property"> = ({'_id': 'Cardinal', 'enum': 'PByte'}, 'WordBool')</em><a class="headerlink" href="#xedit.xelib.definitions.XEditLibSignatures.ValueType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="xedit.xelib.definitions.generate_python_from_pascal">
+<code class="descclassname">xedit.xelib.definitions.</code><code class="descname">generate_python_from_pascal</code><span class="sig-paren">(</span><em>pascal_paste</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.definitions.generate_python_from_pascal" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function that can be passed a paste of the lines from the pascal
+'{$region 'API functions'}' sections in xedit-lib source code, and it will
+parse the definitions and print you python definitions in the format above.</p>
+<p>&#64;param pascal_paste: a dirty paste of pascal code as described</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xedit.xelib.definitions.params">
+<code class="descclassname">xedit.xelib.definitions.</code><code class="descname">params</code><span class="sig-paren">(</span><em>**params_types</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.definitions.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that returns the dictionary of parameters given, makes following
+code look a bit better on the eyes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xedit.xelib.definitions.ret">
+<code class="descclassname">xedit.xelib.definitions.</code><code class="descname">ret</code><span class="sig-paren">(</span><em>return_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.definitions.ret" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that returns the thing given and defaults to None, makes the
+following code look a bit better on the eyes.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-xedit.xelib.xelib">
+<span id="xedit-xelib-xelib-module"></span><h2>xedit.xelib.xelib module<a class="headerlink" href="#module-xedit.xelib.xelib" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xelib.xelib.Xelib">
+<em class="property">class </em><code class="descclassname">xedit.xelib.xelib.</code><code class="descname">Xelib</code><a class="headerlink" href="#xedit.xelib.xelib.Xelib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.element_values.ElementValuesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.elements.ElementsMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.errors.ErrorsMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.file_values.FileValuesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.files.FilesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.filter.FilterMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.groups.GroupsMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.helpers.HelpersMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.masters.MastersMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.messages.MessagesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.meta.MetaMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.record_values.RecordValuesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.records.RecordsMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.resources.ResourcesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.serialization.SerializationMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.setup.SetupMethods</span></code></p>
+<p>Xelib class</p>
+<dl class="staticmethod">
+<dt id="xedit.xelib.xelib.Xelib.load_lib">
+<em class="property">static </em><code class="descname">load_lib</code><span class="sig-paren">(</span><em>dll_path</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.xelib.Xelib.load_lib" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.xelib.Xelib.loaded">
+<code class="descname">loaded</code><a class="headerlink" href="#xedit.xelib.xelib.Xelib.loaded" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.xelib.Xelib.manage_handles">
+<code class="descname">manage_handles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.xelib.Xelib.manage_handles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.xelib.Xelib.opened_handles">
+<code class="descname">opened_handles</code><a class="headerlink" href="#xedit.xelib.xelib.Xelib.opened_handles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.xelib.Xelib.print_handle_management_stack">
+<code class="descname">print_handle_management_stack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.xelib.Xelib.print_handle_management_stack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.xelib.Xelib.promote_handle">
+<code class="descname">promote_handle</code><span class="sig-paren">(</span><em>handle</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.xelib.Xelib.promote_handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.xelib.Xelib.raw_api">
+<code class="descname">raw_api</code><a class="headerlink" href="#xedit.xelib.xelib.Xelib.raw_api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.xelib.Xelib.release_handle">
+<code class="descname">release_handle</code><span class="sig-paren">(</span><em>handle</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.xelib.Xelib.release_handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.xelib.Xelib.release_handles">
+<code class="descname">release_handles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.xelib.Xelib.release_handles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.xelib.Xelib.track_handle">
+<code class="descname">track_handle</code><span class="sig-paren">(</span><em>handle</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.xelib.Xelib.track_handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="xedit.xelib.xelib.XelibError">
+<em class="property">exception </em><code class="descclassname">xedit.xelib.xelib.</code><code class="descname">XelibError</code><a class="headerlink" href="#xedit.xelib.xelib.XelibError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>An exception object for use by xelib</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-xedit.xelib">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-xedit.xelib" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="xedit.xelib.Xelib">
+<em class="property">class </em><code class="descclassname">xedit.xelib.</code><code class="descname">Xelib</code><a class="headerlink" href="#xedit.xelib.Xelib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.element_values.ElementValuesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.elements.ElementsMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.errors.ErrorsMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.file_values.FileValuesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.files.FilesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.filter.FilterMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.groups.GroupsMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.helpers.HelpersMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.masters.MastersMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.messages.MessagesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.meta.MetaMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.record_values.RecordValuesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.records.RecordsMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.resources.ResourcesMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.serialization.SerializationMethods</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">xedit.xelib.wrapper_methods.setup.SetupMethods</span></code></p>
+<p>Xelib class</p>
+<dl class="staticmethod">
+<dt id="xedit.xelib.Xelib.load_lib">
+<em class="property">static </em><code class="descname">load_lib</code><span class="sig-paren">(</span><em>dll_path</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.Xelib.load_lib" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.Xelib.loaded">
+<code class="descname">loaded</code><a class="headerlink" href="#xedit.xelib.Xelib.loaded" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.Xelib.manage_handles">
+<code class="descname">manage_handles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.Xelib.manage_handles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.Xelib.opened_handles">
+<code class="descname">opened_handles</code><a class="headerlink" href="#xedit.xelib.Xelib.opened_handles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.Xelib.print_handle_management_stack">
+<code class="descname">print_handle_management_stack</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.Xelib.print_handle_management_stack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.Xelib.promote_handle">
+<code class="descname">promote_handle</code><span class="sig-paren">(</span><em>handle</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.Xelib.promote_handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="xedit.xelib.Xelib.raw_api">
+<code class="descname">raw_api</code><a class="headerlink" href="#xedit.xelib.Xelib.raw_api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.Xelib.release_handle">
+<code class="descname">release_handle</code><span class="sig-paren">(</span><em>handle</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.Xelib.release_handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.Xelib.release_handles">
+<code class="descname">release_handles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.Xelib.release_handles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="xedit.xelib.Xelib.track_handle">
+<code class="descname">track_handle</code><span class="sig-paren">(</span><em>handle</em><span class="sig-paren">)</span><a class="headerlink" href="#xedit.xelib.Xelib.track_handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="xedit.xelib.XelibError">
+<em class="property">exception </em><code class="descclassname">xedit.xelib.</code><code class="descname">XelibError</code><a class="headerlink" href="#xedit.xelib.XelibError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>An exception object for use by xelib</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, leontristain
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

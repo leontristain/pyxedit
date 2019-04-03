@@ -53,7 +53,9 @@ class Xelib(ElementValuesMethods,
             ResourcesMethods,
             SerializationMethods,
             SetupMethods):
-
+    '''
+    Xelib class
+    '''
     def __init__(self):
         self.dll_path = DLL_PATH
         self._raw_api = None
