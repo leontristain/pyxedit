@@ -2,7 +2,7 @@ from collections import namedtuple
 import functools
 import pytest
 
-from xedit import XelibError
+from pyxedit import XelibError
 
 from . fixtures import xelib  # NOQA: for pytest
 

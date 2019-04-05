@@ -1,7 +1,7 @@
 import pytest
 import time
 
-from xedit import Xelib, XelibError
+from pyxedit import Xelib, XelibError
 
 from . utils import stripped_block
 

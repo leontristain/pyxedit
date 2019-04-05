@@ -1,6 +1,6 @@
 import pytest
 
-from xedit import XEditError
+from pyxedit import XEditError
 
 from .. fixtures import xedit, assert_no_opened_handles_after  # NOQA: pytest
 

@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 import shutil
 
-from xedit import XEdit
+from pyxedit import XEdit
 
 
 @pytest.fixture(scope='class')
