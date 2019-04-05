@@ -313,48 +313,49 @@ class TestElementValues:
         data = self.get_data(xelib)
 
         # should return false for disabled flags
-        assert xelib.get_flag(data.file_flags, '', 'ESM') is False
-        assert xelib.get_flag(data.file_flags, '', 'Localized') is False
-        assert xelib.get_flag(data.file_flags, '', '') is False
-        assert xelib.get_flag(data.refr_flags, '', 'Deleted') is False
-        assert xelib.get_flag(data.refr_flags, '', 'Ignored') is False
-        assert xelib.get_flag(data.refr_flags, '', 'Unknown 0') is False
+        assert xelib.get_flag(data.file_flags, 'ESM') is False
+        assert xelib.get_flag(data.file_flags, 'Localized') is False
+        assert xelib.get_flag(data.file_flags, '') is False
+        assert xelib.get_flag(data.refr_flags, 'Deleted') is False
+        assert xelib.get_flag(data.refr_flags, 'Ignored') is False
+        assert xelib.get_flag(data.refr_flags, 'Unknown 0') is False
 
         # should return true for enabled flags
         assert xelib.get_flag(
                    0,
-                   'xtest-1.esp\\File Header\\Record Header\\Record Flags',
-                   'ESM') is True
+                   'ESM',
+                   path='xtest-1.esp\\File Header\\Record Header\\'
+                        'Record Flags') is True
         assert xelib.get_flag(
                    data.rec,
-                   'BODT\\First Person Flags',
-                   '33 - Hands') is True
-        assert xelib.get_flag(data.refr_flags, '', 'Persistent') is True
-        assert xelib.get_flag(data.refr_flags, '', 'Initially Disabled') is True
+                   '33 - Hands',
+                   path='BODT\\First Person Flags') is True
+        assert xelib.get_flag(data.refr_flags, 'Persistent') is True
+        assert xelib.get_flag(data.refr_flags, 'Initially Disabled') is True
 
         # should fail if flag is not found
         with pytest.raises(XelibError):
-            xelib.get_flag(data.refr_flags, '', 'Temporary')
+            xelib.get_flag(data.refr_flags, 'Temporary')
         with pytest.raises(XelibError):
-            xelib.get_flag(data.refr_flags, '', 'Unknown 5')
+            xelib.get_flag(data.refr_flags, 'Unknown 5')
 
         # should fail on elements that do not have flags
         with pytest.raises(XelibError):
-            xelib.get_flag(data.xt2, '', 'ESM')
+            xelib.get_flag(data.xt2, 'ESM')
         with pytest.raises(XelibError):
-            xelib.get_flag(data.xt2, 'File Header', 'ESM')
+            xelib.get_flag(data.xt2, 'ESM', path='File Header')
         with pytest.raises(XelibError):
-            xelib.get_flag(data.refr, '', 'Deleted')
+            xelib.get_flag(data.refr, 'Deleted')
         with pytest.raises(XelibError):
-            xelib.get_flag(data.refr, 'Record Header', 'Deleted')
+            xelib.get_flag(data.refr, 'Deleted', path='Record Header')
 
     def test_set_flag(self, xelib):
         data = self.get_data(xelib)
 
         # should enable disabled flags
-        assert xelib.get_flag(data.file_flags, '', 'Localized') is False
-        xelib.set_flag(data.file_flags, '', 'Localized', True)
-        assert xelib.get_flag(data.file_flags, '', 'Localized') is True
+        assert xelib.get_flag(data.file_flags, 'Localized') is False
+        xelib.set_flag(data.file_flags, 'Localized', True)
+        assert xelib.get_flag(data.file_flags, 'Localized') is True
 
         # TODO: This test causes issues later on for some reason (disabled
         # in xedit-lib tests)
@@ -362,52 +363,54 @@ class TestElementValues:
         # xelib.set_flag(data.refr_flags, '', 'Deleted', True)
         # assert xelib.get_flag(data.refr_flags, '', 'Deleted') is True
 
-        assert xelib.get_flag(data.refr_flags, '', 'Ignored') is False
-        xelib.set_flag(data.refr_flags, '', 'Ignored', True)
-        assert xelib.get_flag(data.refr_flags, '', 'Ignored') is True
+        assert xelib.get_flag(data.refr_flags, 'Ignored') is False
+        xelib.set_flag(data.refr_flags, 'Ignored', True)
+        assert xelib.get_flag(data.refr_flags, 'Ignored') is True
 
         assert xelib.get_flag(
-                   data.rec, 'BODT\\First Person Flags', '32 - Body') is False
-        xelib.set_flag(data.rec, 'BODT\\First Person Flags', '32 - Body', True)
+            data.rec, '32 - Body', path='BODT\\First Person Flags') is False
+        xelib.set_flag(
+            data.rec, '32 - Body', True, path='BODT\\First Person Flags')
         assert xelib.get_flag(
-                   data.rec, 'BODT\\First Person Flags', '32 - Body') is True
+            data.rec, '32 - Body', path='BODT\\First Person Flags') is True
 
         # should disable enabled flags
-        assert xelib.get_flag(data.file_flags, '', 'Localized') is True
-        xelib.set_flag(data.file_flags, '', 'Localized', False)
-        assert xelib.get_flag(data.file_flags, '', 'Localized') is False
+        assert xelib.get_flag(data.file_flags, 'Localized') is True
+        xelib.set_flag(data.file_flags, 'Localized', False)
+        assert xelib.get_flag(data.file_flags, 'Localized') is False
 
         # TODO: This test causes issues later on for some reason (disabled
         # in xedit-lib tests)
-        # assert xelib.get_flag(data.refr_flags, '', 'Deleted') is True
-        # xelib.set_flag(data.refr_flags, '', 'Deleted', False)
-        # assert xelib.get_flag(data.refr_flags, '', 'Deleted') is False
+        # assert xelib.get_flag(data.refr_flags, 'Deleted') is True
+        # xelib.set_flag(data.refr_flags, 'Deleted', False)
+        # assert xelib.get_flag(data.refr_flags, 'Deleted') is False
 
-        assert xelib.get_flag(data.refr_flags, '', 'Ignored') is True
-        xelib.set_flag(data.refr_flags, '', 'Ignored', False)
-        assert xelib.get_flag(data.refr_flags, '', 'Ignored') is False
+        assert xelib.get_flag(data.refr_flags, 'Ignored') is True
+        xelib.set_flag(data.refr_flags, 'Ignored', False)
+        assert xelib.get_flag(data.refr_flags, 'Ignored') is False
 
         assert xelib.get_flag(
-                   data.rec, 'BODT\\First Person Flags', '32 - Body') is True
-        xelib.set_flag(data.rec, 'BODT\\First Person Flags', '32 - Body', False)
+            data.rec, '32 - Body', path='BODT\\First Person Flags') is True
+        xelib.set_flag(
+            data.rec, '32 - Body', False, path='BODT\\First Person Flags')
         assert xelib.get_flag(
-                   data.rec, 'BODT\\First Person Flags', '32 - Body') is False
+            data.rec, '32 - Body', path='BODT\\First Person Flags') is False
 
         # should fail if flag is not found
         with pytest.raises(XelibError):
-            xelib.set_flag(data.refr_flags, '', 'Temporary', True)
+            xelib.set_flag(data.refr_flags, 'Temporary', True)
         with pytest.raises(XelibError):
-            xelib.set_flag(data.refr_flags, '', 'Unknown 5', False)
+            xelib.set_flag(data.refr_flags, 'Unknown 5', False)
 
         # should fail on elements that do not have flags
         with pytest.raises(XelibError):
-            xelib.set_flag(data.xt2, '', 'ESM', True)
+            xelib.set_flag(data.xt2, 'ESM', True)
         with pytest.raises(XelibError):
-            xelib.set_flag(data.xt2, 'File Header', 'ESM', True)
+            xelib.set_flag(data.xt2, 'ESM', True, path='File Header')
         with pytest.raises(XelibError):
-            xelib.set_flag(data.refr, '', 'Deleted', True)
+            xelib.set_flag(data.refr, 'Deleted', True)
         with pytest.raises(XelibError):
-            xelib.set_flag(data.refr, 'Record Header', 'Deleted', True)
+            xelib.set_flag(data.refr, 'Deleted', True, path='Record Header')
 
     def test_get_enabled_flags(self, xelib):
         data = self.get_data(xelib)
@@ -441,37 +444,39 @@ class TestElementValues:
         data = self.get_data(xelib)
 
         # should enable flags that are present
-        assert xelib.get_enabled_flags(data.file_flags, '') == []
+        assert xelib.get_enabled_flags(data.file_flags) == []
         xelib.set_enabled_flags(
-                  data.file_flags, '', ['ESM', 'Localized', 'Ignored'])
-        assert (xelib.get_enabled_flags(data.file_flags, '') ==
+                  data.file_flags, ['ESM', 'Localized', 'Ignored'])
+        assert (xelib.get_enabled_flags(data.file_flags) ==
                     ['ESM', 'Localized', 'Ignored'])
 
-        assert (xelib.get_enabled_flags(data.refr_flags, '') ==
+        assert (xelib.get_enabled_flags(data.refr_flags) ==
                     ['Persistent', 'Initially Disabled'])
         xelib.set_enabled_flags(
-                  data.refr_flags, '', ['Unknown 1',
-                                        'Persistent',
-                                        'Initially Disabled',
-                                        'Ignored',
-                                        'Multibound'])
-        assert (xelib.get_enabled_flags(data.refr_flags, '') ==
+                  data.refr_flags, ['Unknown 1',
+                                    'Persistent',
+                                    'Initially Disabled',
+                                    'Ignored',
+                                    'Multibound'])
+        assert (xelib.get_enabled_flags(data.refr_flags) ==
                     ['Unknown 1',
                      'Persistent',
                      'Initially Disabled',
                      'Ignored',
                      'Multibound'])
 
-        assert (xelib.get_enabled_flags(data.rec, 'BODT\\First Person Flags') ==
+        assert (xelib.get_enabled_flags(
+                    data.rec, path='BODT\\First Person Flags') ==
                 ['33 - Hands'])
         xelib.set_enabled_flags(data.rec,
-                                'BODT\\First Person Flags',
                                 ['30 - Head',
                                  '33 - Hands',
                                  '40 - Tail',
                                  '52 - Unnamed',
-                                 '61 - FX01'])
-        assert (xelib.get_enabled_flags(data.rec, 'BODT\\First Person Flags') ==
+                                 '61 - FX01'],
+                                path='BODT\\First Person Flags')
+        assert (xelib.get_enabled_flags(
+                    data.rec, path='BODT\\First Person Flags') ==
                 ['30 - Head',
                  '33 - Hands',
                  '40 - Tail',
@@ -479,43 +484,45 @@ class TestElementValues:
                  '61 - FX01'])
 
         # should disable flags that are not present
-        assert (xelib.get_enabled_flags(data.file_flags, '') ==
+        assert (xelib.get_enabled_flags(data.file_flags) ==
                     ['ESM', 'Localized', 'Ignored'])
-        xelib.set_enabled_flags(data.file_flags, '', [])
-        assert xelib.get_enabled_flags(data.file_flags, '') == []
+        xelib.set_enabled_flags(data.file_flags, [])
+        assert xelib.get_enabled_flags(data.file_flags) == []
 
-        assert (xelib.get_enabled_flags(data.refr_flags, '') ==
+        assert (xelib.get_enabled_flags(data.refr_flags) ==
                     ['Unknown 1',
                      'Persistent',
                      'Initially Disabled',
                      'Ignored',
                      'Multibound'])
         xelib.set_enabled_flags(
-                  data.refr_flags, '', ['Persistent', 'Initially Disabled'])
-        assert (xelib.get_enabled_flags(data.refr_flags, '') ==
+                  data.refr_flags, ['Persistent', 'Initially Disabled'])
+        assert (xelib.get_enabled_flags(data.refr_flags) ==
                     ['Persistent', 'Initially Disabled'])
 
-        assert (xelib.get_enabled_flags(data.rec, 'BODT\\First Person Flags') ==
+        assert (xelib.get_enabled_flags(
+                    data.rec, path='BODT\\First Person Flags') ==
                 ['30 - Head',
                  '33 - Hands',
                  '40 - Tail',
                  '52 - Unnamed',
                  '61 - FX01'])
         xelib.set_enabled_flags(data.rec,
-                                'BODT\\First Person Flags',
-                                ['33 - Hands'])
-        assert (xelib.get_enabled_flags(data.rec, 'BODT\\First Person Flags') ==
+                                ['33 - Hands'],
+                                path='BODT\\First Person Flags')
+        assert (xelib.get_enabled_flags(
+                    data.rec, path='BODT\\First Person Flags') ==
                 ['33 - Hands'])
 
         # should fail on elements that do not have flags
         with pytest.raises(XelibError):
-            xelib.set_enabled_flags(data.xt2, '', [])
+            xelib.set_enabled_flags(data.xt2, [])
         with pytest.raises(XelibError):
-            xelib.set_enabled_flags(data.xt2, 'File Header', [])
+            xelib.set_enabled_flags(data.xt2, [], path='File Header')
         with pytest.raises(XelibError):
-            xelib.set_enabled_flags(data.refr, '', [])
+            xelib.set_enabled_flags(data.refr, [])
         with pytest.raises(XelibError):
-            xelib.set_enabled_flags(data.refr, 'Record Header', [])
+            xelib.set_enabled_flags(data.refr, [], path='Record Header')
 
     def test_get_all_flags(self, xelib):
         data = self.get_data(xelib)
