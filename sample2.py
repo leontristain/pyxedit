@@ -1,4 +1,4 @@
-from xedit import XEdit
+from pyxedit import XEdit
 
 # To start, create an XEdit object, tell it what game you want to open, and
 # what plugins you want to load. With the xedit object, invoke the `session`

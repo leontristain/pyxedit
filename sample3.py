@@ -1,4 +1,4 @@
-from xedit import XEdit
+from pyxedit import XEdit
 from pathlib import Path
 
 xedit = XEdit.quickstart(plugins=['The Ordinary Women.esp'])
