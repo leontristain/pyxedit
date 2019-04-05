@@ -37,7 +37,7 @@ I highly recommend doing any kind of python project inside a virtual environment
 
 Here's a quick snippet if you just want to dive in and play around with things. Note that for this library to work at all, you will need Skyrim SE (or any other XEditLib-supported game) installed on your computer. The below snippet assumes SkyrimSE with at least the Dawnguard DLC available::
 
-    from xedit import XEdit
+    from pyxedit import XEdit
 
     if __name__ == '__main__':
         with XEdit(plugins=['Dawnguard.esm']).session() as xedit:
@@ -51,7 +51,7 @@ Here's a quick snippet if you just want to dive in and play around with things. 
 If you just want to launch the python interpreter and play around in there, you can try the following::
 
     Python 3.7.2
-    > from xedit import XEdit
+    > from pyxedit import XEdit
     > xedit = XEdit.quickstart()  # this will load Dawnguard.esm by default,
                                   # start an xedit context, and give you an
                                   # xedit handle
