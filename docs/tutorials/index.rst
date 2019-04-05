@@ -2,10 +2,11 @@
 Tutorials
 =================
 
-Here are tutorials
+The following are the various tutorials available
 
 .. toctree::
    :maxdepth: 1
 
-   xedit_tutorial
+   fundamental_knowledge
    xelib_tutorial
+   xedit_tutorial
