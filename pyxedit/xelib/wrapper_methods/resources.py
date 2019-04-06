@@ -22,20 +22,23 @@ class ResourcesMethods(WrapperMethodsBase):
     def extract_file(self, name, src, dst):
         return self.raw_api.ExtractFile(name, src, dst)
 
-    def get_container_files(self, name, folder):
+    def get_container_files(self, name, folder, ex=True):
         return self.get_string_array(
             lambda len_: self.raw_api.GetContainerFiles(name, folder, len_),
-            error_msg=f'Failed to get files in container {name}')
+            error_msg=f'Failed to get files in container {name}',
+            ex=ex)
 
-    def get_file_container(self, file_path):
+    def get_file_container(self, file_path, ex=True):
         return self.get_string(
             lambda len_: self.raw_api.GetFileContainer(file_path, len_),
-            error_msg=f'Failed to get file container for {file_path}')
+            error_msg=f'Failed to get file container for {file_path}',
+            ex=ex)
 
-    def get_loaded_containers(self):
+    def get_loaded_containers(self, ex=True):
         return self.get_string_array(
             lambda len_: self.raw_api.GetLoadedContainers(len_),
-            error_msg=f'Failed to get loaded containers')
+            error_msg=f'Failed to get loaded containers',
+            ex=ex)
 
     def load_container(self, file_path):
         return self.raw_api.LoadContainer(file_path)
@@ -48,7 +51,8 @@ class ResourcesMethods(WrapperMethodsBase):
                       compress=False,
                       share=False,
                       af='',
-                      ff=''):
+                      ff='',
+                      ex=True):
         return self.verify_execution(
             self.raw_api.BuildArchive(name,
                                       folder,
@@ -58,10 +62,12 @@ class ResourcesMethods(WrapperMethodsBase):
                                       share,
                                       af,
                                       ff),
-            error_msg=f'Failed to build archive {name}')
+            error_msg=f'Failed to build archive {name}',
+            ex=ex)
 
-    def get_texture_data(self, resource_name):
+    def get_texture_data(self, resource_name, ex=True):
         return self.get_image_data(
             lambda width, height:
                 self.raw_api.GetTextureData(resource_name, width, height),
-            error_msg=f'Failed to get texture data for {resource_name}')
+            error_msg=f'Failed to get texture data for {resource_name}',
+            ex=ex)
