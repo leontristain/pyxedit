@@ -1,4 +1,4 @@
-# pyxeditlib
+# pyxedit
 
 **Note: This library is current in progress and not yet released**
 
