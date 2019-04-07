@@ -20,7 +20,7 @@ The ``Xelib`` API is the low-level API, and is designed to be a minimal wrapper 
 The XEdit API
 -------------
 
-The ``XEdit`` API is a high-level API where the various data types of xedit have been formalized into python objects through the use of the ``Xelib`` API. This high-level API is made accessible via an ``XEdit`` top-level class. With the XEdit API:
+The ``XEdit`` API is a high-level API where the various data types of xedit have been formalized into python objects through the use of the ``Xelib`` API. This high-level API is made accessible via an ``XEdit`` top-level class. With the ``XEdit`` API:
 
 - You work with objects instead of handles, where lifecycle management for handles automatically happen in the background through python's garbage collection.
 - The objects it gives you will support many of python's native syntax, such as dictionary indexing to traverse the element tree, assignable properties for getting and setting element values, and iterable-like syntax for working with arrays. The objects also support many nice, pythonic methods that abstracts away the more verbose Xelib methods, as well as providing more convenient methods where they make sense. For example, to iterate through all child elements of an element, the object will let you simply do ``for item in element.children: ...``
