@@ -35,7 +35,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="The XEdit API Tutorial" href="xedit_tutorial.html" /> 
+    <link rel="next" title="The XEdit API Tutorial" href="xedit_tutorial.html" />
+    <link rel="prev" title="Fundamental Knowledge" href="fundamental_knowledge.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -82,10 +83,17 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="xedit_tutorial.html">The XEdit API Tutorial</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">The Xelib API Tutorial</a><ul class="simple">
+<li class="toctree-l2"><a class="reference internal" href="fundamental_knowledge.html">Fundamental Knowledge</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">The Xelib API Tutorial</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-xelib-class">The Xelib Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-xelib-session">The Xelib Session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#game-configuration">Game Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-plugins">Loading Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-xelib-api">Using The Xelib API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#handle-management">Handle Management</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="xedit_tutorial.html">The XEdit API Tutorial</a></li>
 </ul>
 </li>
 </ul>
@@ -158,7 +166,166 @@
 <h1>The Xelib API Tutorial<a class="headerlink" href="#the-xelib-api-tutorial" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<p>Here are tutorials</p>
+<div class="section" id="the-xelib-class">
+<h2>The Xelib Class<a class="headerlink" href="#the-xelib-class" title="Permalink to this headline">¶</a></h2>
+<p>The entry point of the <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> API is the <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> class. This is importable from the top-level namespace of pyxedit. Typically, you would make an object with the class to interact with the API:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyxedit</span> <span class="k">import</span> <span class="n">Xelib</span>
+
+
+<span class="n">xelib</span> <span class="o">=</span> <span class="n">Xelib</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-xelib-session">
+<h2>The Xelib Session<a class="headerlink" href="#the-xelib-session" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> API is, ultimately, a python interface to the various methods in <code class="docutils literal notranslate"><span class="pre">XEditLib.dll</span></code>. For python to make use of a <code class="docutils literal notranslate"><span class="pre">.dll</span></code> file, it must first load it into memory, and once python is done with it, it is good to unload it so that the next time you load it you're guaranteed a new instance.</p>
+<p>Beyond loading/unloading of the <code class="docutils literal notranslate"><span class="pre">.dll</span></code> file, <code class="docutils literal notranslate"><span class="pre">XEditLib.dll</span></code> API also has code for starting up/tearing down an xEdit session (see the <code class="docutils literal notranslate"><span class="pre">Initialize</span></code> and <code class="docutils literal notranslate"><span class="pre">Finalize</span></code> API methods), where all work is expected to be done in the context of an active session. When you're using the <code class="docutils literal notranslate"><span class="pre">XEditLib.dll</span></code> functions, you're expected to first run <code class="docutils literal notranslate"><span class="pre">Initialize()</span></code>, then do all your work, and at the end run <code class="docutils literal notranslate"><span class="pre">Finalize()</span></code> before you exit.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> API lets you invoke all of this boilerplate logic through its context manager behavior. Entering the context of a <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> object will load <code class="docutils literal notranslate"><span class="pre">XEditLib.dll</span></code> and run <code class="docutils literal notranslate"><span class="pre">Initialize()</span></code>, where upon context exit, <code class="docutils literal notranslate"><span class="pre">Finalize()</span></code> will run, and then <code class="docutils literal notranslate"><span class="pre">XEditLib.dll</span></code> will be unloaded. Please see the below example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyxedit</span> <span class="k">import</span> <span class="n">Xelib</span>
+
+
+<span class="k">with</span> <span class="n">Xelib</span><span class="p">()</span> <span class="k">as</span> <span class="n">xelib</span><span class="p">:</span>
+    <span class="c1"># here, `XEditLib.dll` has been loaded, all API functionality on</span>
+    <span class="c1"># the xelib object has been set up, and `Initialize()` has been</span>
+    <span class="c1"># executed; from here on, you can invoke methods on `xelib` to do</span>
+    <span class="c1"># your work</span>
+    <span class="k">pass</span>
+
+<span class="c1"># here, `Finalize()` has been executed, and `XEditLib.dll` has been</span>
+<span class="c1"># unloaded.</span>
+</pre></div>
+</div>
+<p>When you write code with the <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> API, it is expected that just about all the code you write will be inside a <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">Xelib()</span> <span class="pre">as</span> <span class="pre">xelib:</span> <span class="pre">...</span></code> context.</p>
+</div>
+<div class="section" id="game-configuration">
+<h2>Game Configuration<a class="headerlink" href="#game-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Once you're inside a session, the first thing is usually to configure it. Here is where you get to tell the API which game you want to work with, and the path to the game install folder. To set the game to SkyrimSE, run the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xelib</span><span class="o">.</span><span class="n">set_game_mode</span><span class="p">(</span><span class="n">xelib</span><span class="o">.</span><span class="n">Games</span><span class="o">.</span><span class="n">SkyrimSE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">Games</span></code> is an <em>Enum</em> object available on the <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> class itself. Most enums that the <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> API works with will be available on the <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> class itself. If you're curious, you can check out other examples like <code class="docutils literal notranslate"><span class="pre">xelib.ElementTypes</span></code> or <code class="docutils literal notranslate"><span class="pre">xelib.LoaderStates</span></code>.</p>
+<p>With a game chosen, the xEdit session seems to be able to auto-detect your game folder. To check this, you can run the following to see what game folder it has found:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xelib</span><span class="o">.</span><span class="n">get_game_path</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Most likely, if you already have Skyrim SE installed on your computer, it will show up here. If it doesn't (or if you just want to explicitly point it to a Skyrim SE folder), you can run the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xelib</span><span class="o">.</span><span class="n">set_game_path</span><span class="p">(</span><span class="s1">&#39;D:</span><span class="se">\\</span><span class="s1">SteamLibrary</span><span class="se">\\</span><span class="s1">steamapps</span><span class="se">\\</span><span class="s1">common</span><span class="se">\\</span><span class="s1">Skyrim Special Edition&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="loading-plugins">
+<h2>Loading Plugins<a class="headerlink" href="#loading-plugins" title="Permalink to this headline">¶</a></h2>
+<p>With the game chosen, and with the library knows where your game is installed to, you can now proceed to load some plugins. The following code snippet shows
+how this can be done with the <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> API:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="n">xelib</span><span class="o">.</span><span class="n">load_plugins</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;Skyrim.esm&#39;</span><span class="p">,</span>
+                                    <span class="s1">&#39;Update.esm&#39;</span><span class="p">,</span>
+                                    <span class="s1">&#39;Dawnguard.esm&#39;</span><span class="p">]))</span>
+<span class="k">while</span> <span class="n">xelib</span><span class="o">.</span><span class="n">get_loader_status</span><span class="p">()</span> <span class="o">==</span> <span class="n">xelib</span><span class="o">.</span><span class="n">LoaderStates</span><span class="o">.</span><span class="n">lsActive</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There are several things about the above code. First, <cite>load_plugins</cite> takes in a string that is expected to be a newline-separated list of plugin names, which is why we run <code class="docutils literal notranslate"><span class="pre">os.linesep.join</span></code> to turn the list of plugin names into a string that looks like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Skyrim</span><span class="o">.</span><span class="n">esm</span>
+<span class="n">Update</span><span class="o">.</span><span class="n">esm</span>
+<span class="n">Dawnguard</span><span class="o">.</span><span class="n">esm</span>
+</pre></div>
+</div>
+<p>Next, once you tell the library to load those plugins, the function itself is an async function that returns immediately while the plugin continues to load in the background. There's not much you can do before the plugins actually load, so we can repeatedly check the loader state and keep on waiting until it is no longer <code class="docutils literal notranslate"><span class="pre">lsActive</span></code>.</p>
+<p>Once the loader finishes, you're now ready to do anything and everything in the xEdit session. To put everything so far together, you end up with code that looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pyxedit</span> <span class="k">import</span> <span class="n">Xelib</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">game_path</span> <span class="o">=</span> <span class="s1">&#39;D:</span><span class="se">\\</span><span class="s1">SteamLibrary</span><span class="se">\\</span><span class="s1">steamapps</span><span class="se">\\</span><span class="s1">common</span><span class="se">\\</span><span class="s1">Skyrim Special Edition&#39;</span>
+<span class="n">plugins</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Skyrim.esm&#39;</span><span class="p">,</span> <span class="s1">&#39;Update.esm&#39;</span><span class="p">,</span> <span class="s1">&#39;Dawnguard.esm&#39;</span><span class="p">]</span>
+
+
+<span class="k">with</span> <span class="n">Xelib</span><span class="p">()</span> <span class="k">as</span> <span class="n">xelib</span><span class="p">:</span>
+    <span class="c1"># configure xelib to work with our game</span>
+    <span class="n">xelib</span><span class="o">.</span><span class="n">set_game_mode</span><span class="p">(</span><span class="n">xelib</span><span class="o">.</span><span class="n">Games</span><span class="o">.</span><span class="n">SkyrimSE</span><span class="p">)</span>
+    <span class="n">xelib</span><span class="o">.</span><span class="n">set_game_path</span><span class="p">(</span><span class="n">game_path</span><span class="p">)</span>
+
+    <span class="c1"># load the plugins</span>
+    <span class="n">xelib</span><span class="o">.</span><span class="n">load_plugins</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">plugins</span><span class="p">))</span>
+
+    <span class="c1"># wait for plugins to finish loading</span>
+    <span class="k">while</span> <span class="n">xelib</span><span class="o">.</span><span class="n">get_loader_status</span><span class="p">()</span> <span class="o">==</span> <span class="n">xelib</span><span class="o">.</span><span class="n">LoaderStates</span><span class="o">.</span><span class="n">lsActive</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="c1"># we&#39;re now ready to do whatever</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-the-xelib-api">
+<h2>Using The Xelib API<a class="headerlink" href="#using-the-xelib-api" title="Permalink to this headline">¶</a></h2>
+<p>Now might be the time to take a look at the <a class="reference external" href="#">Xelib API Reference</a> for the list of all the methods you have available to you. These can all be accessed from the <cite>xelib</cite> object.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In addition to the API reference provided here, it might also be useful to look at <a class="reference external" href="https://z-edit.github.io/#/docs?t=Development%2FAPIs%2Fxelib">zEdit's xelib API documentation</a>. Both zEdit's xelib API and <code class="docutils literal notranslate"><span class="pre">pyxedit.Xelib</span></code> are wrappers around <code class="docutils literal notranslate"><span class="pre">XEditLib.dll</span></code>, it's just that the former is an ES6 Javascript wrapper while the latter is a Python wrapper.</p>
+<p>In fact, <code class="docutils literal notranslate"><span class="pre">pyxedit.Xelib</span></code> was written using zEdit's xelib API as reference, so a lot of the patterns ended up looking very similar, where you can consider <code class="docutils literal notranslate"><span class="pre">pyxedit.Xelib</span></code> to be a python version of an &quot;almost-equivalent&quot;. In both cases, methods are largely one-to-one with <code class="docutils literal notranslate"><span class="pre">XEditLib.dll</span></code> methods as well.</p>
+<p>That said, there are some differences between zEdit's xelib API and <code class="docutils literal notranslate"><span class="pre">pyxedit.Xelib</span></code>, <a class="reference external" href="#">which you can read about here</a>.</p>
+</div>
+</div>
+<div class="section" id="handle-management">
+<h2>Handle Management<a class="headerlink" href="#handle-management" title="Permalink to this headline">¶</a></h2>
+<p>Much of <code class="docutils literal notranslate"><span class="pre">XEditLib.dll</span></code>'s API works with the notion of handles, which are similar to pointers and memory management in languages like C/C++. For example, when you retrieve an element, it is given to you in the form of an integer <em>handle</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># try to get the ARMA record at Dawnguard.esm\ARMA\VampireWolfAA</span>
+<span class="n">handle</span> <span class="o">=</span> <span class="n">xelib</span><span class="o">.</span><span class="n">get_element</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Dawnguard.esm</span><span class="se">\\</span><span class="s1">ARMA</span><span class="se">\\</span><span class="s1">VampireWolfAA&#39;</span><span class="p">)</span>
+
+<span class="c1"># the ARMA record is now available to you as an integer handle</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>  <span class="c1"># should be some integer</span>
+
+<span class="c1"># you can then use the integer as an &#39;id&#39; to further inspect the ARMA record with</span>
+<span class="n">record_name</span> <span class="o">=</span> <span class="n">xelib</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">record_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is good to release a handle after you're done using it so that the memory and the integer can be recycled for use by other things. This is typically done with <code class="docutils literal notranslate"><span class="pre">XEditLib</span></code>'s <code class="docutils literal notranslate"><span class="pre">Release</span></code> method, which is available on <code class="docutils literal notranslate"><span class="pre">Xelib</span></code> as <code class="docutils literal notranslate"><span class="pre">xelib.release</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># release the handle</span>
+<span class="n">xelib</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>But manually keeping track of every handle the API throws at you can be difficult. For this reason, the <code class="docutils literal notranslate"><span class="pre">xelib</span></code> object also provides a context manager you can use to manage these handles en-mass:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># enter a handle management context</span>
+<span class="k">with</span> <span class="n">xelib</span><span class="o">.</span><span class="n">manage_handles</span><span class="p">():</span>
+    <span class="c1"># within the context, we can invoke methods and use any handles</span>
+    <span class="c1"># we get back</span>
+    <span class="n">handle</span> <span class="o">=</span> <span class="n">xelib</span><span class="o">.</span><span class="n">get_element</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Dawnguard.esm</span><span class="se">\\</span><span class="s1">ARMA</span><span class="se">\\</span><span class="s1">VampireWolfAA&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">xelib</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="n">handle</span><span class="p">))</span>
+
+    <span class="c1"># when exiting the context, all new handles generated within the</span>
+    <span class="c1"># context will be automatically released</span>
+
+<span class="c1"># those handles should no longer be valid after exiting the context</span>
+</pre></div>
+</div>
+<p>The handle management contexts can also be nested to create multiple layers of handle management, which might be useful in complex use cases:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">xelib</span><span class="o">.</span><span class="n">manage_handles</span><span class="p">():</span>
+    <span class="c1"># do a task</span>
+    <span class="o">...</span>
+
+    <span class="k">with</span> <span class="n">xelib</span><span class="o">.</span><span class="n">manage_handles</span><span class="p">():</span>
+        <span class="c1"># do a subtask that might involve lots of handles</span>
+        <span class="o">...</span>
+
+        <span class="c1"># maybe you get a handle that you want to keep beyond this context,</span>
+        <span class="c1"># in which case you can promote it to the parent context</span>
+        <span class="n">handle_to_keep</span> <span class="o">=</span> <span class="o">...</span>
+        <span class="n">xelib</span><span class="o">.</span><span class="n">promote_handle</span><span class="p">(</span><span class="n">handle_to_keep</span><span class="p">)</span>
+
+    <span class="c1"># those subtask handles are now released (except for handle_to_keep),</span>
+    <span class="c1"># continue doing the main task</span>
+    <span class="o">...</span>
+
+<span class="c1"># task is done and all handles are released</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -169,8 +336,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="xedit_tutorial.html" class="btn btn-neutral float-right" title="The XEdit API Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="xedit_tutorial.html" class="btn btn-neutral float-left" title="The XEdit API Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="fundamental_knowledge.html" class="btn btn-neutral float-left" title="Fundamental Knowledge" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
