@@ -108,7 +108,7 @@ Once the loader finishes, you're now ready to do anything and everything in the 
 Using The Xelib API
 ===================
 
-Now might be the time to take a look at the `Xelib API Reference <#>`_ for the list of all the methods you have available to you. These can all be accessed from the `xelib` object.
+Now might be the time to take a look at the `Xelib API Reference <#>`_ for the list of all the methods you have available to you. These can all be accessed from the ``xelib`` object.
 
 .. note::
 
