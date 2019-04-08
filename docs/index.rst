@@ -15,3 +15,4 @@ This project, `pyxedit <#>`_, is my attempt to wrap the same xedit-lib library i
 
    overview/index
    tutorials/index
+   api_reference/index
