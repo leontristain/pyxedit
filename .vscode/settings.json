@@ -10,5 +10,6 @@
     },
     "editor.suggestOnTriggerCharacters": false,
     "editor.parameterHints.enabled": false,
-    "python.pythonPath": "venv\\Scripts\\python.exe"
+    "python.pythonPath": "venv\\Scripts\\python.exe",
+    "restructuredtext.confPath": "${workspaceFolder}\\docs"
 }

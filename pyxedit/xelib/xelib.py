@@ -57,6 +57,9 @@ class Xelib(ElementValuesMethods,
     Xelib class
     '''
     def __init__(self):
+        '''
+        Initializer
+        '''
         self.dll_path = DLL_PATH
         self._raw_api = None
         self._handles_stack = []
