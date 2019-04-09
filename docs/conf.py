@@ -68,4 +68,4 @@ autodoc_default_options = {
     'member-order': 'bysource'
 }
 autodoc_member_order = 'bysource'
-autodoc_mock_imports = 'ctypes.wintypes'
+autodoc_mock_imports = ['ctypes.wintypes']
