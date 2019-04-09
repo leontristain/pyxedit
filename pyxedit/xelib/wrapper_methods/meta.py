@@ -15,18 +15,65 @@ class MetaMethods(WrapperMethodsBase):
     SortBy = SortBy
 
     def initialize(self):
+        '''
+        Initializes an xEdit session. Corresponds to ``InitXEdit`` from
+        ``XEditLib.dll``. I'm not fully sure what this does exactly,
+        but it is required for the other ``XEditLib.dll`` functions to work.
+        The name ``InitXEdit`` sounds like it may be the equivalent of starting
+        up xEdit.
+
+        Without running this first, calling other ``XEditLib.dll`` functions
+        will at times result in memory access violation related to null
+        references.
+
+        .. warning::
+            Users should not have to run this method by hand, as it should be
+            covered with ``Xelib``'s context manager functionality.
+        '''
         self.raw_api.InitXEdit()
 
     def finalize(self):
+        '''
+        Closes the xEdit session. Corresponds to ``CloseXEdit`` from
+        ``XEditLib.dll``.
+
+        .. warning::
+            Users should not have to run this method by hand, as it should be
+            covered with ``Xelib``'s context manager functionality.
+        '''
         self.raw_api.CloseXEdit()
 
-    def get_global(self, key, ex=True):
+    def get_global(self, key: str, ex: bool = True):
+        '''
+        Retrieves the value of an ``XEditLib.dll`` global variable. Examples of
+        global variables may include ``ProgramPath``, ``Version``, and
+        ``FileCount``. These values are used for some of ``XEditLib.dll``'s
+        internal functionality.
+
+        The above examples might be out of date in due time. To see what global
+        variables ``XEditLib.dll`` currently contains, you can run
+        :func:`~pyxedit.Xelib.get_globals`.
+
+        :param key: name of the global variable to retrieve
+        :param ex: whether failures should trigger an Exception or return a
+                   falsey value
+        :returns: the value of the global variable being retrieved
+        '''
         return self.get_string(
             lambda len_: self.raw_api.GetGlobal(key, len_),
             error_msg=f'GetGlobal failed',
             ex=ex)
 
-    def get_globals(self, ex=True):
+    def get_globals(self, ex: bool = True):
+        '''
+        Returns a list of name-value pairs for all globals. Entries are
+        separated by ``\\r\\n``, and the name value pairs are separated by
+        ``=``.
+
+        :param ex: whether failures should trigger an Exception or return a
+                   falsey value
+        :returns: name-value pairs for all globals as described above
+        '''
         return self.get_string(
             lambda len_: self.raw_api.GetGlobals(len_),
             error_msg=f'GetGlobals failed',

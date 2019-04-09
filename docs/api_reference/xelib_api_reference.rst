@@ -1,3 +1,7 @@
+.. |hr| raw:: html
+
+    <hr/>
+
 ===================
 Xelib API Reference
 ===================
@@ -10,13 +14,17 @@ The Xelib Class
 
 .. autoclass:: pyxedit.Xelib
 
-    .. rubric:: Initializer
+    |hr|
+
+    .. rubric:: Basic Methods
     .. automethod:: __init__
     .. automethod:: __enter__
     .. automethod:: __exit__
     .. automethod:: load_lib
     .. autoattribute:: raw_api
     .. autoattribute:: loaded
+
+    |hr|
 
     .. rubric:: Handle Management Methods
     Methods for managing handles.
@@ -28,6 +36,8 @@ The Xelib Class
     .. automethod:: manage_handles
     .. automethod:: promote_handle
     .. automethod:: print_handle_management_stack
+
+    |hr|
 
     .. rubric:: Meta Methods
     Library-specific methods such as getting globals.
@@ -44,6 +54,8 @@ The Xelib Class
     .. automethod:: clean_store
     .. automethod:: reset_store
 
+    |hr|
+
     .. rubric:: Messages Methods
     Methods for dealing with log and exception messages.
 
@@ -51,6 +63,8 @@ The Xelib Class
     .. automethod:: clear_messages
     .. automethod:: get_exception_message
     .. automethod:: get_exception_stack
+
+    |hr|
 
     .. rubric:: Setup Methods
     Methods for dealing with game modes and loading files.
@@ -70,6 +84,8 @@ The Xelib Class
     .. automethod:: get_loader_status
     .. automethod:: get_loaded_file_names
 
+    |hr|
+
     .. rubric:: Resources Methods
     Methods for handling bethesda archives and game data files.
 
@@ -81,6 +97,8 @@ The Xelib Class
     .. automethod:: load_container
     .. automethod:: build_archive
     .. automethod:: get_texture_data
+
+    |hr|
 
     .. rubric:: Elements Methods
     Methods for handling elements.
@@ -126,6 +144,8 @@ The Xelib Class
     .. automethod:: is_fixed
     .. automethod:: is_flags
 
+    |hr|
+
     .. rubric:: Element Value Methods
     Methods for getting or setting values on elements.
 
@@ -156,6 +176,8 @@ The Xelib Class
     .. automethod:: name_from_signature
     .. automethod:: get_signature_name_map
 
+    |hr|
+
     .. rubric:: Files Methods
     Methods for handling files.
 
@@ -176,6 +198,8 @@ The Xelib Class
     .. automethod:: sort_editor_ids
     .. automethod:: sort_names
 
+    |hr|
+
     .. rubric:: File Values Methods
     Methods for getting or setting values on files.
 
@@ -188,6 +212,8 @@ The Xelib Class
     .. automethod:: set_file_description
     .. automethod:: get_is_esm
     .. automethod:: set_is_esm
+
+    |hr|
 
     .. rubric:: Records Methods
     Methods for handling records in files.
@@ -217,6 +243,8 @@ The Xelib Class
     .. automethod:: get_record_conflict_data
     .. automethod:: get_node_elements
 
+    |hr|
+
     .. rubric:: Record Values Methods
     Methods for getting or setting values from records.
 
@@ -227,6 +255,8 @@ The Xelib Class
     .. automethod:: rotate
     .. automethod:: get_record_flag
     .. automethod:: set_record_flag
+
+    |hr|
 
     .. rubric:: Masters Methods
     Methods for handling masters in files.
@@ -241,12 +271,16 @@ The Xelib Class
     .. automethod:: add_all_masters
     .. automethod:: get_available_masters
 
+    |hr|
+
     .. rubric:: Groups Methods
     Methods for handling groups in files.
 
     .. automethod:: has_group
     .. automethod:: add_group
     .. automethod:: get_child_group
+
+    |hr|
 
     .. rubric:: Serialization Methods
     Methods for serializing elements to JSON and deserializing them from JSON.
@@ -255,6 +289,8 @@ The Xelib Class
     .. automethod:: element_to_dict
     .. automethod:: element_from_json
     .. automethod:: element_from_dict
+
+    |hr|
 
     .. rubric:: Plugin Error Methods
     Methods for getting and resolving errors/dirty edits in plugin files.
