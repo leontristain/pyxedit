@@ -10,6 +10,7 @@
     },
     "editor.suggestOnTriggerCharacters": false,
     "editor.parameterHints.enabled": false,
+    "terminal.integrated.shellArgs.windows": ["-ExecutionPolicy", "Bypass"],
     "python.pythonPath": "venv\\Scripts\\python.exe",
     "restructuredtext.confPath": "${workspaceFolder}\\docs"
 }
