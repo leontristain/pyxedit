@@ -11,6 +11,18 @@ from . fixtures import xelib  # NOQA: for pytest
 from . utils import stripped_block
 
 
+TEST_PLUGINS = ['Skyrim.esm',
+                'Update.esm',
+                'Dawnguard.esm',
+                'HearthFires.esm',
+                'Dragonborn.esm',
+                'xtest-1.esp',
+                'xtest-2.esp',
+                'xtest-3.esp',
+                'xtest-4.esp',
+                'xtest-5.esp']
+
+
 class TestFiles:
     def test_file_by_name(self, xelib):
         # should return a handle if a matching file is loaded
@@ -110,25 +122,8 @@ class TestFiles:
 class TestSaveFile:
     def test_save_file(self):
         # should save new files
-        with Xelib().session() as xelib:
-            # initialize and load plugins
-            xelib.set_game_mode(xelib.Games.Skyrim)
-            xelib.load_plugins(stripped_block('''
-                        Skyrim.esm
-                        Update.esm
-                        Dawnguard.esm
-                        HearthFires.esm
-                        Dragonborn.esm
-                        xtest-1.esp
-                        xtest-2.esp
-                        xtest-3.esp
-                        xtest-4.esp
-                        xtest-5.esp
-                        '''))
-            assert xelib.get_loader_status() == xelib.LoaderStates.lsActive
-            while xelib.get_loader_status() == xelib.LoaderStates.lsActive:
-                time.sleep(0.1)
-
+        with Xelib(game_mode=Xelib.Games.Skyrim,
+                   plugins=TEST_PLUGINS).session() as xelib:
             # ensure data path is good
             data_path = xelib.get_global('DataPath')
             assert Path(data_path, 'xtest-5.esp').is_file()
@@ -152,25 +147,8 @@ class TestSaveFile:
 
         # should save files at custom paths
         tmpdir = tempfile.mkdtemp()
-        with Xelib().session() as xelib:
-            # initialize and load plugins
-            xelib.set_game_mode(xelib.Games.Skyrim)
-            xelib.load_plugins(stripped_block('''
-                        Skyrim.esm
-                        Update.esm
-                        Dawnguard.esm
-                        HearthFires.esm
-                        Dragonborn.esm
-                        xtest-1.esp
-                        xtest-2.esp
-                        xtest-3.esp
-                        xtest-4.esp
-                        xtest-5.esp
-                        '''))
-            assert xelib.get_loader_status() == xelib.LoaderStates.lsActive
-            while xelib.get_loader_status() == xelib.LoaderStates.lsActive:
-                time.sleep(0.1)
-
+        with Xelib(game_mode=Xelib.Games.Skyrim,
+                   plugins=TEST_PLUGINS).session() as xelib:
             # ensure data path is good
             assert Path(tmpdir).is_dir()
             assert not Path(tmpdir, 'xtest-6.esp').is_file()

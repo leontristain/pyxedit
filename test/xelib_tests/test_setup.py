@@ -10,14 +10,14 @@ from . utils import backed_up, Timer, stripped_block
 
 class TestSetup:
     def app_data_path(self, file_name):
-        with Xelib().session() as xelib:
-            xelib.set_game_mode(xelib.Games.Skyrim)
+        with (Xelib(game_mode=Xelib.Games.Skyrim)
+                  .session(load_plugins=False)) as xelib:
             app_data_path = xelib.get_global('AppDataPath')
             assert app_data_path
         return Path(app_data_path, file_name)
 
     def test_set_game_mode(self):
-        with Xelib().session() as xelib:
+        with Xelib(game_mode=None).session(load_plugins=False) as xelib:
             # AppDataPath should not be set at the beginning
             with pytest.raises(XelibError):
                 xelib.get_global('AppDataPath')
@@ -41,8 +41,8 @@ class TestSetup:
                 # comment
                 NonExistingPlugin.esp
                 '''))
-            with Xelib().session() as xelib:
-                xelib.set_game_mode(xelib.Games.Skyrim)
+            with (Xelib(game_mode=Xelib.Games.Skyrim)
+                      .session(load_plugins=False)) as xelib:
                 load_order = xelib.get_load_order().split()
 
                 # xtest-5.esp should exist
@@ -79,8 +79,8 @@ class TestSetup:
                 # comment
                 NonExistingPlugin.esp
                 '''))
-            with Xelib().session() as xelib:
-                xelib.set_game_mode(xelib.Games.Skyrim)
+            with (Xelib(game_mode=Xelib.Games.Skyrim)
+                      .session(load_plugins=False)) as xelib:
                 plugins = xelib.get_active_plugins().split()
 
                 # xtest-5.esp should exist

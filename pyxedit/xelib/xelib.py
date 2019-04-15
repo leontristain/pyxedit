@@ -3,6 +3,8 @@ from contextlib import contextmanager
 from ctypes import wintypes
 from itertools import tee
 from pathlib import Path
+import os
+import time
 
 from pyxedit.xelib.definitions import DelphiTypes, XEditLibSignatures
 from pyxedit.xelib.wrapper_methods.element_values import ElementValuesMethods
@@ -56,30 +58,79 @@ class Xelib(ElementValuesMethods,
     '''
     Xelib class
     '''
-    def __init__(self):
+    def __init__(self,
+                 game_mode=SetupMethods.Games.SkyrimSE,
+                 game_path=None,
+                 plugins=None):
         '''
         Initializer
         '''
+        # Initialization attributes
+        self._game_mode = game_mode
+        self._game_path = game_path
+        self._plugins = plugins or []
+
+        # XEditLib.dll entry points
         self.dll_path = DLL_PATH
         self._raw_api = None
+
+        # Attribute for handle management
         self._handles_stack = []
         self._current_handles = set()
 
+    @property
+    def game_path(self):
+        return self.get_game_path() if self.loaded else self._game_path
+
+    @game_path.setter
+    def game_path(self, value):
+        self._game_path = value
+        if self.loaded:
+            return self.set_game_path(value)
+
     @contextmanager
-    def session(self):
+    def session(self, load_plugins=True):
         try:
-            if not self._raw_api:
-                self._raw_api = self.load_lib(self.dll_path)
-                self.initialize()
+            # sanity check that API has not yet been loaded
+            if self.loaded:
+                raise XelibError('Api already loaded')
+
+            # load XEditLib.dll
+            self._raw_api = self.load_lib(self.dll_path)
+
+            # initialize the xEdit context
+            self.initialize()
+
+            # set the game mode if given
+            if self._game_mode:
+                self.set_game_mode(self._game_mode)
+
+            # set the game path explicitly if given
+            if self._game_path:
+                self.set_game_path(self._game_path)
+
+            # load plugins if specified
+            if load_plugins:
+                self.load_plugins(os.linesep.join(self._plugins))
+                while (self.get_loader_status() ==
+                            SetupMethods.LoaderStates.lsActive):
+                    time.sleep(0.1)
+
+            # loading is done, given handle to user
             yield self
+
         finally:
-            if self._raw_api:
-                self.release_handles()
-                self.finalize()
-                kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
-                kernel32.FreeLibrary.argtypes = [wintypes.HMODULE]
-                kernel32.FreeLibrary(self._raw_api._handle)
-                self._raw_api = None
+            # sanity check that API is loaded
+            if not self.loaded:
+                raise XelibError('Api is not loaded; something is wrong')
+
+            # unload the API
+            self.release_handles()
+            self.finalize()
+            kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+            kernel32.FreeLibrary.argtypes = [wintypes.HMODULE]
+            kernel32.FreeLibrary(self._raw_api._handle)
+            self._raw_api = None
 
     @property
     def loaded(self):
