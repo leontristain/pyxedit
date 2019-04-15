@@ -5,75 +5,75 @@ from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
 
 @unique
 class ElementTypes(Enum):
-    etFile = 0
-    etMainRecord = 1
-    etGroupRecord = 2
-    etSubRecord = 3
-    etSubRecordStruct = 4
-    etSubRecordArray = 5
-    etSubRecordUnion = 6
-    etArray = 7
-    etStruct = 8
-    etValue = 9
-    etFlag = 10
-    etStringListTerminator = 11
-    etUnion = 12
-    etStructChapter = 13
+    File = 0
+    MainRecord = 1
+    GroupRecord = 2
+    SubRecord = 3
+    SubRecordStruct = 4
+    SubRecordArray = 5
+    SubRecordUnion = 6
+    Array = 7
+    Struct = 8
+    Value = 9
+    Flag = 10
+    StringListTerminator = 11
+    Union = 12
+    StructChapter = 13
 
 
 @unique
 class DefTypes(Enum):
-    dtRecord = 0
-    dtSubRecord = 1
-    dtSubRecordArray = 2
-    dtSubRecordStruct = 3
-    dtSubRecordUnion = 4
-    dtString = 5
-    dtLString = 6
-    dtLenString = 7
-    dtByteArray = 8
-    dtInteger = 9
-    dtIntegerFormater = 10
-    dtIntegerFormaterUnion = 11
-    dtFlag = 12
-    dtFloat = 13
-    dtArray = 14
-    dtStruct = 15
-    dtUnion = 16
-    dtEmpty = 17
-    dtStructChapter = 18
+    Record = 0
+    SubRecord = 1
+    SubRecordArray = 2
+    SubRecordStruct = 3
+    SubRecordUnion = 4
+    String = 5
+    LString = 6
+    LenString = 7
+    ByteArray = 8
+    Integer = 9
+    IntegerFormater = 10
+    IntegerFormaterUnion = 11
+    Flag = 12
+    Float = 13
+    Array = 14
+    Struct = 15
+    Union = 16
+    Empty = 17
+    StructChapter = 18
 
 
 @unique
 class SmashTypes(Enum):
-    stUnknown = 0
-    stRecord = 1
-    stString = 2
-    stInteger = 3
-    stFlag = 4
-    stFloat = 5
-    stStruct = 6
-    stUnsortedArray = 7
-    stUnsortedStructArray = 8
-    stSortedArray = 9
-    stSortedStructArray = 10
-    stByteArray = 11
-    stUnion = 12
+    Unknown = 0
+    Record = 1
+    String = 2
+    Integer = 3
+    Flag = 4
+    Float = 5
+    Struct = 6
+    UnsortedArray = 7
+    UnsortedStructArray = 8
+    SortedArray = 9
+    SortedStructArray = 10
+    ByteArray = 11
+    Union = 12
 
 
 @unique
 class ValueTypes(Enum):
-    vtUnknown = 0
-    vtBytes = 1
-    vtNumber = 2
-    vtString = 3
-    vtText = 4
-    vtReference = 5
-    vtFlags = 6
-    vtEnum = 7
-    vtColor = 8
-    vtArray = 9
-    vtStruct = 10
+    Unknown = 0
+    Bytes = 1
+    Number = 2
+    String = 3
+    Text = 4
+    Reference = 5
+    Flags = 6
+    Enum = 7
+    Color = 8
+    Array = 9
+    Struct = 10
 
 
 class ElementsMethods(WrapperMethodsBase):
@@ -382,4 +382,4 @@ class ElementsMethods(WrapperMethodsBase):
             ex=ex)
 
     def is_flags(self, id_, ex=True):
-        return self.value_type(id_, ex=ex) == ValueTypes.vtFlags
+        return self.value_type(id_, ex=ex) == ValueTypes.Flags

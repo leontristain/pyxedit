@@ -69,7 +69,7 @@ how this can be done with the ``Xelib`` API::
     xelib.load_plugins(os.linesep.join(['Skyrim.esm',
                                         'Update.esm',
                                         'Dawnguard.esm']))
-    while xelib.get_loader_status() == xelib.LoaderStates.lsActive:
+    while xelib.get_loader_status() == xelib.LoaderStates.Active:
         time.sleep(0.1)
 
 There are several things about the above code. First, `load_plugins` takes in a string that is expected to be a newline-separated list of plugin names, which is why we run ``os.linesep.join`` to turn the list of plugin names into a string that looks like::
@@ -99,7 +99,7 @@ Once the loader finishes, you're now ready to do anything and everything in the 
         xelib.load_plugins(os.linesep.join(plugins))
 
         # wait for plugins to finish loading
-        while xelib.get_loader_status() == xelib.LoaderStates.lsActive:
+        while xelib.get_loader_status() == xelib.LoaderStates.Active:
             time.sleep(0.1)
 
         # we're now ready to do whatever

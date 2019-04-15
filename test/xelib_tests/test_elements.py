@@ -1087,74 +1087,74 @@ class TestElements:
 
         # should return vtBytes for byte array elements
         assert (value_type_at(data.ar1, path='Male world model\\MO2T') ==
-                    xelib.ValueTypes.vtBytes)
+                    xelib.ValueTypes.Bytes)
 
         # should return vtNumber for numeric elements
         assert (value_type_at(data.ar1, path='OBND\\X1') ==
-                    xelib.ValueTypes.vtNumber)
+                    xelib.ValueTypes.Number)
         assert (value_type_at(data.ar1, path='DNAM') ==
-                    xelib.ValueTypes.vtNumber)
+                    xelib.ValueTypes.Number)
         assert (value_type_at(data.ar1, path='DATA\\Weight') ==
-                    xelib.ValueTypes.vtNumber)
+                    xelib.ValueTypes.Number)
 
         # should return vtString for string elements
         assert (value_type_at(data.ar1, path='EDID') ==
-                    xelib.ValueTypes.vtString)
+                    xelib.ValueTypes.String)
         assert (value_type_at(data.ar1, path='FULL') ==
-                    xelib.ValueTypes.vtString)
+                    xelib.ValueTypes.String)
         assert (value_type_at(data.ar1, path='Male world model\\MOD2') ==
-                    xelib.ValueTypes.vtString)
+                    xelib.ValueTypes.String)
 
         # should return vtText for multi-line string elements
         assert (value_type_at(data.skyrim, path='00015475\\DESC') ==
-                    xelib.ValueTypes.vtText)
+                    xelib.ValueTypes.Text)
         assert (value_type_at(data.skyrim, path='0001362F\\Responses\\[0]\\NAM1') ==
-                    xelib.ValueTypes.vtText)
+                    xelib.ValueTypes.Text)
         assert (value_type_at(0, path='xtest-1.esp\\File Header\\SNAM') ==
-                    xelib.ValueTypes.vtText)
+                    xelib.ValueTypes.Text)
         assert (value_type_at(data.skyrim, path='0000014C\\DNAM') ==
-                    xelib.ValueTypes.vtText)
+                    xelib.ValueTypes.Text)
         assert (value_type_at(data.skyrim, path='00015D24\\Stages\\[1]\\'
                                                 'Log Entries\\[0]\\CNAM') ==
-                    xelib.ValueTypes.vtText)
+                    xelib.ValueTypes.Text)
 
         # should return vtReference for FormID elements
         assert (value_type_at(data.ar1, path='KWDA\\[0]') ==
-                    xelib.ValueTypes.vtReference)
+                    xelib.ValueTypes.Reference)
         assert (value_type_at(data.ar1, path='Armature\\[0]') ==
-                    xelib.ValueTypes.vtReference)
+                    xelib.ValueTypes.Reference)
 
         # should return vtFlags for flags elements
         assert (value_type_at(data.ar1, path='BODT\\First Person Flags') ==
-                    xelib.ValueTypes.vtFlags)
+                    xelib.ValueTypes.Flags)
         assert (value_type_at(data.ar1, path='BODT\\General Flags') ==
-                    xelib.ValueTypes.vtFlags)
+                    xelib.ValueTypes.Flags)
         assert (value_type_at(data.ar1, path='Record Header\\Record Flags') ==
-                    xelib.ValueTypes.vtFlags)
+                    xelib.ValueTypes.Flags)
 
         # should return vtEnum for enumeration elements
         assert (value_type_at(data.ar1, path='BODT\\Armor Type') ==
-                    xelib.ValueTypes.vtEnum)
+                    xelib.ValueTypes.Enum)
 
         # should return vtColor for color elements
         assert (value_type_at(data.skyrim, path='0000001B\\PNAM') ==
-                    xelib.ValueTypes.vtColor)
+                    xelib.ValueTypes.Color)
         assert (value_type_at(data.skyrim, path='00027D1C\\XCLL\\Ambient Color') ==
-                    xelib.ValueTypes.vtColor)
+                    xelib.ValueTypes.Color)
 
         # should return vtStruct for struct elements
         assert (value_type_at(data.ar1, path='Male world model') ==
-                    xelib.ValueTypes.vtStruct)
+                    xelib.ValueTypes.Struct)
         assert (value_type_at(data.ar1, path='OBND') ==
-                    xelib.ValueTypes.vtStruct)
+                    xelib.ValueTypes.Struct)
         assert (value_type_at(data.ar1, path='DATA') ==
-                    xelib.ValueTypes.vtStruct)
+                    xelib.ValueTypes.Struct)
         assert (value_type_at(data.ar1, path='Record Header') ==
-                    xelib.ValueTypes.vtStruct)
+                    xelib.ValueTypes.Struct)
 
         # should resolve union defs correctly
         assert (value_type_at(data.skyrim, path='00000DD6\\DATA') ==
-                    xelib.ValueTypes.vtNumber)
+                    xelib.ValueTypes.Number)
 
         # should fail on files, groups, and main records
         with pytest.raises(XelibError):

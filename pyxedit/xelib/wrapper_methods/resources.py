@@ -5,12 +5,12 @@ from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
 
 @unique
 class ArchiveTypes(Enum):
-    baNone = 0
-    baTES3 = 1
-    baFO3 = 2
-    baSSE = 3
-    baFO4 = 4
-    baFO4dds = 5
+    None_ = 0
+    TES3 = 1
+    FO3 = 2
+    SSE = 3
+    FO4 = 4
+    FO4dds = 5
 
 
 class ResourcesMethods(WrapperMethodsBase):

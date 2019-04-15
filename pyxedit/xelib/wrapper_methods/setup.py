@@ -5,20 +5,20 @@ from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
 
 @unique
 class LoaderStates(Enum):
-    lsInactive = 0
-    lsActive = 1
-    lsDone = 2
-    lsError = 3
+    Inactive = 0
+    Active = 1
+    Done = 2
+    Error = 3
 
 
 @unique
 class GameModes(Enum):
-    gmFNV = 0
-    gmFO3 = 1
-    gmTES4 = 2
-    gmTES5 = 3
-    gmSSE = 4
-    gmFO4 = 5
+    FNV = 0
+    FO3 = 1
+    TES4 = 2
+    TES5 = 3
+    SSE = 4
+    FO4 = 5
 
 
 class SetupMethods(WrapperMethodsBase):
@@ -26,7 +26,7 @@ class SetupMethods(WrapperMethodsBase):
     GameModes = GameModes
 
     def get_game_path(self, game=None, ex=True):
-        game = game or self.GameModes.gmSSE
+        game = game or self.GameModes.SSE
         return self.get_string(
             lambda len_: self.raw_api.GetGamePath(game.value, len_),
             error_msg=f'GetGamePath failed for game {game}; mode '
@@ -40,7 +40,7 @@ class SetupMethods(WrapperMethodsBase):
             ex=ex)
 
     def get_game_language(self, game=None, ex=True):
-        game = game or self.GameModes.gmSSE
+        game = game or self.GameModes.SSE
         return self.get_string(
             lambda len_: self.raw_api.GetGameLanguage(game.value, len_),
             error_msg=f'GetGameLanguage failed for game {game}; mode '
@@ -54,7 +54,7 @@ class SetupMethods(WrapperMethodsBase):
             ex=ex)
 
     def set_game_mode(self, game=None, ex=True):
-        game = game or self.GameModes.gmSSE
+        game = game or self.GameModes.SSE
         return self.verify_execution(
             self.raw_api.SetGameMode(game.value),
             error_msg=f'Failed to SetGameMode to game {game}; mode '

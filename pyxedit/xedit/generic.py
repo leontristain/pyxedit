@@ -35,12 +35,12 @@ class XEditGenericObject(XEditBase):
             referenced = self.xelib.get_links_to(self.handle, ex=False)
             return self.objectify(referenced) if referenced else None
         elif self.type == self.Types.Value:
-            if self.def_type in (self.DefTypes.dtString,
-                                 self.DefTypes.dtLString):
+            if self.def_type in (self.DefTypes.String,
+                                 self.DefTypes.LString):
                 return self.xelib.get_value(self.handle)
-            elif self.def_type == self.DefTypes.dtInteger:
+            elif self.def_type == self.DefTypes.Integer:
                 return self.xelib.get_int_value(self.handle)
-            elif self.def_type == self.DefTypes.dtFloat:
+            elif self.def_type == self.DefTypes.Float:
                 return self.xelib.get_float_value(self.handle)
             else:
                 raise NotImplementedError(
@@ -61,11 +61,11 @@ class XEditGenericObject(XEditBase):
         if self.type == self.Types.Ref:
             return self.xelib.set_links_to(self.handle, value.handle)
         elif self.type == self.Types.Value:
-            if self.def_type in (self.DefTypes.dtString, self.DefTypes.dtLString):
+            if self.def_type in (self.DefTypes.String, self.DefTypes.LString):
                 return self.xelib.set_value(self.handle, str(value))
-            elif self.def_type == self.DefTypes.dtInteger:
+            elif self.def_type == self.DefTypes.Integer:
                 return self.xelib.set_int_value(self.handle, int(value))
-            elif self.def_type == self.DefTypes.dtFloat:
+            elif self.def_type == self.DefTypes.Float:
                 return self.xelib.set_float_value(self.handle, float(value))
             else:
                 raise NotImplementedError(
@@ -153,8 +153,8 @@ class XEditGenericObject(XEditBase):
 
     def copy_into(self, target_plugin, as_new=False):
         # for this to work, self must be a record, and target must be a file
-        assert self.element_type == self.ElementTypes.etMainRecord
-        assert target_plugin.element_type == target_plugin.ElementTypes.etFile
+        assert self.element_type == self.ElementTypes.MainRecord
+        assert target_plugin.element_type == target_plugin.ElementTypes.File
 
         # add required masters for copying self into the given plugin
         target_plugin.add_masters_needed_for_copying(self, as_new=as_new)
@@ -170,8 +170,8 @@ class XEditGenericObject(XEditBase):
         non-empty text values found.
         '''
         for descendant in self.descendants(iter_groups=iter_groups):
-            if descendant.def_type in (descendant.DefTypes.dtString,
-                                       descendant.DefTypes.dtLString):
+            if descendant.def_type in (descendant.DefTypes.String,
+                                       descendant.DefTypes.LString):
                 value = descendant.value
                 if value:
                     yield value

@@ -302,54 +302,54 @@ class TestRecords:
 
         # should work on main records
         h = xelib.get_element(data.kw1)
-        assert xelib.get_conflict_data(n1, h) == (xelib.ConflictAll.caOnlyOne,
-                                                  xelib.ConflictThis.ctOnlyOne)
+        assert xelib.get_conflict_data(n1, h) == (xelib.ConflictAll.OnlyOne,
+                                                  xelib.ConflictThis.OnlyOne)
         h = xelib.get_element(data.kw2)
-        assert xelib.get_conflict_data(n2, h) == (xelib.ConflictAll.caConflictCritical,
-                                                  xelib.ConflictThis.ctMaster)
+        assert xelib.get_conflict_data(n2, h) == (xelib.ConflictAll.ConflictCritical,
+                                                  xelib.ConflictThis.Master)
         h = xelib.get_element(data.ar1)
-        assert xelib.get_conflict_data(n3, h) == (xelib.ConflictAll.caOverride,
-                                                  xelib.ConflictThis.ctMaster)
+        assert xelib.get_conflict_data(n3, h) == (xelib.ConflictAll.Override,
+                                                  xelib.ConflictThis.Master)
         # should work on struct elements
         h = xelib.get_element(data.kw1, path='Record Header')
-        assert xelib.get_conflict_data(n1, h) == (xelib.ConflictAll.caOnlyOne,
-                                                  xelib.ConflictThis.ctOnlyOne)
+        assert xelib.get_conflict_data(n1, h) == (xelib.ConflictAll.OnlyOne,
+                                                  xelib.ConflictThis.OnlyOne)
         h = xelib.get_element(data.kw2, path='Record Header')
-        assert xelib.get_conflict_data(n2, h) == (xelib.ConflictAll.caNoConflict,
-                                                  xelib.ConflictThis.ctMaster)
+        assert xelib.get_conflict_data(n2, h) == (xelib.ConflictAll.NoConflict,
+                                                  xelib.ConflictThis.Master)
         h = xelib.get_element(data.ar1, path='RecordHeader')
-        assert xelib.get_conflict_data(n3, h) == (xelib.ConflictAll.caUnknown,
-                                                  xelib.ConflictThis.ctUnknown)
+        assert xelib.get_conflict_data(n3, h) == (xelib.ConflictAll.Unknown,
+                                                  xelib.ConflictThis.Unknown)
         h = xelib.get_element(data.kw2, path='CNAM - Color')
-        assert xelib.get_conflict_data(n2, h) == (xelib.ConflictAll.caConflictCritical,
-                                                  xelib.ConflictThis.ctMaster)
+        assert xelib.get_conflict_data(n2, h) == (xelib.ConflictAll.ConflictCritical,
+                                                  xelib.ConflictThis.Master)
         h = xelib.get_element(data.ar1, path='OBND - Object Bounds')
-        assert xelib.get_conflict_data(n3, h) == (xelib.ConflictAll.caNoConflict,
-                                                  xelib.ConflictThis.ctMaster)
+        assert xelib.get_conflict_data(n3, h) == (xelib.ConflictAll.NoConflict,
+                                                  xelib.ConflictThis.Master)
         # should work on value elements
         h = xelib.get_element(data.kw1, path='Record Header\\Signature')
-        assert xelib.get_conflict_data(n1, h) == (xelib.ConflictAll.caOnlyOne,
-                                                  xelib.ConflictThis.ctOnlyOne)
+        assert xelib.get_conflict_data(n1, h) == (xelib.ConflictAll.OnlyOne,
+                                                  xelib.ConflictThis.OnlyOne)
         h = xelib.get_element(data.kw2, path='Record Header\\Signature')
-        assert xelib.get_conflict_data(n2, h) == (xelib.ConflictAll.caNoConflict,
-                                                  xelib.ConflictThis.ctMaster)
+        assert xelib.get_conflict_data(n2, h) == (xelib.ConflictAll.NoConflict,
+                                                  xelib.ConflictThis.Master)
         h = xelib.get_element(data.ar1, path='RecordHeader\\Signature')
-        assert xelib.get_conflict_data(n3, h) == (xelib.ConflictAll.caUnknown,
-                                                  xelib.ConflictThis.ctUnknown)
+        assert xelib.get_conflict_data(n3, h) == (xelib.ConflictAll.Unknown,
+                                                  xelib.ConflictThis.Unknown)
         h = xelib.get_element(data.kw2, path='CNAM - Color\\Red')
-        assert xelib.get_conflict_data(n2, h) == (xelib.ConflictAll.caConflictCritical,
-                                                  xelib.ConflictThis.ctMaster)
+        assert xelib.get_conflict_data(n2, h) == (xelib.ConflictAll.ConflictCritical,
+                                                  xelib.ConflictThis.Master)
         h = xelib.get_element(data.ar1, path='OBND - Object Bounds\\X1')
-        assert xelib.get_conflict_data(n3, h) == (xelib.ConflictAll.caNoConflict,
-                                                  xelib.ConflictThis.ctMaster)
+        assert xelib.get_conflict_data(n3, h) == (xelib.ConflictAll.NoConflict,
+                                                  xelib.ConflictThis.Master)
         # should work on file headers
         h = xelib.get_element(data.skyrim, path='File Header')
         n1 = xelib.get_nodes(h)
 
         e = xelib.get_element(h, path='CNAM - Author')
-        assert xelib.get_conflict_data(n1, e) == (xelib.ConflictAll.caOnlyOne,
-                                                  xelib.ConflictThis.ctOnlyOne)
+        assert xelib.get_conflict_data(n1, e) == (xelib.ConflictAll.OnlyOne,
+                                                  xelib.ConflictThis.OnlyOne)
         e = xelib.get_element(h, path='HEDR - Header\\Version')
-        assert xelib.get_conflict_data(n1, e) == (xelib.ConflictAll.caOnlyOne,
-                                                  xelib.ConflictThis.ctOnlyOne)
+        assert xelib.get_conflict_data(n1, e) == (xelib.ConflictAll.OnlyOne,
+                                                  xelib.ConflictThis.OnlyOne)
 

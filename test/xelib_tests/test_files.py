@@ -120,7 +120,7 @@ class TestFiles:
 class TestSaveFile:
     def test_save_file(self):
         # should save new files
-        with Xelib(game_mode=Xelib.GameModes.gmTES5,
+        with Xelib(game_mode=Xelib.GameModes.TES5,
                    plugins=TEST_PLUGINS).session() as xelib:
             # ensure data path is good
             data_path = xelib.get_global('DataPath')
@@ -145,7 +145,7 @@ class TestSaveFile:
 
         # should save files at custom paths
         tmpdir = tempfile.mkdtemp()
-        with Xelib(game_mode=Xelib.GameModes.gmTES5,
+        with Xelib(game_mode=Xelib.GameModes.TES5,
                    plugins=TEST_PLUGINS).session() as xelib:
             # ensure data path is good
             assert Path(tmpdir).is_dir()

@@ -5,29 +5,29 @@ from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
 
 @unique
 class ConflictThis(Enum):
-    ctUnknown = 0
-    ctIgnored = 1
-    ctNotDefined = 2
-    ctIdenticalToMaster = 3
-    ctOnlyOne = 4
-    ctHiddenByModGroup = 5
-    ctMaster = 6
-    ctConflictBenign = 7
-    ctOverride = 8
-    ctIdenticalToMasterWinsConflict = 9
-    ctConflictWins = 10
-    ctConflictLoses = 11
+    Unknown = 0
+    Ignored = 1
+    NotDefined = 2
+    IdenticalToMaster = 3
+    OnlyOne = 4
+    HiddenByModGroup = 5
+    Master = 6
+    ConflictBenign = 7
+    Override = 8
+    IdenticalToMasterWinsConflict = 9
+    ConflictWins = 10
+    ConflictLoses = 11
 
 
 @unique
 class ConflictAll(Enum):
-    caUnknown = 0
-    caOnlyOne = 1
-    caNoConflict = 2
-    caConflictBenign = 3
-    caOverride = 4
-    caConflict = 5
-    caConflictCritical = 6
+    Unknown = 0
+    OnlyOne = 1
+    NoConflict = 2
+    ConflictBenign = 3
+    Override = 4
+    Conflict = 5
+    ConflictCritical = 6
 
 
 @unique

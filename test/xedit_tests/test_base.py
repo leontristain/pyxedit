@@ -125,16 +125,16 @@ class TestXEditBase:
         # sanity check all four type fields, when inapplicable they should
         # return None
         dawnguard = xedit['Dawnguard.esm']
-        assert dawnguard.element_type == xedit.ElementTypes.etFile
+        assert dawnguard.element_type == xedit.ElementTypes.File
         assert dawnguard.def_type is None
         assert dawnguard.value_type is None
         assert dawnguard.smash_type is None
 
         pnam = xedit['Dawnguard.esm\\Head Part\\MaleEyesSnowElf\\PNAM']
-        assert pnam.element_type == xedit.ElementTypes.etSubRecord
-        assert pnam.def_type == xedit.DefTypes.dtInteger
-        assert pnam.value_type == xedit.ValueTypes.vtEnum
-        assert pnam.smash_type == xedit.SmashTypes.stInteger
+        assert pnam.element_type == xedit.ElementTypes.SubRecord
+        assert pnam.def_type == xedit.DefTypes.Integer
+        assert pnam.value_type == xedit.ValueTypes.Enum
+        assert pnam.smash_type == xedit.SmashTypes.Integer
 
     @assert_no_opened_handles_after
     def test_add_delete(self, xedit):

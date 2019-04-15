@@ -167,17 +167,17 @@ class XEditBase:
         Resolve an XEditType value for this element based on the various
         other types.
         '''
-        if self.def_type in (self.DefTypes.dtString,
-                             self.DefTypes.dtLString,
-                             self.DefTypes.dtLenString,
-                             self.DefTypes.dtByteArray,
-                             self.DefTypes.dtInteger,
-                             self.DefTypes.dtIntegerFormater,
-                             self.DefTypes.dtIntegerFormaterUnion,
-                             self.DefTypes.dtFlag,
-                             self.DefTypes.dtFloat):
-            if (self.def_type == self.DefTypes.dtInteger and
-                    self.value_type == self.ValueTypes.vtReference):
+        if self.def_type in (self.DefTypes.String,
+                             self.DefTypes.LString,
+                             self.DefTypes.LenString,
+                             self.DefTypes.ByteArray,
+                             self.DefTypes.Integer,
+                             self.DefTypes.IntegerFormater,
+                             self.DefTypes.IntegerFormaterUnion,
+                             self.DefTypes.Flag,
+                             self.DefTypes.Float):
+            if (self.def_type == self.DefTypes.Integer and
+                    self.value_type == self.ValueTypes.Reference):
                 return self.Types.Ref
             else:
                 return self.Types.Value
@@ -217,7 +217,7 @@ class XEditBase:
         '''
         Returns whether element is a flag element containing flags
         '''
-        return self.value_type == self.ValueTypes.vtFlags
+        return self.value_type == self.ValueTypes.Flags
 
     def objectify(self, handle):
         '''
@@ -254,19 +254,19 @@ class XEditBase:
             return XEditFlags.from_xedit_object(handle, self)
 
         # if object is a plugin, use the XEditPlugin class
-        if generic_obj.element_type == self.ElementTypes.etFile:
+        if generic_obj.element_type == self.ElementTypes.File:
             return XEditPlugin.from_xedit_object(handle, self)
 
         # if object is a top-level group, use the generic class as-is, since
         # it's going to have a signature that is same as the records in the
         # group, but won't have anything of substance
-        if generic_obj.element_type == self.ElementTypes.etGroupRecord:
+        if generic_obj.element_type == self.ElementTypes.GroupRecord:
             generic_obj.auto_release = True
             return generic_obj
 
         # if object is an array or subrecord array, use the collection class
-        if generic_obj.element_type in (self.ElementTypes.etArray,
-                                        self.ElementTypes.etSubRecordArray):
+        if generic_obj.element_type in (self.ElementTypes.Array,
+                                        self.ElementTypes.SubRecordArray):
             return XEditArray.from_xedit_object(handle, self)
 
         # otherwise, see if we can find a subclass of XEditBase

@@ -59,7 +59,7 @@ class Xelib(ElementValuesMethods,
     Xelib class
     '''
     def __init__(self,
-                 game_mode=SetupMethods.GameModes.gmSSE,
+                 game_mode=SetupMethods.GameModes.SSE,
                  game_path=None,
                  plugins=None):
         '''
@@ -113,7 +113,7 @@ class Xelib(ElementValuesMethods,
             if load_plugins:
                 self.load_plugins(os.linesep.join(self._plugins))
                 while (self.get_loader_status() ==
-                            SetupMethods.LoaderStates.lsActive):
+                            SetupMethods.LoaderStates.Active):
                     time.sleep(0.1)
 
             # loading is done, given handle to user
