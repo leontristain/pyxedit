@@ -1,6 +1,4 @@
 from contextlib import contextmanager
-import os
-import time
 
 from pyxedit.xedit.base import XEditBase
 from pyxedit.xelib import Xelib

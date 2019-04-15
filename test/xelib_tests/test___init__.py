@@ -1,9 +1,6 @@
 import pytest
-import time
 
-from pyxedit import Xelib, XelibError
-
-from . utils import stripped_block
+from pyxedit import XelibError
 
 from . fixtures import xelib  # NOQA: for pytest
 

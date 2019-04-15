@@ -3,12 +3,10 @@ from pathlib import Path
 import pytest
 import shutil
 import tempfile
-import time
 
 from pyxedit import Xelib, XelibError
 
 from . fixtures import xelib  # NOQA: for pytest
-from . utils import stripped_block
 
 
 TEST_PLUGINS = ['Skyrim.esm',
