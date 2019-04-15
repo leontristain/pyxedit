@@ -110,7 +110,7 @@ class TestFiles:
 class TestSaveFile:
     def test_save_file(self):
         # should save new files
-        with Xelib() as xelib:
+        with Xelib().session() as xelib:
             # initialize and load plugins
             xelib.set_game_mode(xelib.Games.Skyrim)
             xelib.load_plugins(stripped_block('''
@@ -152,7 +152,7 @@ class TestSaveFile:
 
         # should save files at custom paths
         tmpdir = tempfile.mkdtemp()
-        with Xelib() as xelib:
+        with Xelib().session() as xelib:
             # initialize and load plugins
             xelib.set_game_mode(xelib.Games.Skyrim)
             xelib.load_plugins(stripped_block('''

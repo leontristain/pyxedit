@@ -8,7 +8,7 @@ from . utils import stripped_block, Timer
 
 @pytest.fixture(scope='class')
 def xelib():
-    with Xelib() as xelib:
+    with Xelib().session() as xelib:
         xelib.set_game_mode(xelib.Games.Skyrim)
         xelib.load_plugins(stripped_block('''
                     Skyrim.esm

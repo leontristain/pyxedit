@@ -65,6 +65,7 @@ class Xelib(ElementValuesMethods,
         self._handles_stack = []
         self._current_handles = set()
 
+    '''
     def __enter__(self):
         if not self._raw_api:
             self._raw_api = self.load_lib(self.dll_path)
@@ -79,6 +80,23 @@ class Xelib(ElementValuesMethods,
             kernel32.FreeLibrary.argtypes = [wintypes.HMODULE]
             kernel32.FreeLibrary(self._raw_api._handle)
             self._raw_api = None
+    '''
+
+    @contextmanager
+    def session(self):
+        try:
+            if not self._raw_api:
+                self._raw_api = self.load_lib(self.dll_path)
+                self.initialize()
+            yield self
+        finally:
+            if self._raw_api:
+                self.release_handles()
+                self.finalize()
+                kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+                kernel32.FreeLibrary.argtypes = [wintypes.HMODULE]
+                kernel32.FreeLibrary(self._raw_api._handle)
+                self._raw_api = None
 
     @property
     def loaded(self):

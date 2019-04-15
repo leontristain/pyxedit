@@ -14,7 +14,7 @@ class TestInit:
                 method(handle)
 
         # should save new files
-        with Xelib() as xelib:
+        with Xelib().session() as xelib:
             # initialize and load plugins
             xelib.set_game_mode(xelib.Games.Skyrim)
             xelib.load_plugins(stripped_block('''

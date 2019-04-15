@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import os
 import time
 
@@ -35,29 +36,18 @@ class XEdit(XEditBase):
     def plugin_names(self):
         return self.xelib.get_loaded_file_names()
 
+    @contextmanager
     def session(self, load_plugins=True):
-        class XeditSession:
-            def __init__(self, xedit, load_plugins):
-                self.xedit = xedit
-                self.load_plugins = load_plugins
-
-            def __enter__(self):
-                self.xedit.xelib.__enter__()
-                self.xedit.xelib.set_game_mode(self.xedit._game_mode)
-                if self.xedit._game_path:
-                    self.xedit.xelib.set_game_path(self.xedit._game_path)
-                if self.load_plugins:
-                    self.xedit.xelib.load_plugins(
-                        os.linesep.join(self.xedit._plugins))
-                    while (self.xedit.xelib.get_loader_status() ==
-                                                Xelib.LoaderStates.lsActive):
-                        time.sleep(0.1)
-                return self.xedit
-
-            def __exit__(self, exc_type, exc_value, traceback):
-                self.xedit.xelib.__exit__(exc_type, exc_value, traceback)
-
-        return XeditSession(self, load_plugins)
+        with self.xelib.session():
+            self.xelib.set_game_mode(self._game_mode)
+            if self._game_path:
+                self.xelib.set_game_path(self._game_path)
+            if load_plugins:
+                self.xelib.load_plugins(os.linesep.join(self._plugins))
+                while (self.xelib.get_loader_status() ==
+                           Xelib.LoaderStates.lsActive):
+                    time.sleep(0.1)
+            yield self
 
     @classmethod
     def quickstart(cls, game=XEditBase.Games.SkyrimSE, plugins=None):
