@@ -59,7 +59,7 @@ class Xelib(ElementValuesMethods,
     Xelib class
     '''
     def __init__(self,
-                 game_mode=SetupMethods.Games.SkyrimSE,
+                 game_mode=SetupMethods.GameModes.gmSSE,
                  game_path=None,
                  plugins=None):
         '''

@@ -9,11 +9,11 @@ class TestXEditBase:
     @assert_no_opened_handles_after
     def test_basic_attributes(self, xedit):
         # enums on the xelib class should have been forwarded
-        assert xedit.Games
         assert xedit.ElementTypes
         assert xedit.DefTypes
         assert xedit.SmashTypes
         assert xedit.ValueTypes
+        assert xedit.GameModes
 
         # should have a handle attribute
         assert hasattr(xedit, 'handle')

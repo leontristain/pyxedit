@@ -16,6 +16,6 @@ def xelib():
                'xtest-4.esp',
                'xtest-5.esp']
 
-    with Xelib(game_mode=Xelib.Games.Skyrim,
+    with Xelib(game_mode=Xelib.GameModes.gmTES5,
                plugins=plugins).session() as xelib:
         yield xelib

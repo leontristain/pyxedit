@@ -10,7 +10,7 @@ from . utils import backed_up, Timer, stripped_block
 
 class TestSetup:
     def app_data_path(self, file_name):
-        with (Xelib(game_mode=Xelib.Games.Skyrim)
+        with (Xelib(game_mode=Xelib.GameModes.gmTES5)
                   .session(load_plugins=False)) as xelib:
             app_data_path = xelib.get_global('AppDataPath')
             assert app_data_path
@@ -23,11 +23,11 @@ class TestSetup:
                 xelib.get_global('AppDataPath')
 
             # should succeed for the first time for Skyrim game mode
-            xelib.set_game_mode(xelib.Games.Skyrim)
+            xelib.set_game_mode(xelib.GameModes.gmTES5)
 
             # Should fail the second time
             with pytest.raises(XelibError):
-                xelib.set_game_mode(xelib.Games.SkyrimSE)
+                xelib.set_game_mode(xelib.GameModes.gmSSE)
 
             # AppDataPath should now be accessible
             assert xelib.get_global('AppDataPath')
@@ -41,7 +41,7 @@ class TestSetup:
                 # comment
                 NonExistingPlugin.esp
                 '''))
-            with (Xelib(game_mode=Xelib.Games.Skyrim)
+            with (Xelib(game_mode=Xelib.GameModes.gmTES5)
                       .session(load_plugins=False)) as xelib:
                 load_order = xelib.get_load_order().split()
 
@@ -79,7 +79,7 @@ class TestSetup:
                 # comment
                 NonExistingPlugin.esp
                 '''))
-            with (Xelib(game_mode=Xelib.Games.Skyrim)
+            with (Xelib(game_mode=Xelib.GameModes.gmTES5)
                       .session(load_plugins=False)) as xelib:
                 plugins = xelib.get_active_plugins().split()
 

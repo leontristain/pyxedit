@@ -42,11 +42,11 @@ class SetupMethods(WrapperMethodsBase):
     GameModes = GameModes
 
     def get_game_path(self, game=None, ex=True):
-        game = game or self.Games.SkyrimSE
+        game = game or self.GameModes.gmSSE
         return self.get_string(
-            lambda len_: self.raw_api.GetGamePath(game.value.mode, len_),
+            lambda len_: self.raw_api.GetGamePath(game.value, len_),
             error_msg=f'GetGamePath failed for game {game}; mode '
-                      f'{game.value.mode}',
+                      f'{game.value}',
             ex=ex)
 
     def set_game_path(self, path, ex=True):
@@ -56,11 +56,11 @@ class SetupMethods(WrapperMethodsBase):
             ex=ex)
 
     def get_game_language(self, game=None, ex=True):
-        game = game or self.Games.SkyrimSE
+        game = game or self.GameModes.gmSSE
         return self.get_string(
-            lambda len_: self.raw_api.GetGameLanguage(game.value.mode, len_),
+            lambda len_: self.raw_api.GetGameLanguage(game.value, len_),
             error_msg=f'GetGameLanguage failed for game {game}; mode '
-                      f'{game.value.mode}',
+                      f'{game.value}',
             ex=ex) or 'English'
 
     def set_language(self, language, ex=True):
@@ -70,11 +70,11 @@ class SetupMethods(WrapperMethodsBase):
             ex=ex)
 
     def set_game_mode(self, game=None, ex=True):
-        game = game or self.Games.SkyrimSE
+        game = game or self.GameModes.gmSSE
         return self.verify_execution(
-            self.raw_api.SetGameMode(game.value.mode),
+            self.raw_api.SetGameMode(game.value),
             error_msg=f'Failed to SetGameMode to game {game}; mode '
-                      f'{game.value.mode}',
+                      f'{game.value}',
             ex=ex)
 
     def get_load_order(self, ex=True):

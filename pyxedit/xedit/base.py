@@ -7,12 +7,12 @@ from pyxedit.xedit.misc import XEditError, XEditTypes
 
 class XEditBase:
     SIGNATURE = None
-    Games = Xelib.Games
     Types = XEditTypes
     ElementTypes = Xelib.ElementTypes
     DefTypes = Xelib.DefTypes
     SmashTypes = Xelib.SmashTypes
     ValueTypes = Xelib.ValueTypes
+    GameModes = Xelib.GameModes
 
     # initializer
     def __init__(self, xelib, handle, handle_group, auto_release=True):

@@ -6,7 +6,7 @@ from pyxedit.xelib import Xelib
 
 class XEdit(XEditBase):
     def __init__(self,
-                 game_mode=XEditBase.Games.SkyrimSE,
+                 game_mode=XEditBase.GameModes.gmSSE,
                  game_path=None,
                  plugins=None):
         self.import_all_object_classes()
@@ -54,7 +54,7 @@ class XEdit(XEditBase):
             yield self
 
     @classmethod
-    def quickstart(cls, game=XEditBase.Games.SkyrimSE, plugins=None):
+    def quickstart(cls, game=XEditBase.GameModes.gmSSE, plugins=None):
         '''
         For when you want to play around with an xedit session in the
         interpreter quickly

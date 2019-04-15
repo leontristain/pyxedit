@@ -17,7 +17,7 @@ def xedit():
                        'Dragonborn.esm']
 
     # construct the XEdit object we will use for running the test
-    xedit = XEdit(game_mode=XEdit.Games.SkyrimSE, plugins=vanilla_masters)
+    xedit = XEdit(game_mode=XEdit.GameModes.gmSSE, plugins=vanilla_masters)
 
     # open a quick non-loading session to retrieve the auto-discovered game path
     with xedit.session(load_plugins=False):
