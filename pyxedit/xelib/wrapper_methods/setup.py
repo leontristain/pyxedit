@@ -1,20 +1,6 @@
-from collections import namedtuple
 from enum import Enum, unique
 
 from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
-
-
-GameInfo = namedtuple('GameInfo', 'name short_name mode exe_name')
-
-
-@unique
-class Games(Enum):
-    FalloutNV = GameInfo('Fallout NV', 'FalloutNV', 0, 'FalloutNV.exe')
-    Fallout3 = GameInfo('Fallout 3', 'Fallout3', 1, 'Fallout3.exe')
-    Oblivion = GameInfo('Oblivion', 'Oblivion', 2, 'Oblivion.exe')
-    Skyrim = GameInfo('Skyrim', 'Skyrim', 3, 'TESV.exe')
-    SkyrimSE = GameInfo('Skyrim SE', 'Skyrim', 4, 'SkyrimSE.exe')
-    Fallout4 = GameInfo('Fallout 4', 'Fallout4', 5, 'Fallout4.exe')
 
 
 @unique
@@ -36,8 +22,6 @@ class GameModes(Enum):
 
 
 class SetupMethods(WrapperMethodsBase):
-    GameInfo = GameInfo
-    Games = Games
     LoaderStates = LoaderStates
     GameModes = GameModes
 
