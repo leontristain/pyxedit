@@ -70,7 +70,7 @@ def assert_no_opened_handles_after(test):
         # by xelib. If there is, then something somewhere is failing to
         # release handle during finalization. This could happen if, say,
         # an object has errorneously set auto_release to False.
-        assert xedit.xelib.opened_handles == set()
+        assert xedit.xelib.all_opened_handles == set()
 
         return returned
     return wrapped_test

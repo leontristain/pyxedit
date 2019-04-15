@@ -125,7 +125,7 @@ class Xelib(ElementValuesMethods,
                 raise XelibError('Api is not loaded; something is wrong')
 
             # unload the API
-            self.release_handles()
+            self.release_all_handles()
             self.finalize()
             kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
             kernel32.FreeLibrary.argtypes = [wintypes.HMODULE]
@@ -137,34 +137,38 @@ class Xelib(ElementValuesMethods,
         return bool(self._raw_api)
 
     @property
-    def opened_handles(self):
+    def full_handles_stack(self):
+        return self._handles_stack + [self._current_handles]
+
+    @property
+    def all_opened_handles(self):
         opened_handles = set()
-        for handles in self._handles_stack:
+        for handles in self.full_handles_stack:
             opened_handles.update(handles)
-        opened_handles.update(self._current_handles)
         return opened_handles
 
     def track_handle(self, handle):
         self._current_handles.add(handle)
 
     def release_handle(self, handle):
-        found_layers = [
-            layer for layer in self._handles_stack + [self._current_handles]
-            if handle in layer]
-        if found_layers:
-            for layer in found_layers:
-                layer.remove(handle)
-            try:
-                self.release(handle)
-            except XelibError:
-                pass
+        try:
+            self.release(handle)
+        except XelibError:
+            pass
+        finally:
+            for layer in self.full_handles_stack:
+                if handle in layer:
+                    layer.remove(handle)
 
-    def release_handles(self):
-        while self._current_handles:
-            try:
-                self.release(self._current_handles.pop())
-            except XelibError:
-                pass
+    def release_handles(self, handles):
+        for handle in handles:
+            self.release_handle(handle)
+
+    def release_current_handles(self):
+        self.release_handles(list(self._current_handles))
+
+    def release_all_handles(self):
+        self.release_handles(list(self.all_opened_handles))
 
     @contextmanager
     def manage_handles(self):
@@ -173,7 +177,7 @@ class Xelib(ElementValuesMethods,
             self._current_handles = set()
             yield
         finally:
-            self.release_handles()
+            self.release_current_handles()
             self._current_handles = self._handles_stack.pop()
 
     def print_handle_management_stack(self):
@@ -182,14 +186,12 @@ class Xelib(ElementValuesMethods,
         print(f'{len(self._handles_stack)}: {self._current_handles}')
 
     def promote_handle(self, handle):
-        full_stack = self._handles_stack + [self._current_handles]
-        for (current_handles,
-             parent_scope_handles) in pairwise(reversed(full_stack)):
-            if handle in current_handles:
-                current_handles.remove(handle)
-                parent_scope_handles.add(handle)
-                return parent_scope_handles
-
+        for (current_layer,
+             parent_layer) in pairwise(reversed(self.full_handles_stack)):
+            if handle in current_layer:
+                current_layer.remove(handle)
+                parent_layer.add(handle)
+                return parent_layer
         print(f'failed to promote handle {handle}')
 
     @property

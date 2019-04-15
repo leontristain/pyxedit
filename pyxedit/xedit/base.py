@@ -15,19 +15,19 @@ class XEditBase:
     GameModes = Xelib.GameModes
 
     # initializer
-    def __init__(self, xelib, handle, handle_group, auto_release=True):
+    def __init__(self, xelib, handle, handle_layer, auto_release=True):
         '''
         Initializer
         '''
         # each XEditBase-derived object wraps an xedit-lib handle
         self.handle = handle
 
-        # we keep a reference to the handle group (from the xelib object)
+        # we keep a reference to the handle layer (from the xelib object)
         # containing the handle, in order to keep tabs on whether the handle
         # is still valid. The Xelib object is responsible for depopulating
-        # the group as handles are released; if the group has been emptied,
+        # the layer as handles are released; if the layer has been emptied,
         # we should be able to detect that here
-        self._handle_group = handle_group
+        self._handle_layer = handle_layer
 
         # we keep a reference to the overarching xelib object; this is the
         # gateway to the xelib API that lets us do just about everything.
@@ -68,7 +68,7 @@ class XEditBase:
         @return: self._xelib attribute, but only if handle is still valid
                  (i.e. still exists in the handle group it's supposed to be in)
         '''
-        if self.handle and self.handle not in self._handle_group:
+        if self.handle and self.handle not in self._handle_layer:
             raise XEditError(f'Accessing XEdit object of handle {self.handle} '
                              f'which has already been released from the '
                              f'xelib session')
@@ -127,9 +127,9 @@ class XEditBase:
         harmlessly do nothing.
         '''
         if self.handle:
-            parent_handles = self.xelib.promote_handle(self.handle)
-            if parent_handles:
-                self._handle_group = parent_handles
+            parent_layer = self.xelib.promote_handle(self.handle)
+            if parent_layer:
+                self._handle_layer = parent_layer
 
     # basic type properties, these should be safely accessible and return
     # a falsey value if inapplicable
