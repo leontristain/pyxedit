@@ -202,17 +202,21 @@ class Xelib(ElementValuesMethods,
 
     @staticmethod
     def load_lib(dll_path):
+        # load XEditLib.dll
         lib = ctypes.CDLL(str(dll_path))
-        types_mapping = {mapping.name: mapping.value for mapping in DelphiTypes}
+
+        # define type signatures for XEditLib.dll methods
         for signature in XEditLibSignatures:
             method_name = signature.name
             params, return_type = signature.value
             try:
                 method = getattr(lib, method_name)
-                method.argtypes = [types_mapping[delphi_type]
-                                   for _, delphi_type in params.items()]
+                method.argtypes = [DelphiTypes[type_].value
+                                   for _, type_ in params.items()]
                 if return_type:
-                    method.restype = types_mapping[return_type]
+                    method.restype = DelphiTypes[return_type].value
             except AttributeError:
                 print(f'WARNING: missing function {method_name}')
+
+        # return a handle to the loaded library
         return lib
