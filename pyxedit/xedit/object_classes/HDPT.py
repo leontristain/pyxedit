@@ -30,6 +30,6 @@ class XEditHeadPart(XEditGenericObject):
 
     @property
     def file_paths(self):
-        files = ([self.model_filename] +
-                 [part['NAM1'].value for part in self.parts])
+        files = ([f'Meshes\\{self.model_filename}'] +
+                 [f'Meshes\\{part["NAM1"].value}' for part in self.parts or []])
         return sorted(set([file_ for file_ in files if file_]))

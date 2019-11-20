@@ -88,6 +88,20 @@ class XEditBase:
         return getattr(self.xelib, method)(self.handle, *args, **kwargs)
 
     # dunderbar methods, implement native object functionalities
+    def __hash__(self):
+        '''
+        Implements hashing behavior.
+
+        The uniqueness of an xedit object is based on its path, which should
+        be composed of at least the plugin file it comes from, the record it
+        belongs to, and the subpath within the record. This seems to be
+        sufficient to uniquely identify any xedit object.
+
+        Having xedit objects being both hashable and with __eq__ defined,
+        should allow it to be used as keys of dictionaries and added to sets.
+        '''
+        return hash(self.path)
+
     def __eq__(self, other):
         '''
         Implements equality behavior (`==` operator)
@@ -561,6 +575,7 @@ class XEditBase:
         '''
         from pyxedit.xedit.object_classes.ARMA import XEditArmature  # NOQA
         from pyxedit.xedit.object_classes.ARMO import XEditArmor  # NOQA
+        from pyxedit.xedit.object_classes.FLST import XEditFormList  # NOQA
         from pyxedit.xedit.object_classes.HDPT import XEditHeadPart  # NOQA
         from pyxedit.xedit.object_classes.NPC_ import XEditNPC  # NOQA
         from pyxedit.xedit.object_classes.OBND import XEditObjectBounds # NOQA

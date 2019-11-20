@@ -54,8 +54,8 @@ class XEditArmature(XEditGenericObject):
 
     nam0 = base_male_texture = male_skin_texture = XEditAttribute('NAM0')
     nam1 = base_female_texture = female_skin_texture = XEditAttribute('NAM1')
-    nam2 = base_male_firstperson_texture = XEditAttribute('NAM2')
-    nam3 = base_female_firstperson_texture = XEditAttribute('NAM3')
+    nam2 = base_male_firstperson_texture_swap_list = XEditAttribute('NAM2')
+    nam3 = base_female_firstperson_texture_swap_list = XEditAttribute('NAM3')
 
     modl = additional_races = included_races = XEditAttribute('MODL')
     sndd = footstep_sound = XEditAttribute('SNDD')
@@ -69,11 +69,17 @@ class XEditArmature(XEditGenericObject):
 
     @property
     def textures(self):
-        for item in [self.nam0, self.nam1, self.nam2, self.nam3]:
+        for item in [self.nam0, self.nam1]:
+            if item:
+                yield item
+
+    @property
+    def firstperson_texture_swap_lists(self):
+        for item in [self.nam2, self.nam3]:
             if item:
                 yield item
 
     @property
     def file_paths(self):
-        return [model.model_filename for model in self.models
+        return [f'Meshes\\{model.model_filename}' for model in self.models
                 if model and model.model_filename]

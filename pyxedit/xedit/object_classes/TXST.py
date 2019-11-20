@@ -31,4 +31,4 @@ class XEditTextureSet(XEditGenericObject):
         '''
         Return a list of all file paths currently associated with this record
         '''
-        return [path for path in self.texture_paths if path]
+        return [f'Textures\\{path}' for path in self.texture_paths if path]
