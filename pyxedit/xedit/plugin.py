@@ -2,6 +2,9 @@ from pyxedit.xedit.base import XEditBase
 
 
 class XEditPlugin(XEditBase):
+    def __repr__(self):
+        return (f'<{self.__class__.__name__} {self.name} {self.handle}>')
+
     @property
     def author(self):
         return self.xelib_run('get_file_author')
@@ -97,4 +100,4 @@ class XEditPlugin(XEditBase):
         return self.xelib_run('save_file')
 
     def save_as(self, file_path):
-        return self.xelib_run('save_file', file_path=file_path)
+        return self.xelib_run('save_file', file_path=str(file_path))

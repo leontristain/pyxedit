@@ -209,7 +209,7 @@ class TestXEditBase:
         assert dawnguard.__class__.__name__ == 'XEditPlugin'
 
         armo = xedit['Dawnguard.esm\\ARMO']
-        assert armo.__class__.__name__ == 'XEditGenericObject'
+        assert armo.__class__.__name__ == 'XEditArmor'
 
         txst = xedit['Dawnguard.esm\\Texture Set\\EyesSnowElf']
         assert txst.__class__.__name__ == 'XEditTextureSet'

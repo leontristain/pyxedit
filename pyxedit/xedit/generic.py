@@ -82,24 +82,42 @@ class XEditGenericObject(XEditBase):
 
     @property
     def form_id(self):
-        form_id = self.xelib_run('get_form_id', ex=False)
-        if form_id:
-            return form_id
+        '''
+        The form_id property. This is only valid if the current object points
+        to an ElementTypes.MainRecord. When invalid, a None is returned.
+        '''
+        if self.element_type == self.ElementTypes.MainRecord:
+            form_id = self.xelib_run('get_form_id', ex=False)
+            if form_id:
+                return form_id
 
     @property
     def form_id_str(self):
+        '''
+        The form_id padded with leading 0s to 8 characters, and returned as a
+        string. This is the most common string representation of a FormID
+        '''
         form_id = self.form_id
         if form_id:
             return f'{form_id:0>8X}'
 
     @property
     def local_form_id(self):
-        form_id = self.xelib_run('get_form_id', local=True, ex=False)
-        if form_id:
-            return form_id
+        '''
+        The local_form_id property. This is only valid if the current object
+        points to an ElementTypes.MainRecord. When invalid, a None is returned.
+        '''
+        if self.element_type == self.ElementTypes.MainRecord:
+            form_id = self.xelib_run('get_form_id', local=True, ex=False)
+            if form_id:
+                return form_id
 
     @property
     def local_form_id_str(self):
+        '''
+        The local_form_id padded with leading 0s to 8 characters, and returned
+        as a string. This is the most common string representation of a FormID
+        '''
         local_form_id = self.local_form_id
         if local_form_id:
             return f'{local_form_id:0>8X}'
@@ -110,6 +128,11 @@ class XEditGenericObject(XEditBase):
 
     @property
     def is_master(self):
+        '''
+        Returns whether this record is a master record. A record is a master
+        record if it is a newly introduced record in its plugin, where no
+        earlier plugins has the same record.
+        '''
         return self.xelib_run('is_master')
 
     @property
@@ -118,6 +141,11 @@ class XEditGenericObject(XEditBase):
 
     @property
     def is_override(self):
+        '''
+        Returns whether this record is an override record. An record is an
+        override record if the master record exists in some previous plugin,
+        and this record intends to override it.
+        '''
         return self.xelib_run('is_override')
 
     @property
@@ -151,7 +179,26 @@ class XEditGenericObject(XEditBase):
         if self.is_injected:
             return self.objectify(self.xelib_run('get_injection_target'))
 
-    def copy_into(self, target_plugin, as_new=False):
+    def copy_into(self, target_plugin, mode='override'):
+        '''
+        Copies a record into the given target plugin.
+
+        @param target_plugin: the target plugin to copy into
+
+        @param mode:
+            whether to copy as a new record or override record, can take the
+            following 3 possible values:
+                'override': record will be copied as an override record
+                'new': record will be copied as a new record
+                'mirror': a master record will be copied as a new record, while
+                    an override record will be copied as an override record
+            if not given, 'override' is the default value.
+        '''
+        # translate the mode into an as_new value
+        as_new = {'override': False,
+                  'new': True,
+                  'mirror': self.is_master}[mode]
+
         # for this to work, self must be a record, and target must be a file
         assert self.element_type == self.ElementTypes.MainRecord
         assert target_plugin.element_type == target_plugin.ElementTypes.File
@@ -159,7 +206,7 @@ class XEditGenericObject(XEditBase):
         # add required masters for copying self into the given plugin
         target_plugin.add_masters_needed_for_copying(self, as_new=as_new)
 
-        # copy our element over as override
+        # copy our element over
         return self.objectify(self.xelib_run('copy_element',
                                              target_plugin.handle,
                                              as_new=as_new))

@@ -1,3 +1,4 @@
+from cached_property import cached_property
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -147,35 +148,40 @@ class XEditBase:
 
     # basic type properties, these should be safely accessible and return
     # a falsey value if inapplicable
-    @property
+    @cached_property
     def element_type(self):
         '''
         Returns the element type
         '''
         return self.xelib_run('element_type', ex=False)
 
-    @property
+    @cached_property
     def def_type(self):
         '''
         Returns the def type
         '''
         return self.xelib_run('def_type', ex=False)
 
-    @property
+    @cached_property
     def smash_type(self):
         '''
         Returns the smash type
         '''
         return self.xelib_run('smash_type', ex=False)
 
-    @property
+    @cached_property
     def value_type(self):
         '''
-        Returns the value type
+        Returns the value type. A value type is invalid for File, Group, and
+        Main element types. In those cases, a None will be returned.
         '''
-        return self.xelib_run('value_type', ex=False)
+        if self.element_type not in (
+                self.ElementTypes.File,
+                self.ElementTypes.GroupRecord,
+                self.ElementTypes.MainRecord):
+            return self.xelib_run('value_type')
 
-    @property
+    @cached_property
     def type(self):
         '''
         Resolve an XEditType value for this element based on the various
@@ -197,6 +203,16 @@ class XEditBase:
                 return self.Types.Value
         else:
             return self.Types.Container
+
+    @cached_property
+    def is_ref(self):
+        '''
+        Returns whether element is a reference type
+        '''
+        try:
+            return self.type == self.Types.Ref
+        except NotImplementedError:
+            return False
 
     @property
     def is_modified(self):
@@ -226,7 +242,7 @@ class XEditBase:
         '''
         return self.xelib_run('is_sorted')
 
-    @property
+    @cached_property
     def is_flags(self):
         '''
         Returns whether element is a flag element containing flags
@@ -416,14 +432,25 @@ class XEditBase:
         '''
         return self.xelib_run('local_path', ex=False)
 
-    @property
+    @cached_property
     def signature(self):
         '''
         Returns the element signature
         '''
-        return self.xelib_run('signature', ex=False)
+        if self.SIGNATURE:
+            return self.SIGNATURE
+        elif self.element_type in (
+                self.ElementTypes.MainRecord,
+                self.ElementTypes.GroupRecord,
+                self.ElementTypes.SubRecord,
+                self.ElementTypes.SubRecordStruct,
+                self.ElementTypes.SubRecordArray,
+                self.ElementTypes.SubRecordUnion):
+            return self.xelib_run('signature')
+        else:
+            return None
 
-    @property
+    @cached_property
     def signature_name(self):
         '''
         Returns any known human-readable name for the element's signature
@@ -516,6 +543,17 @@ class XEditBase:
             return self.get(str(Path(self.long_path).parent), absolute=True)
 
     @property
+    def references(self):
+        '''
+        Produces all descendent elements of the current element that have
+        reference value types.
+        '''
+        for descendant in self.descendants():
+            if (descendant.is_ref and not
+                    descendant.long_path.endswith('Record Header\\FormID')):
+                yield descendant
+
+    @property
     def ls(self):
         '''
         Prints a list of children to stdout; this can be useful when browsing
@@ -580,3 +618,4 @@ class XEditBase:
         from pyxedit.xedit.object_classes.NPC_ import XEditNPC  # NOQA
         from pyxedit.xedit.object_classes.OBND import XEditObjectBounds # NOQA
         from pyxedit.xedit.object_classes.TXST import XEditTextureSet  # NOQA
+        from pyxedit.xedit.object_classes.VMAD import XEditVirtualMachineAdapter  # NOQA

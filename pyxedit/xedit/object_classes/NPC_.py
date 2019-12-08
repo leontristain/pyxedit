@@ -5,7 +5,7 @@ from pyxedit.xedit.generic import XEditGenericObject
 class XEditNPC(XEditGenericObject):
     SIGNATURE = 'NPC_'
 
-    vmad = script_info = XEditAttribute('VMAD')
+    vmad = script_info = virtual_machine_adapter = XEditAttribute('VMAD')
     obnd = object_bounds = XEditAttribute('OBND')
 
     acbs = base_stats = XEditAttribute('ACBS')

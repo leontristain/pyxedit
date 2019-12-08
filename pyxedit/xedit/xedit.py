@@ -53,6 +53,9 @@ class XEdit(XEditBase):
         with self.xelib.session():
             yield self
 
+    def add_file(self, file_name):
+        return self.objectify(self.xelib.add_file(file_name))
+
     @classmethod
     def quickstart(cls, game=XEditBase.GameModes.SSE, plugins=None):
         '''
