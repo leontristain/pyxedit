@@ -191,7 +191,14 @@ class XEditGenericObject(XEditBase):
                 'override': record will be copied as an override record
                 'new': record will be copied as a new record
                 'mirror': a master record will be copied as a new record, while
-                    an override record will be copied as an override record
+                    an override record will be copied as an override record.
+                    This is useful when you want to duplicate the effects of
+                    a mod's records into your own plugin, where the mod in
+                    question may have overrides on skyrim masters _AND_ new
+                    records added by the mod, in which case you would want to
+                    copy the newly added records as new, but the overriden
+                    records as override
+
             if not given, 'override' is the default value.
         '''
         # translate the mode into an as_new value
