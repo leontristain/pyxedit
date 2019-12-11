@@ -286,9 +286,24 @@ class Xelib(ElementValuesMethods,
         return opened_handles
 
     def track_handle(self, handle):
+        '''
+        Add the given handle to the current handle management stack layer
+        for tracking purposes.
+
+        Args:
+            handle (``int``)
+                The handle to track
+        '''
         self._current_handles.add(handle)
 
     def release_handle(self, handle):
+        '''
+        Releases a handle, and remove it from the handle management stack.
+
+        Args:
+            handle (``int``)
+                The handle to release
+        '''
         try:
             self.release(handle)
         except XelibError:
@@ -299,6 +314,13 @@ class Xelib(ElementValuesMethods,
                     layer.remove(handle)
 
     def release_handles(self, handles):
+        '''
+        Releases the given list of handles.
+
+        Args:
+            handles (``List[int]``)
+                The list of handles to release
+        '''
         for handle in handles:
             self.release_handle(handle)
 
@@ -310,6 +332,31 @@ class Xelib(ElementValuesMethods,
 
     @contextmanager
     def manage_handles(self):
+        '''
+        A context manager that helps you manage sets of handles. Any new handles
+        returned by a ``Xelib`` API method within such a context will be
+        automatically released on context exit. These handle management contexts
+        can be nested. See below example:
+
+        .. highlight:: python
+        .. code-block:: python
+
+            with Xelib(plugins=['foo.esp']).session() as xelib:
+                # handle 1 gets created
+                h1 = xelib.get_element('foo.esp\\NPC_\\Lydia')
+
+                with manage_handles():
+                    # handle 2 gets created
+                    h2 = xelib.get_element('foo.esp\\NPC_\\Balgruuf')
+
+                    with manage_handles():
+                        # handle 3 gets created
+                        h3 = xelib.get_element('foo.esp\\NPC_\\Taarie')
+
+                    # on context exit, handle 3 gets released
+                # on context exit, handle 2 gets released
+            # at the end of session, handle 1 gets released
+        '''
         try:
             self._handles_stack.append(self._current_handles)
             self._current_handles = set()
@@ -319,11 +366,24 @@ class Xelib(ElementValuesMethods,
             self._current_handles = self._handles_stack.pop()
 
     def print_handle_management_stack(self):
+        '''
+        Prints the entire handle management stack to stdout. Useful for
+        debugging.
+        '''
         for i, handles in enumerate(self._handles_stack):
             print(f'{i}: {handles}')
         print(f'{len(self._handles_stack)}: {self._current_handles}')
 
     def promote_handle(self, handle):
+        '''
+        Promotes the given handle from its current handle management context
+        to its parent handle management context. This is useful for preserving
+        handles you're interested in.
+
+        Args:
+            handles (``List[int]``)
+                The handle to promote to parent handle management context
+        '''
         for (current_layer,
              parent_layer) in pairwise(reversed(self.full_handles_stack)):
             if handle in current_layer:

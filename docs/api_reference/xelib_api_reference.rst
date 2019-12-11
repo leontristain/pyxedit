@@ -28,7 +28,7 @@ The Xelib Class
     .. rubric:: Handle Management Methods
     Methods for managing handles.
 
-        .. automethod:: track_handle
+    .. automethod:: track_handle
     .. automethod:: release_handle
     .. automethod:: release_handles
     .. automethod:: manage_handles
