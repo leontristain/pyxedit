@@ -9,6 +9,27 @@ Xelib API Reference
 .. toctree::
    :maxdepth: 1
 
+Overview
+========
+
+The `ex` Parameter
+==================
+
+Many ``Xelib`` API methods will support an ``ex`` parameter that can be set to
+`True` or `False`, and has a default value associated. In the API documentation,
+this parameter will not be documented, since it always means the same thing.
+When ``ex=False``, the method will not raise an exception, and will instead return some kind of falsey value like `None` if a return value is expected.
+When ``ex=True``, any kind of errors encountered in ``XEditLib.dll`` will be
+raised as a ``XelibError``.
+
+This has to do with how most ``XEditLib.dll`` functions work. You are supposed
+to call it, and it always returns a boolean for whether the call was successful.
+If the call was successful, you can then run some other function to retrieve the
+return value. Otherwise, you can run some other function to retrieve the error
+message and traceback.
+
+Note that this is not necessarily a one-to-one correspondance to the `Ex` functions of the javascript `xelib <https://github.com/z-edit/xelib>`_ library. I did use the javascript xelib library as a reference for creating this python wrapper, however I think I may have misunderstood `Ex` as short for `Exception`. Later on I `learned <https://stackoverflow.com/questions/3963374/what-does-it-mean-when-ex-is-added-to-a-function-method-name>`_ that it is also likely to mean `Extension`, which seems to be a known pattern in the windows world. Either way, I ended up with ``ex=`` optional parameters to mean `exception`, and I think that's what I will go with in this python wrapper.
+
 Basic Methods
 =============
 
