@@ -345,11 +345,11 @@ class Xelib(ElementValuesMethods,
                 # handle 1 gets created
                 h1 = xelib.get_element('foo.esp\\NPC_\\Lydia')
 
-                with manage_handles():
+                with xelib.manage_handles():
                     # handle 2 gets created
                     h2 = xelib.get_element('foo.esp\\NPC_\\Balgruuf')
 
-                    with manage_handles():
+                    with xelib.manage_handles():
                         # handle 3 gets created
                         h3 = xelib.get_element('foo.esp\\NPC_\\Taarie')
 
