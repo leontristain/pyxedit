@@ -18,8 +18,7 @@ The Xelib Class
 
     .. rubric:: Basic Methods
     .. automethod:: __init__
-    .. automethod:: __enter__
-    .. automethod:: __exit__
+    .. automethod:: session
     .. automethod:: load_lib
     .. autoattribute:: raw_api
     .. autoattribute:: loaded
@@ -29,8 +28,7 @@ The Xelib Class
     .. rubric:: Handle Management Methods
     Methods for managing handles.
 
-    .. autoattribute:: opened_handles
-    .. automethod:: track_handle
+        .. automethod:: track_handle
     .. automethod:: release_handle
     .. automethod:: release_handles
     .. automethod:: manage_handles

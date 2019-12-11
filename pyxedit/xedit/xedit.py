@@ -8,11 +8,13 @@ class XEdit(XEditBase):
     def __init__(self,
                  game_mode=XEditBase.GameModes.SSE,
                  game_path=None,
-                 plugins=None):
+                 plugins=None,
+                 xeditlib_path=None):
         self.import_all_object_classes()
         self._xelib = Xelib(game_mode=game_mode,
                             game_path=game_path,
-                            plugins=plugins)
+                            plugins=plugins,
+                            xeditlib_path=xeditlib_path)
         self.handle = 0
         self.auto_release = False
 

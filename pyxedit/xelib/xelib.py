@@ -135,9 +135,28 @@ class Xelib(ElementValuesMethods,
     def __init__(self,
                  game_mode=SetupMethods.GameModes.SSE,
                  game_path=None,
-                 plugins=None):
+                 plugins=None,
+                 xeditlib_path=None):
         '''
-        Initializer
+        Xelib Class Initializer
+
+        Args:
+            game_mode (``Xelib.GameModes``):
+                This is where you tell Xelib which game you want it to work
+                with. Accepts anything in the ``Xelib.GameModes`` enum.
+                For Skyrim, use ``Xelib.GameModes.TES5``. For Skyrim Special
+                Edition, use ``Xelib.GameModes.SSE``.
+            game_path (``str``):
+                The path to the game folder. If not given, the library will
+                attempt to automatically find the game's install path using
+                known registry values.
+            plugins (``List[str]``):
+                The list of plugins to load. Any required masters will be
+                automatically included as well.
+            xeditlib_path (``str``):
+                If you want to point ``Xelib`` to use your own copy of
+                ``XEditLib.dll``, you may provide the file path here. Otherwise,
+                the library will use its own copy of ``XEditLib.dll``.
         '''
         # Initialization attributes
         self._game_mode = game_mode
@@ -145,7 +164,7 @@ class Xelib(ElementValuesMethods,
         self._plugins = plugins or []
 
         # XEditLib.dll entry points
-        self.dll_path = DLL_PATH
+        self.dll_path = xeditlib_path or DLL_PATH
         self._raw_api = None
         self._wrapper_api = None  # point `raw_api` to this to log debug calls
 
@@ -165,6 +184,44 @@ class Xelib(ElementValuesMethods,
 
     @contextmanager
     def session(self, load_plugins=True):
+        '''
+        Creates a context manager for your ``Xelib`` session. This is the
+        primary way in which you are expected to use the ``Xelib`` API.
+        See example:
+
+        .. highlight:: python
+        .. code-block:: python
+
+            with Xelib(plugins=['foo.esp']).session() as xelib:
+                # do stuff with xelib handle
+                print(xelib.get_element('foo.esp\\NPC_\\Lydia'))
+
+        Upon entering the session context, ``Xelib`` will load ``XEditLib.dll``,
+        and call its ``InitXEdit`` function. Then, if ``load_plugin`` is set
+        to ``True``, ``Xelib`` will attempt to load its list of plugins.
+
+        Upon exiting the session context, ``Xelib`` will release all opened
+        handles, then call the ``CloseXEdit`` function, and finally frees the
+        ``XEditLib.dll`` shared library from memory.
+
+        Args:
+            load_plugins (``bool``):
+                Whether to load ``Xelib``'s list of plugins after initializing
+                ``XEditLib.dll``
+        '''
+        # Before loading the API, we need to set XEDITLIB_PROGRAM_PATH to the
+        # location of the Hardcoded.dat files. We allow this to be overridden
+        # by our users, but if not given, we will set it to the folder of the
+        # XEditLib.dll we are trying to load.
+        program_path = (
+            os.getenv('XEDITLIB_PROGRAM_PATH') or
+            str(Path(self.dll_path).parent))
+        # Make sure the program path has a trailing slash; XEditLib does not
+        # smartly handle directories.
+        if not program_path.endswith('\\'):
+            program_path += '\\'
+        os.putenv('XEDITLIB_PROGRAM_PATH', program_path)
+
         try:
             # sanity check that API has not yet been loaded
             if self.loaded:
@@ -211,6 +268,10 @@ class Xelib(ElementValuesMethods,
 
     @property
     def loaded(self):
+        '''
+        (``bool``) A property that tells you whether ``XEditLib.dll`` is loaded.
+        (i.e. whether you are within a session)
+        '''
         return bool(self._raw_api)
 
     @property
@@ -273,6 +334,32 @@ class Xelib(ElementValuesMethods,
 
     @property
     def raw_api(self):
+        '''
+        (``ctypes.CDLL``) A property that gives you the handle to the
+        ``ctypes.CDLL`` raw API object. Calling functions from this object
+        will call functions on ``XEditLib.dll`` directly. If you want the
+        lowest access to ``XEditLib.dll``, this provides it.
+
+        This property cannot be accessed when ``XEditLib.dll`` has not been
+        loaded (i.e. not in a session), in which case, a ``XelibError`` will
+        be raised.
+
+        Most users should probably not call the DLL functions directly, since
+        the call patterns are a bit counterintuitive to users of higher-level
+        programming languages. For example, most string getter functions on
+        ``XEditLib.dll`` will return not the result string itself, but a
+        `success` value of `True` or `False`, where the caller is expected to
+        then call a ``GetResultString`` function to retrieve the value from some
+        centralized result location.
+
+        The ``Xelib`` API methods are essentially near 1-to-1 mappings of
+        the ``XEditLib.dll`` functions, except with the tedious patterns of
+        "checking for success and then call a value-getter function"
+        automatically handled, such that the function call would return the
+        actual value itself, or raise Exceptions, like what you'd expect from
+        a higher-level programming language API. Thus, most users should use
+        ``Xelib`` methods instead.
+        '''
         if not self._raw_api:
             raise XelibError(f'Must use Xelib within its own context; the '
                              f'code should look something like: `with xelib '
@@ -285,6 +372,16 @@ class Xelib(ElementValuesMethods,
 
     @staticmethod
     def load_lib(dll_path):
+        '''
+        Loads ``XEditLib.dll`` into python and wrap it with ctypes definitions
+        based on known calling signatures of the library functions.
+
+        Args:
+            dll_path (``str``):
+                Path to the ``XEditLib.dll`` file
+        Returns:
+            ``ctypes.CDLL``: handle to the loaded library
+        '''
         # load XEditLib.dll
         lib = ctypes.CDLL(str(dll_path))
 
