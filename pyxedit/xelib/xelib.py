@@ -434,7 +434,7 @@ class Xelib(ElementValuesMethods,
     def load_lib(dll_path):
         '''
         Loads ``XEditLib.dll`` into python and wrap it with ctypes definitions
-        based on known calling signatures of the library functions.
+        based on known calling signatures of the DLL functions.
 
         Args:
             dll_path (``str``):
