@@ -9,36 +9,28 @@ Xelib API Reference
 .. toctree::
    :maxdepth: 1
 
-The Xelib Class
-===============
+Basic Methods
+=============
 
 .. autoclass:: pyxedit.Xelib
 
-    |hr|
-
-    .. rubric:: Basic Methods
     .. automethod:: __init__
     .. automethod:: session
-    .. automethod:: load_lib
-    .. autoattribute:: raw_api
-    .. autoattribute:: loaded
 
-    |hr|
+Handle Management Methods
+=========================
 
-    .. rubric:: Handle Management Methods
-    Methods for managing handles.
+.. autoclass:: pyxedit.Xelib
 
-    .. automethod:: track_handle
-    .. automethod:: release_handle
-    .. automethod:: release_handles
     .. automethod:: manage_handles
     .. automethod:: promote_handle
     .. automethod:: print_handle_management_stack
 
-    |hr|
+Meta Methods
+============
+Library-specific methods such as getting globals.
 
-    .. rubric:: Meta Methods
-    Library-specific methods such as getting globals.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: initialize
     .. automethod:: finalize
@@ -52,20 +44,22 @@ The Xelib Class
     .. automethod:: clean_store
     .. automethod:: reset_store
 
-    |hr|
+Messages Methods
+================
+Methods for dealing with log and exception messages.
 
-    .. rubric:: Messages Methods
-    Methods for dealing with log and exception messages.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: get_messages
     .. automethod:: clear_messages
     .. automethod:: get_exception_message
     .. automethod:: get_exception_stack
 
-    |hr|
+Setup Methods
+=============
+Methods for dealing with game modes and loading files.
 
-    .. rubric:: Setup Methods
-    Methods for dealing with game modes and loading files.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: get_game_path
     .. automethod:: set_game_path
@@ -82,10 +76,11 @@ The Xelib Class
     .. automethod:: get_loader_status
     .. automethod:: get_loaded_file_names
 
-    |hr|
+Resources Methods
+=================
+Methods for handling bethesda archives and game data files.
 
-    .. rubric:: Resources Methods
-    Methods for handling bethesda archives and game data files.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: extract_container
     .. automethod:: extract_file
@@ -96,10 +91,11 @@ The Xelib Class
     .. automethod:: build_archive
     .. automethod:: get_texture_data
 
-    |hr|
+Elements Methods
+================
+Methods for handling elements.
 
-    .. rubric:: Elements Methods
-    Methods for handling elements.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: has_element
     .. automethod:: get_element
@@ -142,10 +138,11 @@ The Xelib Class
     .. automethod:: is_fixed
     .. automethod:: is_flags
 
-    |hr|
+Element Value Methods
+=====================
+Methods for getting or setting values on elements.
 
-    .. rubric:: Element Value Methods
-    Methods for getting or setting values on elements.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: name
     .. automethod:: long_name
@@ -174,10 +171,11 @@ The Xelib Class
     .. automethod:: name_from_signature
     .. automethod:: get_signature_name_map
 
-    |hr|
+Files Methods
+=============
+Methods for handling files.
 
-    .. rubric:: Files Methods
-    Methods for handling files.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: add_file
     .. automethod:: file_by_index
@@ -196,10 +194,11 @@ The Xelib Class
     .. automethod:: sort_editor_ids
     .. automethod:: sort_names
 
-    |hr|
+File Values Methods
+===================
+Methods for getting or setting values on files.
 
-    .. rubric:: File Values Methods
-    Methods for getting or setting values on files.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: get_next_object_id
     .. automethod:: set_next_object_id
@@ -211,10 +210,11 @@ The Xelib Class
     .. automethod:: get_is_esm
     .. automethod:: set_is_esm
 
-    |hr|
+Records Methods
+===============
+Methods for handling records in files.
 
-    .. rubric:: Records Methods
-    Methods for handling records in files.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: get_form_id
     .. automethod:: get_hex_form_id
@@ -241,10 +241,11 @@ The Xelib Class
     .. automethod:: get_record_conflict_data
     .. automethod:: get_node_elements
 
-    |hr|
+Record Values Methods
+=====================
+Methods for getting or setting values from records.
 
-    .. rubric:: Record Values Methods
-    Methods for getting or setting values from records.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: editor_id
     .. automethod:: full_name
@@ -254,10 +255,11 @@ The Xelib Class
     .. automethod:: get_record_flag
     .. automethod:: set_record_flag
 
-    |hr|
+Masters Methods
+===============
+Methods for handling masters in files.
 
-    .. rubric:: Masters Methods
-    Methods for handling masters in files.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: clean_masters
     .. automethod:: sort_masters
@@ -269,29 +271,32 @@ The Xelib Class
     .. automethod:: add_all_masters
     .. automethod:: get_available_masters
 
-    |hr|
+Groups Methods
+==============
+Methods for handling groups in files.
 
-    .. rubric:: Groups Methods
-    Methods for handling groups in files.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: has_group
     .. automethod:: add_group
     .. automethod:: get_child_group
 
-    |hr|
+Serialization Methods
+=====================
+Methods for serializing elements to JSON and deserializing them from JSON.
 
-    .. rubric:: Serialization Methods
-    Methods for serializing elements to JSON and deserializing them from JSON.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod:: element_to_json
     .. automethod:: element_to_dict
     .. automethod:: element_from_json
     .. automethod:: element_from_dict
 
-    |hr|
+Plugin Error Methods
+====================
+Methods for getting and resolving errors/dirty edits in plugin files.
 
-    .. rubric:: Plugin Error Methods
-    Methods for getting and resolving errors/dirty edits in plugin files.
+.. autoclass:: pyxedit.Xelib
 
     .. automethod check_for_errors
     .. automethod get_error_thread_done

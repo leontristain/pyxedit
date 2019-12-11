@@ -129,9 +129,6 @@ class Xelib(ElementValuesMethods,
             ResourcesMethods,
             SerializationMethods,
             SetupMethods):
-    '''
-    Xelib class
-    '''
     def __init__(self,
                  game_mode=SetupMethods.GameModes.SSE,
                  game_path=None,
