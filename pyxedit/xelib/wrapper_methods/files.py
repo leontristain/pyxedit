@@ -2,9 +2,9 @@ from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
 
 
 class FilesMethods(WrapperMethodsBase):
-    def add_file(self, file_name, ex=True):
+    def add_file(self, file_name, ignore_exists=False, ex=True):
         return self.get_handle(
-            lambda res: self.raw_api.AddFile(file_name, res),
+            lambda res: self.raw_api.AddFile(file_name, ignore_exists, res),
             error_msg=f'Failed to add new file {file_name}',
             ex=ex)
 

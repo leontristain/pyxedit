@@ -75,7 +75,7 @@ class XEditLibSignatures(Enum):
     SetGameMode = params(mode='Integer'), ret('WordBool')
     GetLoadOrder = params(len='PInteger'), ret('WordBool')
     GetActivePlugins = params(len='PInteger'), ret('WordBool')
-    LoadPlugins = params(loadOrder='PWideChar', smartLoad='WordBool'), ret('WordBool')
+    LoadPlugins = params(loadOrder='PWideChar', smartLoad='WordBool', useDummies='WordBool'), ret('WordBool')
     LoadPlugin = params(filename='PWideChar'), ret('WordBool')
     LoadPluginHeader = params(fileName='PWideChar', _res='PCardinal'), ret('WordBool')
     BuildReferences = params(_id='Cardinal', synchronous='WordBool'), ret('WordBool')
@@ -100,7 +100,7 @@ class XEditLibSignatures(Enum):
     GetTextureData = params(resourceName='PWideChar', width='PInteger', height='PInteger'), ret('WordBool')
 
     # file handling methods
-    AddFile = params(filename='PWideChar', _res='PCardinal'), ret('WordBool')
+    AddFile = params(filename='PWideChar', ignoreExists='WordBool', _res='PCardinal'), ret('WordBool')
     FileByIndex = params(index='Integer', _res='PCardinal'), ret('WordBool')
     FileByLoadOrder = params(loadOrder='Integer', _res='PCardinal'), ret('WordBool')
     FileByName = params(name='PWideChar', _res='PCardinal'), ret('WordBool')
@@ -134,7 +134,7 @@ class XEditLibSignatures(Enum):
     RemoveElement = params(_id='Cardinal', path='PWideChar'), ret('WordBool')
     RemoveElementOrParent = params(_id='Cardinal'), ret('WordBool')
     SetElement = params(_id='Cardinal', _id2='Cardinal'), ret('WordBool')
-    GetElements = params(_id='Cardinal', path='PWideChar', sort='WordBool', filter='WordBool', len='PInteger'), ret('WordBool')
+    GetElements = params(_id='Cardinal', path='PWideChar', sort='WordBool', filter='WordBool', sparse='WordBool', len='PInteger'), ret('WordBool')
     GetDefNames = params(_id='Cardinal', len='PInteger'), ret('WordBool')
     GetAddList = params(_id='Cardinal', len='PInteger'), ret('WordBool')
     GetLinksTo = params(_id='Cardinal', path='PWideChar', _res='PCardinal'), ret('WordBool')
@@ -179,15 +179,18 @@ class XEditLibSignatures(Enum):
     # serialization methods
     ElementToJson = params(_id='Cardinal', len='PInteger'), ret('WordBool')
     ElementFromJson = params(_id='Cardinal', path='PWideChar', json='PWideChar'), ret('WordBool')
+    DefToJson = params(_id='Cardinal', len='PInteger'), ret('WordBool')
 
     # element value methods
     Name = params(_id='Cardinal', len='PInteger'), ret('WordBool')
     LongName = params(_id='Cardinal', len='PInteger'), ret('WordBool')
     DisplayName = params(_id='Cardinal', len='PInteger'), ret('WordBool')
-    Path = params(_id='Cardinal', short='WordBool', local='WordBool', len='PInteger'), ret('WordBool')
+    Path = params(_id='Cardinal', short='WordBool', local='WordBool', sort='WordBool', len='PInteger'), ret('WordBool')
+    PathName = params(_id='Cardinal', sort='WordBool', len='PInteger'), ret('WordBool')
     Signature = params(_id='Cardinal', len='PInteger'), ret('WordBool')
     GetValue = params(_id='Cardinal', path='PWideChar', len='PInteger'), ret('WordBool')
     SetValue = params(_id='Cardinal', path='PWideChar', value='PWideChar'), ret('WordBool')
+    GetRefValue = params(_id='Cardinal', path='PWideChar', _len='PInteger'), ret('WordBool')
     GetIntValue = params(_id='Cardinal', path='PWideChar', value='PInteger'), ret('WordBool')
     SetIntValue = params(_id='Cardinal', path='PWideChar', value='Integer'), ret('WordBool')
     GetUIntValue = params(_id='Cardinal', path='PWideChar', value='PCardinal'), ret('WordBool')
@@ -207,7 +210,7 @@ class XEditLibSignatures(Enum):
     # record handling methods
     GetFormID = params(_id='Cardinal', formID='PCardinal', native='WordBool'), ret('WordBool')
     SetFormID = params(_id='Cardinal', formID='Cardinal', native='WordBool', fixReferences='WordBool'), ret('WordBool')
-    GetRecord = params(_id='Cardinal', formID='Cardinal', searchMasters='WordBool', _res='PCardinal'), ret('WordBool')
+    GetRecord = params(_id='Cardinal', _formID='Cardinal', searchMasters='WordBool', _res='PCardinal'), ret('WordBool')
     GetRecords = params(_id='Cardinal', search='PWideChar', includeOverrides='WordBool', len='PInteger'), ret('WordBool')
     GetREFRs = params(_id='Cardinal', search='PWideChar', flags='Cardinal', len='PInteger'), ret('WordBool')
     GetOverrides = params(_id='Cardinal', count='PInteger'), ret('WordBool')
@@ -224,6 +227,7 @@ class XEditLibSignatures(Enum):
     IsInjected = params(_id='Cardinal', bool='PWordBool'), ret('WordBool')
     IsOverride = params(_id='Cardinal', bool='PWordBool'), ret('WordBool')
     IsWinningOverride = params(_id='Cardinal', bool='PWordBool'), ret('WordBool')
+    GetRecordDef = params(sig='PWideChar', _res='PCardinal'), ret('WordBool')
     GetNodes = params(_id='Cardinal', _res='PCardinal'), ret('WordBool')
     GetConflictData = params(_id='Cardinal', _id2='Cardinal', conflictAll='PByte', conflictThis='PByte'), ret('WordBool')
     GetNodeElements = params(_id='Cardinal', _id2='Cardinal', len='PInteger'), ret('WordBool')

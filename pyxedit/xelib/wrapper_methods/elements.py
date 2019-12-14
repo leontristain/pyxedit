@@ -132,10 +132,10 @@ class ElementsMethods(WrapperMethodsBase):
                       f'{self.element_context(id1)}',
             ex=ex)
 
-    def get_elements(self, id_=0, path='', sort=False, filter=False, ex=True):
+    def get_elements(self, id_=0, path='', sort=False, filter=False, sparse=False, ex=True):
         return self.get_array(
             lambda len_:
-                self.raw_api.GetElements(id_, path, sort, filter, len_),
+                self.raw_api.GetElements(id_, path, sort, filter, sparse, len_),
             error_msg=f'Failed to get child elements at '
                       f'{self.element_context(id_, path)}',
             ex=ex)

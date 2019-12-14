@@ -94,8 +94,8 @@ class TestElementValues:
         assert '[06]' in xelib.display_name(data.xt2)
 
         # should format hardcoded dat names properly
-        h = xelib.get_element(0, path='Skyrim.Hardcoded.dat', ex=True)
-        assert xelib.display_name(h) == '[00] Skyrim.exe'
+        h = xelib.get_element(0, path='TESV.exe', ex=True)
+        assert xelib.display_name(h) == '[00] TESV.exe'
 
     def test_path(self, xelib):
         data = self.get_data(xelib)
@@ -130,11 +130,11 @@ class TestElementValues:
 
         # should resolve element names
         assert (xelib.path(data.element) ==
-                    'xtest-2.esp\\00012E46\\DNAM - Armor Rating')
+                    'xtest-2.esp\\00012E46\\DNAM')
 
         # should resolve array element indexes
         assert (xelib.path(data.keyword) ==
-                    'xtest-2.esp\\00012E46\\KWDA - Keywords\\[1]')
+                    'xtest-2.esp\\00012E46\\KWDA\\[1]')
 
     def test_signature(self, xelib):
         data = self.get_data(xelib)

@@ -206,6 +206,8 @@ class Xelib(ElementValuesMethods,
                 Whether to load ``Xelib``'s list of plugins after initializing
                 ``XEditLib.dll``
         '''
+
+        """
         # Before loading the API, we need to set XEDITLIB_PROGRAM_PATH to the
         # location of the Hardcoded.dat files. We allow this to be overridden
         # by our users, but if not given, we will set it to the folder of the
@@ -218,6 +220,7 @@ class Xelib(ElementValuesMethods,
         if not program_path.endswith('\\'):
             program_path += '\\'
         os.putenv('XEDITLIB_PROGRAM_PATH', program_path)
+        """
 
         try:
             # sanity check that API has not yet been loaded

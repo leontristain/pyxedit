@@ -49,7 +49,8 @@ class TestMasters:
 
         # should get required by file handles
         assert ([xelib.name(id_) for id_ in xelib.get_required_by(data.skyrim)] ==
-                ['Update.esm',
+                ['TESV.exe',
+                 'Update.esm',
                  'Dawnguard.esm',
                  'HearthFires.esm',
                  'Dragonborn.esm',

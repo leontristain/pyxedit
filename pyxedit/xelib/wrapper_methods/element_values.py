@@ -26,20 +26,32 @@ class ElementValuesMethods(WrapperMethodsBase):
 
     def path(self, id_, ex=True):
         return self.get_string(
-            lambda len_: self.raw_api.Path(id_, True, False, len_),
+            lambda len_: self.raw_api.Path(id_, True, False, False, len_),
             error_msg=f'Path failed on {id_}',
             ex=ex)
 
     def long_path(self, id_, ex=True):
         return self.get_string(
-            lambda len_: self.raw_api.Path(id_, False, False, len_),
+            lambda len_: self.raw_api.Path(id_, False, False, False, len_),
             error_msg=f'Path failed on {id_}',
             ex=ex)
 
     def local_path(self, id_, ex=True):
         return self.get_string(
-            lambda len_: self.raw_api.Path(id_, False, True, len_),
+            lambda len_: self.raw_api.Path(id_, False, True, False, len_),
             error_msg=f'Path failed on {id_}',
+            ex=ex)
+
+    def sort_path(self, id_, ex=True):
+        return self.get_string(
+            lambda len_: self.raw_api.Path(id_, False, True, True, len_),
+            error_msg=f'Path failed on {id_}',
+            ex=ex)
+
+    def path_name(self, id_, sort=False, ex=True):
+        return self.get_string(
+            lambda len_: self.raw_api.PathName(id_, sort, len_),
+            error_msg=f'PathName failed on {id_}',
             ex=ex)
 
     def signature(self, id_, ex=True):
@@ -58,6 +70,13 @@ class ElementValuesMethods(WrapperMethodsBase):
         return self.get_string(
             lambda len_: self.raw_api.GetValue(id_, path, len_),
             error_msg=f'Failed to get element value at '
+                      f'{self.element_context(id_, path)}',
+            ex=ex)
+
+    def get_ref_value(self, id_, path='', ex=False):
+        return self.get_string(
+            lambda len_: self.raw_api.GetRefValue(id_, path, len_),
+            error_msg=f'Failed to get element ref value at '
                       f'{self.element_context(id_, path)}',
             ex=ex)
 

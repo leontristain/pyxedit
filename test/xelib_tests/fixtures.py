@@ -16,7 +16,7 @@ def xelib():
                'xtest-4.esp',
                'xtest-5.esp']
 
-    with Xelib(game_mode=Xelib.GameModes.TES5,
-               plugins=plugins,
-               xeditlib_path='D:\\git\\xedit-lib\\XEditLib.dll').session() as xelib:
+    with Xelib(
+            game_mode=Xelib.GameModes.TES5,
+            plugins=plugins).session() as xelib:
         yield xelib

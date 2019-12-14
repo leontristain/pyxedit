@@ -192,6 +192,12 @@ class RecordsMethods(WrapperMethodsBase):
             lambda res: self.raw_api.IsWinningOverride(id_, res),
             ex=ex)
 
+    def get_record_def(self, sig, ex=True):
+        return self.get_handle(
+            lambda res: self.raw_api.GetRecordDef(sig, res),
+            error_msg=f'Failed to get record def for {sig}',
+            ex=ex)
+
     def get_nodes(self, id_, ex=True):
         return self.get_handle(
             lambda res: self.raw_api.GetNodes(id_, res),

@@ -90,11 +90,12 @@ class SetupMethods(WrapperMethodsBase):
             error_msg=f'GetActivePlugins failed',
             ex=ex)
 
-    def load_plugins(self, load_order, smart_load=True, ex=True):
+    def load_plugins(self, load_order, smart_load=True, use_dummies=False, ex=True):
         return self.verify_execution(
-            self.raw_api.LoadPlugins(load_order, smart_load),
+            self.raw_api.LoadPlugins(load_order, smart_load, use_dummies),
             error_msg=f'Failed to LoadPlugins given load_order '
-                      f'{repr(load_order)} and smart_load={smart_load}',
+                      f'{repr(load_order)}; smart_load={smart_load}; '
+                      f'use_dummies={use_dummies}',
             ex=ex)
 
     def load_plugin(self, file_name, ex=True):
