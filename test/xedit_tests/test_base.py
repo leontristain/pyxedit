@@ -72,9 +72,9 @@ class TestXEditBase:
 
         # they are now out of scope and no longer usable
         with pytest.raises(XEditError):
-            obj1.signature
+            obj1.name
         with pytest.raises(XEditError):
-            obj2.signature
+            obj2.name
 
         # we can check whether 1 and 2 were freed up by checking whether
         # they get recycled when we create new handles
@@ -96,17 +96,17 @@ class TestXEditBase:
                 assert obj2.signature
 
             with pytest.raises(XEditError):
-                obj1.signature
+                obj1.name
             with pytest.raises(XEditError):
-                obj2.signature
+                obj2.name
 
             # however, we should be able to promote the objects to the parent
             # scope and have them remain usable in the parent scope
             with xedit.manage_handles():
                 obj3 = xedit.get('Dawnguard.esm\\Head Part\\MaleEyesSnowElf')
                 obj4 = xedit['Dawnguard.esm\\Head Part\\MaleEyesSnowElf']
-                assert obj3.signature
-                assert obj4.signature
+                assert obj3.name
+                assert obj4.name
 
                 obj3.promote()
                 obj4.promote()
@@ -116,9 +116,9 @@ class TestXEditBase:
 
         # promotion should only be effective for one scope
         with pytest.raises(XEditError):
-            obj1.signature
+            obj1.name
         with pytest.raises(XEditError):
-            obj2.signature
+            obj2.name
 
     @assert_no_opened_handles_after
     def test_type_fields(self, xedit):
@@ -168,7 +168,7 @@ class TestXEditBase:
         assert dawnguard.path == 'Dawnguard.esm'
         assert dawnguard.long_path == 'Dawnguard.esm'
         assert dawnguard.local_path == 'Dawnguard.esm'
-        assert dawnguard.signature == ''
+        assert dawnguard.signature is None
         assert dawnguard.signature_name == ''
 
         armo = xedit['Dawnguard.esm\\ARMO']
@@ -185,9 +185,9 @@ class TestXEditBase:
         assert pnam.name == 'PNAM - Type'
         assert pnam.long_name == 'PNAM - Type'
         assert pnam.display_name == 'PNAM - Type'
-        assert pnam.path == 'Dawnguard.esm\\02003786\\PNAM - Type'
-        assert pnam.long_path == 'Dawnguard.esm\\HDPT\\02003786\\PNAM - Type'
-        assert pnam.local_path == 'PNAM - Type'
+        assert pnam.path == 'Dawnguard.esm\\02003786\\PNAM'
+        assert pnam.long_path == 'Dawnguard.esm\\HDPT\\02003786\\PNAM'
+        assert pnam.local_path == 'PNAM'
         assert pnam.signature == 'PNAM'
         assert pnam.signature_name == ''
 
@@ -195,9 +195,9 @@ class TestXEditBase:
         assert tx.name == 'Textures (RGB/A)'
         assert tx.long_name == 'Textures (RGB/A)'
         assert tx.display_name == 'Textures (RGB/A)'
-        assert tx.path == 'Dawnguard.esm\\02003787\\Textures (RGB/A)'
-        assert tx.long_path == 'Dawnguard.esm\\TXST\\02003787\\Textures (RGB/A)'
-        assert tx.local_path == 'Textures (RGB/A)'
+        assert tx.path == 'Dawnguard.esm\\02003787\\TX00'
+        assert tx.long_path == 'Dawnguard.esm\\TXST\\02003787\\TX00'
+        assert tx.local_path == 'TX00'
         assert tx.signature == 'TX00'
         assert tx.signature_name == ''
 
@@ -208,7 +208,7 @@ class TestXEditBase:
         dawnguard = xedit['Dawnguard.esm']
         assert dawnguard.__class__.__name__ == 'XEditPlugin'
 
-        armo = xedit['Dawnguard.esm\\ARMO']
+        armo = xedit['Dawnguard.esm\\ARMO\\DLC1ArmorDawnguardBootsHeavy']
         assert armo.__class__.__name__ == 'XEditArmor'
 
         txst = xedit['Dawnguard.esm\\Texture Set\\EyesSnowElf']

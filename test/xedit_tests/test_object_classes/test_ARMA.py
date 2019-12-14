@@ -138,8 +138,8 @@ class TestARMA:
         sig = f'nam{n}'
         alias = {'nam0': 'base_male_texture',
                  'nam1': 'base_female_texture',
-                 'nam2': 'base_male_firstperson_texture',
-                 'nam3': 'base_female_firstperson_texture'}[sig]
+                 'nam2': 'base_male_firstperson_texture_swap_list',
+                 'nam3': 'base_female_firstperson_texture_swap_list'}[sig]
 
         # ensure there's an empty foo.esp
         foo = xedit.get_or_add('foo.esp')
@@ -282,21 +282,18 @@ class TestARMA:
     @assert_no_opened_handles_after
     def test_textures(self, xedit):
         # should be able to get all textures
-        assert len(list(xedit['Skyrim.esm\\ARMA\\NakedTorso'].textures)) == 4
-
-        # should be able to get less than 4 textures
-        assert len(list(xedit['Skyrim.esm\\ARMA\\NakedHands'].textures)) == 3
+        assert len(list(xedit['Skyrim.esm\\ARMA\\NakedTorso'].textures)) == 2
 
     @assert_no_opened_handles_after
     def test_file_paths(self, xedit):
         # should be able to get all model paths
         assert set(xedit['Skyrim.esm\\ARMA\\NakedTorso'].file_paths) == set(
-            ['Actors\\Character\\Character Assets\\MaleBody_1.NIF',
-                'Actors\\Character\\Character Assets\\FemaleBody_1.nif',
-                'Actors\\Character\\Character Assets\\1stPersonMaleBody_1.NIF',
-                'Actors\\Character\\Character Assets\\1stPersonFemaleBody_1.nif'])
+            ['Meshes\\Actors\\Character\\Character Assets\\MaleBody_1.NIF',
+             'Meshes\\Actors\\Character\\Character Assets\\FemaleBody_1.nif',
+             'Meshes\\Actors\\Character\\Character Assets\\1stPersonMaleBody_1.NIF',
+             'Meshes\\Actors\\Character\\Character Assets\\1stPersonFemaleBody_1.nif'])
 
         # should be able to get less than 4 paths when not everything is set
         assert set(xedit['Skyrim.esm\\ARMA\\IronGlovesAA'].file_paths) == set(
-            ['Armor\\Iron\\Male\\Gauntlets_1.nif',
-                'Armor\\Iron\\F\\Gauntlets_1.nif'])
+            ['Meshes\\Armor\\Iron\\Male\\Gauntlets_1.nif',
+             'Meshes\\Armor\\Iron\\F\\Gauntlets_1.nif'])
