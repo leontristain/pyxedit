@@ -9,7 +9,7 @@ setup(name='pyxedit',
       keywords=[],
       classifiers=[],
       setup_requires=[],
-      install_requires=[],
+      install_requires=['cached-property>=1.5.1'],
       # data_files=[('Lib/site-packages/pyxedit', ['XEditLib/XEditLib.dll'])],
       tests_require=['pytest==4.3.0'],
       test_suite='test')
