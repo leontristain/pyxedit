@@ -12,6 +12,19 @@ Xelib API Reference
 Overview
 ========
 
+The ``Xelib`` API is a minimal wrapper around ``XEditLib.dll``, accessible via a ``Xelib`` top-level class. Methods on the API are almost one-to-one with ``XEditLib.dll``'s public methods. Users familiar with zEdit's xelib API can also consider this the "python version" of an almost-equivalent.
+
+To use the ``Xelib`` API, you must first create a ``Xelib`` object and configure it with various initial values, such as the list of Skyrim mod plugins you'd like to load. Then, to do any work, you need to enter a ``session``. Within the session, the plugins will be loaded and you will be free to inspect records, copy values, create and save plugins, etc... See the following example for the basic boilerplate of how people typically would use the library:
+
+.. highlight:: python
+.. code-block:: python
+
+    from pyxedit import Xelib
+
+    with Xelib(plugins=['GOT.esp', 'LOTR.esp']).session() as xelib:
+        h = xelib.get_element(0, 'GOT.esp\\NPC_\\JonSnow')
+        print(xelib.display_name(h))  # prints 'John Snow'
+
 The `ex` Parameter
 ==================
 

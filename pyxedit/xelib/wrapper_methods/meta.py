@@ -54,10 +54,12 @@ class MetaMethods(WrapperMethodsBase):
         variables ``XEditLib.dll`` currently contains, you can run
         :func:`~pyxedit.Xelib.get_globals`.
 
-        :param key: name of the global variable to retrieve
-        :param ex: whether failures should trigger an Exception or return a
-                   falsey value
-        :returns: the value of the global variable being retrieved
+        Args:
+            key (``str``):
+                name of the global variable to retrieve
+
+        Returns:
+            (``str``) value of the global variable being retrieved
         '''
         return self.get_string(
             lambda len_: self.raw_api.GetGlobal(key, len_),
@@ -70,9 +72,9 @@ class MetaMethods(WrapperMethodsBase):
         separated by ``\\r\\n``, and the name value pairs are separated by
         ``=``.
 
-        :param ex: whether failures should trigger an Exception or return a
-                   falsey value
-        :returns: name-value pairs for all globals as described above
+        Returns:
+            (``str``) a string containing name-value pairs of all global
+            variables in the above specified format
         '''
         return self.get_string(
             lambda len_: self.raw_api.GetGlobals(len_),
@@ -80,6 +82,17 @@ class MetaMethods(WrapperMethodsBase):
             ex=ex)
 
     def set_sort_mode(self, mode, reverse=False, ex=True):
+        '''
+        Sets the sort mode to be used by ``xelib.get_elements`` when the
+        ``sort`` argument is set to ``True``.
+
+        Args:
+            mode (``Xelib.SortBy``):
+                the mode to sort by
+            reverse (``bool``):
+                whether to sort in reverse order
+
+        '''
         return self.verify_execution(
             self.raw_api.SetSortMode(mode.value, reverse),
             error_msg=f'Failed to set sort mode to {mode} '
@@ -87,24 +100,58 @@ class MetaMethods(WrapperMethodsBase):
             ex=ex)
 
     def release(self, id_, ex=True):
+        '''
+        Releases the given handle if it is allocated
+
+        Args:
+            id_ (``int``):
+                the input handle
+        '''
         return self.verify_execution(
             self.raw_api.Release(id_),
             error_msg=f'Failed to release handle {id_}',
             ex=ex)
 
     def release_nodes(self, id_, ex=True):
+        '''
+        Releases the input handle if it is allocated. This is for use with
+        handles returned by ``xelib.get_nodes``.
+
+        Args:
+            id_ (``int``):
+                the input handle
+        '''
         return self.verify_execution(
             self.raw_api.ReleaseNodes(id_),
             error_msg=f'Failed to release nodes {id_}',
             ex=ex)
 
     def switch(self, id_, id2, ex=True):
+        '''
+        Swaps the elements pointed to by the two provided handles.
+
+        Args:
+            id_ (``int``):
+                the first handle
+            id2 (``int``):
+                the second handle
+        '''
         return self.verify_execution(
             self.raw_api.Switch(id_, id2),
             error_msg=f'Failed to switch interface #{id_} and #{id2}',
             ex=ex)
 
     def get_duplicate_handles(self, id_, ex=True):
+        '''
+        Finds other handles that also point to the element the given handle is
+        pointing to.
+
+        Args:
+            id_ (``int``):
+                handle to find duplicates for
+        Returns:
+            (``List(int)``) a list of duplicate handles
+        '''
         return self.get_array(
             lambda len_: self.raw_api.GetDuplicateHandles(id_, len_),
             error_msg=f'Failed to get duplicate handles for {id_}',
