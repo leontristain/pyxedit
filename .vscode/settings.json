@@ -2,7 +2,7 @@
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
-    "editor.fontSize": 14,
+    "editor.fontSize": 18,
     "editor.quickSuggestions": {
         "other": false,
         "comments": false,
@@ -12,5 +12,6 @@
     "editor.parameterHints.enabled": false,
     "terminal.integrated.shellArgs.windows": ["-ExecutionPolicy", "Bypass"],
     "python.pythonPath": "venv\\Scripts\\python.exe",
-    "restructuredtext.confPath": "${workspaceFolder}\\docs"
+    "restructuredtext.confPath": "${workspaceFolder}\\docs",
+    "restructuredtext.linter.run": "off"
 }
