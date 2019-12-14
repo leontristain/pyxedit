@@ -21,6 +21,18 @@ To use the ``Xelib`` API, you must first create a ``Xelib`` object and configure
         h = xelib.get_element(0, 'GOT.esp\\NPC_\\JonSnow')
         print(xelib.display_name(h))  # prints 'John Snow'
 
+.. note::
+    **Differences between** ``XEditLib.dll`` **and the** ``Xelib`` **wrapper:**
+
+    The API offered by ``Xelib``, like the `javascript xelib <https://github.com/z-edit/xelib>`_, are near 1-to-1 with the actual functions available on ``XEditLib.dll``. The main difference between calling ``XEditLib.dll`` functions directly and the higher level "xelib" wrappers is that ``XEditLib.dll`` usage is rather complex. With most functions on ``XEditLib.dll``, you are expected to call it, and it always returns a boolean for whether the call was successful. If the call was successful, you would then run some other function, such as ``GetResultString``, ``GetResultArray``, ``GetResultBytes``, to retrieve the
+    return value. Whereas, on failure, you are supposed to run ``GetExceptionMessage`` and ``GetExceptionStack`` to retrieve the error information.
+
+    The "xelib" higher-level wrappers, then, abstracts this complex call pattern for you. In this python ``Xelib`` API, the actual result value is directly returned to you. If an error occurs, then either an exception is raised or a falsey value will be returned, depending on the ``ex`` parameter (see below section).
+
+    Additionally, ``XEditLib.dll`` requires you to run ``InitXEdit()`` before doing anything else, and ``CloseXEdit()`` after you're done. The plugin loading mechanism is also a bit complex, where you need to join your list of plugins into a single string to act as input, where the actual load call is an asynchronous call where you need to poll for loader status until the load is complete. Again, ``Xelib`` abstracts this for you in the form of a context manager (``with Xelib(...).session() as xelib: ...``) so you don't have to worry about it.
+
+    Lastly, during an ``XEditLib.dll`` session, every handle you obtain can be released by calling the ``Release`` function on it, and ``XEditLib.dll`` expects you to manually manage each handle. To make it easier, ``Xelib`` will give you a context manager (``with xelib.manage_handles(): ...``) so that you can manage handles in groups. The higher-level ``XEdit`` API (also offered by ``pyxedit``) will go one step further and automatically tie together the lifecycle of a handle to the lifecycle of an element object, so that when an object gets garbage collected, its handle is automatically released.
+
 The `ex` Parameter
 ==================
 
@@ -31,13 +43,8 @@ When ``ex=False``, the method will not raise an exception, and will instead retu
 When ``ex=True``, any kind of errors encountered in ``XEditLib.dll`` will be
 raised as a ``XelibError``.
 
-This has to do with how most ``XEditLib.dll`` functions work. You are supposed
-to call it, and it always returns a boolean for whether the call was successful.
-If the call was successful, you can then run some other function to retrieve the
-return value. Otherwise, you can run some other function to retrieve the error
-message and traceback.
-
-Note that this is not necessarily a one-to-one correspondance to the `Ex` functions of the javascript `xelib <https://github.com/z-edit/xelib>`_ library. I did use the javascript xelib library as a reference for creating this python wrapper, however I think I may have misunderstood `Ex` as short for `Exception`. Later on I `learned <https://stackoverflow.com/questions/3963374/what-does-it-mean-when-ex-is-added-to-a-function-method-name>`_ that it is also likely to mean `Extension`, which seems to be a known pattern in the windows world. Either way, I ended up with ``ex=`` optional parameters to mean `exception`, and I think that's what I will go with in this python wrapper.
+.. note::
+    **This is not necessarily a one-to-one correspondance to the** ``Ex`` **functions of the** `javascript xelib <https://github.com/z-edit/xelib>`_ **library.** I did use the javascript xelib library as a reference for creating this python wrapper, however I think I may have misunderstood `Ex` as short for `Exception`. Later on I `learned <https://stackoverflow.com/questions/3963374/what-does-it-mean-when-ex-is-added-to-a-function-method-name>`_ that it is also likely to mean `Extension`, which seems to be a known pattern in the windows world. Either way, I ended up with ``ex=`` optional parameters to mean `exception`, and I think that's what I will go with in this python wrapper.
 
 .. warning::
     A word of caution for the ``ex=False`` option: while doing so will allow
