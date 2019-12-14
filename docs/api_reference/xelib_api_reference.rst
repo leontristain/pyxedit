@@ -1,7 +1,3 @@
-.. |hr| raw:: html
-
-    <hr/>
-
 ===================
 Xelib API Reference
 ===================
