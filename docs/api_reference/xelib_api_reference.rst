@@ -43,6 +43,13 @@ message and traceback.
 
 Note that this is not necessarily a one-to-one correspondance to the `Ex` functions of the javascript `xelib <https://github.com/z-edit/xelib>`_ library. I did use the javascript xelib library as a reference for creating this python wrapper, however I think I may have misunderstood `Ex` as short for `Exception`. Later on I `learned <https://stackoverflow.com/questions/3963374/what-does-it-mean-when-ex-is-added-to-a-function-method-name>`_ that it is also likely to mean `Extension`, which seems to be a known pattern in the windows world. Either way, I ended up with ``ex=`` optional parameters to mean `exception`, and I think that's what I will go with in this python wrapper.
 
+.. warning::
+    A word of caution for the ``ex=False`` option: while doing so will allow
+    you to be more liberal and succinct in your code by ignoring exceptions underneath and turning them into falsey values, it does carry a hefty performance penalty since every error/exception triggered underneath that gets ignored actually has a noticeable performance cost to generate.
+    
+    For example, if you do a tree walk of all elements under a large number of records, where on each node, you perform errorneous logic, ``ex=False`` may
+    hide them away and let you bypass them with a falseyness check, but the speed of your tree walk may slow down to a crawl.
+
 Basic Methods
 =============
 
