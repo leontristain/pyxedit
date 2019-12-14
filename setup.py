@@ -6,11 +6,5 @@ setup(name='pyxedit',
       version='0.1',
       description='python wrapper around xedit-lib',
       author='leontristain',
-      keywords=[],
-      classifiers=[],
-      setup_requires=[],
       install_requires=['cached-property>=1.5.1'],
-      # data_files=[('Lib/site-packages/pyxedit', ['XEditLib/XEditLib.dll'])],
-      tests_require=['pytest==4.3.0'],
-      test_suite='test')
-
+      include_package_data=True)

@@ -26,7 +26,7 @@ from pyxedit.xelib.wrapper_methods.setup import SetupMethods
 
 __all__ = ['DLL_PATH', 'Xelib', 'XelibError']
 
-DLL_PATH = Path(__file__).parent / '../../XEditLib/XEditLib.dll'
+DLL_PATH = Path(__file__).parent / '../xedit-lib/XEditLib.dll'
 
 
 def pairwise(iterable):
