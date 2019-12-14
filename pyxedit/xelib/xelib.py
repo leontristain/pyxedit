@@ -189,9 +189,9 @@ class Xelib(ElementValuesMethods,
         .. highlight:: python
         .. code-block:: python
 
-            with Xelib(plugins=['foo.esp']).session() as xelib:
+            with Xelib(plugins=['GOT.esp']).session() as xelib:
                 # do stuff with xelib handle
-                print(xelib.get_element('foo.esp\\NPC_\\Lydia'))
+                print(xelib.get_element('GOT.esp\\\\NPC_\\\\JonSnow'))
 
         Upon entering the session context, ``Xelib`` will load ``XEditLib.dll``,
         and call its ``InitXEdit`` function. Then, if ``load_plugin`` is set
@@ -338,17 +338,17 @@ class Xelib(ElementValuesMethods,
         .. highlight:: python
         .. code-block:: python
 
-            with Xelib(plugins=['foo.esp']).session() as xelib:
+            with Xelib(plugins=['GOT.esp', 'LOTR.esp']).session() as xelib:
                 # handle 1 gets created
-                h1 = xelib.get_element('foo.esp\\NPC_\\Lydia')
+                h1 = xelib.get_element('GOT.esp\\\\NPC_\\\\JonSnow')
 
                 with xelib.manage_handles():
                     # handle 2 gets created
-                    h2 = xelib.get_element('foo.esp\\NPC_\\Balgruuf')
+                    h2 = xelib.get_element('GOT.esp\\\\NPC_\\\\Brienne')
 
                     with xelib.manage_handles():
                         # handle 3 gets created
-                        h3 = xelib.get_element('foo.esp\\NPC_\\Taarie')
+                        h3 = xelib.get_element('LOTR.esp\\\\NPC_\\\\Imrahil')
 
                     # on context exit, handle 3 gets released
                 # on context exit, handle 2 gets released

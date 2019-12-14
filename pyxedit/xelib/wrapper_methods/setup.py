@@ -26,6 +26,14 @@ class SetupMethods(WrapperMethodsBase):
     GameModes = GameModes
 
     def get_game_path(self, game=None, ex=True):
+        '''
+        Retrieves the configured game path as understood by ``XEditLib.dll``.
+        The path is the top-level directory of the installed game (e.g.
+        ``D:\\SteamLibrary\\steamapps\\common\\Skyrim Special Edition\\``).
+
+        Returns:
+            (``str``) the path to the game
+        '''
         game = game or self.GameModes.SSE
         return self.get_string(
             lambda len_: self.raw_api.GetGamePath(game.value, len_),
@@ -34,6 +42,15 @@ class SetupMethods(WrapperMethodsBase):
             ex=ex)
 
     def set_game_path(self, path, ex=True):
+        '''
+        Configures ``XEditLib.dll`` to use the given value as the game path.
+        The provided path should be the top-level directory of the installed
+        game (e.g.
+        ``D:\\SteamLibrary\\steamapps\\common\\Skyrim Special Edition\\``).
+
+        Args:
+            path (``str``): the path to the game
+        '''
         return self.verify_execution(
             self.raw_api.SetGamePath(path),
             error_msg=f'Failed to SetGamePath to {path}',
