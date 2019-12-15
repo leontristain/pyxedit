@@ -56,7 +56,7 @@ If you just want to launch the python interpreter and play around in there, you 
                                   # start an xedit context, and give you an
                                   # xedit handle
     > arma = xedit['Dawnguard.esm\\ARMA']
-    > arma.ls  # this will print out the list of vampire_wolf_aa's children
+    > arma.ls  # to see what child nodes exist underneath 'ARMA'
     <XEditArmature ARMA 02014CCC DLC1GargoyleAlbinoAA 2>
     <XEditArmature ARMA 02012E89 ShellbugHelmetAA 3>
     <XEditArmature ARMA 02011CF4 DLC1HawkRingAA 4>
