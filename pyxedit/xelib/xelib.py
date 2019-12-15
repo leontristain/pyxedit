@@ -179,6 +179,47 @@ class Xelib(ElementValuesMethods,
         if self.loaded:
             return self.set_game_path(value)
 
+    def start_session(self, load_plugins=True):
+        # sanity check that API has not yet been loaded
+        if self.loaded:
+            raise XelibError('Api already loaded')
+
+        # load XEditLib.dll
+        self._raw_api = self.load_lib(self.dll_path)
+        self._wrapper_api = XelibWrapperAPI(self._raw_api)
+
+        # initialize the xEdit context
+        self.initialize()
+
+        # set the game mode if given
+        if self._game_mode:
+            self.set_game_mode(self._game_mode)
+
+        # set the game path explicitly if given
+        if self._game_path:
+            self.set_game_path(self._game_path)
+
+        # load plugins if specified
+        if load_plugins:
+            self.load_plugins(os.linesep.join(self._plugins))
+            while (self.get_loader_status() ==
+                        SetupMethods.LoaderStates.Active):
+                time.sleep(0.1)
+
+    def end_session(self):
+        # sanity check that API is loaded
+        if not self.loaded:
+            raise XelibError('Api is not loaded; something is wrong')
+
+        # unload the API
+        self.release_all_handles()
+        self.finalize()
+        kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel32.FreeLibrary.argtypes = [wintypes.HMODULE]
+        kernel32.FreeLibrary(self._raw_api._handle)
+        self._raw_api = None
+        self._wrapper_api = None
+
     @contextmanager
     def session(self, load_plugins=True):
         '''
@@ -207,48 +248,10 @@ class Xelib(ElementValuesMethods,
                 ``XEditLib.dll``
         '''
         try:
-            # sanity check that API has not yet been loaded
-            if self.loaded:
-                raise XelibError('Api already loaded')
-
-            # load XEditLib.dll
-            self._raw_api = self.load_lib(self.dll_path)
-            self._wrapper_api = XelibWrapperAPI(self._raw_api)
-
-            # initialize the xEdit context
-            self.initialize()
-
-            # set the game mode if given
-            if self._game_mode:
-                self.set_game_mode(self._game_mode)
-
-            # set the game path explicitly if given
-            if self._game_path:
-                self.set_game_path(self._game_path)
-
-            # load plugins if specified
-            if load_plugins:
-                self.load_plugins(os.linesep.join(self._plugins))
-                while (self.get_loader_status() ==
-                            SetupMethods.LoaderStates.Active):
-                    time.sleep(0.1)
-
-            # loading is done, given handle to user
+            self.start_session()
             yield self
-
         finally:
-            # sanity check that API is loaded
-            if not self.loaded:
-                raise XelibError('Api is not loaded; something is wrong')
-
-            # unload the API
-            self.release_all_handles()
-            self.finalize()
-            kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
-            kernel32.FreeLibrary.argtypes = [wintypes.HMODULE]
-            kernel32.FreeLibrary(self._raw_api._handle)
-            self._raw_api = None
-            self._wrapper_api = None
+            self.end_session()
 
     @property
     def loaded(self):

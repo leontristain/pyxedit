@@ -66,4 +66,5 @@ class XEdit(XEditBase):
         '''
         plugins = plugins or ['Skyrim.esm', 'Update.esm', 'Dawnguard.esm']
         xedit = cls(game_mode=game, plugins=plugins)
-        return xedit.session().__enter__()
+        xedit.xelib.start_session()
+        return xedit
