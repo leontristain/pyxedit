@@ -19,7 +19,7 @@ To use the ``Xelib`` API, you must first create a ``Xelib`` object and configure
 
     with Xelib(plugins=['GOT.esp', 'LOTR.esp']).session() as xelib:
         h = xelib.get_element(0, 'GOT.esp\\NPC_\\JonSnow')
-        print(xelib.display_name(h))  # prints 'John Snow'
+        print(xelib.display_name(h))  # prints 'Jon Snow'
 
 .. note::
     **Differences between** ``XEditLib.dll`` **and the** ``Xelib`` **wrapper:**
