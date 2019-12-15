@@ -56,6 +56,11 @@ class SetupMethods(WrapperMethodsBase):
 
         This path will be used when loading plugins and resource files.
 
+        .. warning::
+            Users should not have to run this method by hand, as it should be
+            configured onto ``Xelib``'s init parameters and automatically
+            applied during session start.
+
         Args:
             path (``str``): the path to the game
         '''
@@ -100,6 +105,11 @@ class SetupMethods(WrapperMethodsBase):
     def set_game_mode(self, game=None, ex=True):
         '''
         Configures the game mode for ``XEditLib.dll``.
+
+        .. warning::
+            Users should not have to run this method by hand, as it should be
+            configured onto ``Xelib``'s init parameters and automatically
+            applied during session start.
 
         Args:
             game (``Xelib.GameModes``):
@@ -148,6 +158,11 @@ class SetupMethods(WrapperMethodsBase):
         be automatically loaded as necessary. Plugin loading is performed in a
         background thread. Use ``xelib.get_loader_status`` to track the loader
         and determine when it is done.
+
+        .. warning::
+            Users should not have to run this method by hand, as it should be
+            configured onto ``Xelib``'s init parameters and automatically
+            applied during session start.
 
         Args:
             load_order (``str``):
@@ -240,6 +255,13 @@ class SetupMethods(WrapperMethodsBase):
         Returns the status of the loader. This method is used to check the
         progress and completion of asynchronous load methods like
         ``xelib.load_plugins`` and ``xelib.load_plugin``.
+
+        .. warning::
+            Users normally should not have to run this method by hand. The
+            list of plugins to initially load should be configured onto
+            ``Xelib``'s init parameters. Then on session start, the plugin
+            loader should be started and its status checked automatically
+            until the loader is done.
 
         Returns:
             (``Xelib.LoaderStates``) the enum value representing the current
