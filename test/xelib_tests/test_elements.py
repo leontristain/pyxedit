@@ -152,6 +152,7 @@ class TestElements:
             get_element(data.xt4, path='&03FFFFFF')
 
         # should return a handle if the record exists (by EditorID)
+        xelib.sort_editor_ids(data.xt3, 'ARMO')
         assert get_element(data.xt3, path='ArmorIronGauntlets')
 
         # should fail if the record does not exist (by EditorID)
@@ -159,6 +160,7 @@ class TestElements:
             get_element(data.xt3, path='NonExistentEditorID')
 
         # should return a handle if the record exists (by Name)
+        xelib.sort_names(data.xt3, 'ARMO')
         assert get_element(data.xt3, path='"Iron Gauntlets"')
 
         # should fail if the record does not exist (by Name)
