@@ -66,6 +66,8 @@ Handle Management Methods
 
 .. autoclass:: pyxedit.Xelib
 
+    ...continued...
+
     .. automethod:: manage_handles
     .. automethod:: promote_handle
     .. automethod:: print_handle_management_stack
@@ -75,6 +77,8 @@ Meta Methods
 Library-specific methods such as getting globals.
 
 .. autoclass:: pyxedit.Xelib
+
+    ...continued...
 
     .. automethod:: initialize
     .. automethod:: finalize
@@ -94,6 +98,8 @@ Methods for dealing with log and exception messages.
 
 .. autoclass:: pyxedit.Xelib
 
+    ...continued...
+
     .. automethod:: get_messages
     .. automethod:: clear_messages
     .. automethod:: get_exception_message
@@ -104,6 +110,8 @@ Setup Methods
 Methods for dealing with game modes and loading files.
 
 .. autoclass:: pyxedit.Xelib
+
+    ...continued...
 
     .. automethod:: get_game_path
     .. automethod:: set_game_path
@@ -126,6 +134,8 @@ Methods for handling bethesda archives and game data files.
 
 .. autoclass:: pyxedit.Xelib
 
+    ...continued...
+
     .. automethod:: extract_container
     .. automethod:: extract_file
     .. automethod:: get_container_files
@@ -140,6 +150,8 @@ Elements Methods
 Methods for handling elements.
 
 .. autoclass:: pyxedit.Xelib
+
+    ...continued...
 
     .. automethod:: has_element
     .. automethod:: get_element
@@ -188,6 +200,8 @@ Methods for getting or setting values on elements.
 
 .. autoclass:: pyxedit.Xelib
 
+    ...continued...
+
     .. automethod:: name
     .. automethod:: long_name
     .. automethod:: display_name
@@ -221,6 +235,8 @@ Methods for handling files.
 
 .. autoclass:: pyxedit.Xelib
 
+    ...continued...
+
     .. automethod:: add_file
     .. automethod:: file_by_index
     .. automethod:: file_by_load_order
@@ -244,6 +260,8 @@ Methods for getting or setting values on files.
 
 .. autoclass:: pyxedit.Xelib
 
+    ...continued...
+
     .. automethod:: get_next_object_id
     .. automethod:: set_next_object_id
     .. automethod:: get_file_name
@@ -259,6 +277,8 @@ Records Methods
 Methods for handling records in files.
 
 .. autoclass:: pyxedit.Xelib
+
+    ...continued...
 
     .. automethod:: get_form_id
     .. automethod:: get_hex_form_id
@@ -291,6 +311,8 @@ Methods for getting or setting values from records.
 
 .. autoclass:: pyxedit.Xelib
 
+    ...continued...
+
     .. automethod:: editor_id
     .. automethod:: full_name
     .. automethod:: get_ref_editor_id
@@ -304,6 +326,8 @@ Masters Methods
 Methods for handling masters in files.
 
 .. autoclass:: pyxedit.Xelib
+
+    ...continued...
 
     .. automethod:: clean_masters
     .. automethod:: sort_masters
@@ -321,6 +345,8 @@ Methods for handling groups in files.
 
 .. autoclass:: pyxedit.Xelib
 
+    ...continued...
+
     .. automethod:: has_group
     .. automethod:: add_group
     .. automethod:: get_child_group
@@ -330,6 +356,8 @@ Serialization Methods
 Methods for serializing elements to JSON and deserializing them from JSON.
 
 .. autoclass:: pyxedit.Xelib
+
+    ...continued...
 
     .. automethod:: element_to_json
     .. automethod:: element_to_dict
@@ -341,6 +369,8 @@ Plugin Error Methods
 Methods for getting and resolving errors/dirty edits in plugin files.
 
 .. autoclass:: pyxedit.Xelib
+
+    ...continued...
 
     .. automethod check_for_errors
     .. automethod get_error_thread_done
