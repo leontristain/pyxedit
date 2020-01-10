@@ -457,3 +457,20 @@ Methods for getting and resolving errors/dirty edits in plugin files.
     .. automethod get_error_thread_done
     .. automethod get_errors
     .. automethod remove_identical_records
+
+Enums
+=====
+
+``Xelib`` uses the following Enums (list of values), each of which can be accessed as an attribute from the ``Xelib`` class itself.
+
+.. autoclass:: pyxedit.Xelib.ElementTypes
+.. autoclass:: pyxedit.Xelib.DefTypes
+.. autoclass:: pyxedit.Xelib.SmashTypes
+.. autoclass:: pyxedit.Xelib.ValueTypes
+.. autoclass:: pyxedit.Xelib.SortBy
+.. autoclass:: pyxedit.Xelib.ConflictThis
+.. autoclass:: pyxedit.Xelib.ConflictAll
+.. autoclass:: pyxedit.Xelib.GetRefrsFlags
+.. autoclass:: pyxedit.Xelib.ArchiveTypes
+.. autoclass:: pyxedit.Xelib.LoaderStates
+.. autoclass:: pyxedit.Xelib.GameModes

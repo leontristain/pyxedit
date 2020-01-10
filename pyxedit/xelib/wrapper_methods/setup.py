@@ -13,6 +13,28 @@ class LoaderStates(Enum):
 
 @unique
 class GameModes(Enum):
+    '''
+    A list of game modes supported by ``XEditLib.dll``.
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``GameModes.FNV``
+          - Fallout New Vegas
+        * - ``GameModes.FO3``
+          - Fallout 3
+        * - ``GameModes.TES4``
+          - The Elder Scrolls IV: Oblivion
+        * - ``GameModes.TES5``
+          - The Elder Scrolls V: Skyrim
+        * - ``GameModes.SSE``
+          - The Elder Scrolls V: Skyrim Special Edition
+        * - ``GameModes.FO4``
+          - Fallout 4
+
+    '''
     FNV = 0
     FO3 = 1
     TES4 = 2
@@ -35,7 +57,8 @@ class SetupMethods(WrapperMethodsBase):
 
         Args:
             game (``Xelib.GameModes``):
-                The game to retrieve the game path for.
+                The game to retrieve the game path for. See
+                `GameModes <#pyxedit.Xelib.GameModes>`_.
 
         Returns:
             (``str``) the path to the game
@@ -77,6 +100,7 @@ class SetupMethods(WrapperMethodsBase):
         Args:
             game (``Xelib.GameModes``):
                 The game to retrieve the language for.
+                See `GameModes <#pyxedit.Xelib.GameModes>`_.
 
         Returns:
             (``str``) the language used for the game
@@ -114,6 +138,7 @@ class SetupMethods(WrapperMethodsBase):
         Args:
             game (``Xelib.GameModes``):
                 The game to retrieve the language for.
+                See `GameModes <#pyxedit.Xelib.GameModes>`_.
         '''
         game = game or self.GameModes.SSE
         return self.verify_execution(
