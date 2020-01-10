@@ -223,7 +223,7 @@ class SetupMethods(WrapperMethodsBase):
         loaded plugins.
 
         Args:
-            id_ (``int``):
+            id\\_ (``int``):
                 the handle to the plugin file to build references for; 0 means
                 all plugins
             sync (``bool``):
@@ -242,7 +242,7 @@ class SetupMethods(WrapperMethodsBase):
         headers loaded with ``xelib.load_plugin_header`` can also be unloaded.
 
         Args:
-            id_ (``int``):
+            id\\_ (``int``):
                 the handle to the plugin file to unload
         '''
         return self.verify_execution(
