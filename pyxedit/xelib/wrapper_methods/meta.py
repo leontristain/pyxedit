@@ -104,7 +104,7 @@ class MetaMethods(WrapperMethodsBase):
         Releases the given handle if it is allocated
 
         Args:
-            id_ (``int``):
+            id\\_ (``int``):
                 the input handle
         '''
         return self.verify_execution(
@@ -118,7 +118,7 @@ class MetaMethods(WrapperMethodsBase):
         handles returned by ``xelib.get_nodes``.
 
         Args:
-            id_ (``int``):
+            id\\_ (``int``):
                 the input handle
         '''
         return self.verify_execution(
@@ -131,7 +131,7 @@ class MetaMethods(WrapperMethodsBase):
         Swaps the elements pointed to by the two provided handles.
 
         Args:
-            id_ (``int``):
+            id\\_ (``int``):
                 the first handle
             id2 (``int``):
                 the second handle
@@ -147,7 +147,7 @@ class MetaMethods(WrapperMethodsBase):
         pointing to.
 
         Args:
-            id_ (``int``):
+            id\\_ (``int``):
                 handle to find duplicates for
         Returns:
             (``List(int)``) a list of duplicate handles
