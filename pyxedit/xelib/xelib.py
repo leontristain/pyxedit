@@ -368,7 +368,7 @@ class Xelib(ElementValuesMethods,
         handles you're interested in.
 
         Args:
-            handles (``List[int]``)
+            handle (``int``)
                 The handle to promote to parent handle management context
         '''
         for (current_layer,
