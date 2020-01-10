@@ -7,5 +7,5 @@ def test(c, test='test'):
 
 
 @task
-def build_docs(c):
+def docs(c):
     c.run('sphinx-build -b html docs docs/_build')

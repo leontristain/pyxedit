@@ -55,6 +55,15 @@ raised as a ``XelibError``.
 
 Basic Methods
 =============
+Basic boilerplate for usage.
+
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `\_\_init\_\_ <#pyxedit.Xelib.\_\_init\_\_>`_
+    * - `session <#pyxedit.Xelib.session>`_
 
 .. autoclass:: pyxedit.Xelib
 
@@ -63,6 +72,17 @@ Basic Methods
 
 Handle Management Methods
 =========================
+Convenient utilities for managing handles.
+
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `manage_handles <#pyxedit.Xelib.manage_handles>`_
+    * - `promote_handle <#pyxedit.Xelib.promote_handle>`_
+    * - `print_handle_management_stack <#pyxedit.Xelib.print_handle_management_stack>`_
+
 
 .. autoclass:: pyxedit.Xelib
 
@@ -75,6 +95,23 @@ Handle Management Methods
 Meta Methods
 ============
 Library-specific methods such as getting globals.
+
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `initialize <#pyxedit.Xelib.initialize>`_
+    * - `finalize <#pyxedit.Xelib.finalize>`_
+    * - `get_global <#pyxedit.Xelib.get_global>`_
+    * - `get_globals <#pyxedit.Xelib.get_globals>`_
+    * - `set_sort_mode <#pyxedit.Xelib.set_sort_mode>`_
+    * - `release <#pyxedit.Xelib.release>`_
+    * - `release_nodes <#pyxedit.Xelib.release_nodes>`_
+    * - `switch <#pyxedit.Xelib.switch>`_
+    * - `get_duplicate_handles <#pyxedit.Xelib.get_duplicate_handles>`_
+    * - `clean_store <#pyxedit.Xelib.clean_store>`_
+    * - `reset_store <#pyxedit.Xelib.reset_store>`_
 
 .. autoclass:: pyxedit.Xelib
 
@@ -96,6 +133,16 @@ Messages Methods
 ================
 Methods for dealing with log and exception messages.
 
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `get_messages <#pyxedit.Xelib.get_messages>`_
+    * - `clear_messages <#pyxedit.Xelib.clear_messages>`_
+    * - `get_exception_message <#pyxedit.Xelib.get_exception_message>`_
+    * - `get_exception_stack <#pyxedit.Xelib.get_exception_stack>`_
+
 .. autoclass:: pyxedit.Xelib
 
     ...continued...
@@ -108,6 +155,26 @@ Methods for dealing with log and exception messages.
 Setup Methods
 =============
 Methods for dealing with game modes and loading files.
+
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `get_game_path <#pyxedit.Xelib.get_game_path>`_
+    * - `set_game_path <#pyxedit.Xelib.set_game_path>`_
+    * - `get_game_language <#pyxedit.Xelib.get_game_language>`_
+    * - `set_language <#pyxedit.Xelib.set_language>`_
+    * - `set_game_mode <#pyxedit.Xelib.set_game_mode>`_
+    * - `get_load_order <#pyxedit.Xelib.get_load_order>`_
+    * - `get_active_plugins <#pyxedit.Xelib.get_active_plugins>`_
+    * - `load_plugins <#pyxedit.Xelib.load_plugins>`_
+    * - `load_plugin <#pyxedit.Xelib.load_plugin>`_
+    * - `load_plugin_header <#pyxedit.Xelib.load_plugin_header>`_
+    * - `build_references <#pyxedit.Xelib.build_references>`_
+    * - `unload_plugin <#pyxedit.Xelib.unload_plugin>`_
+    * - `get_loader_status <#pyxedit.Xelib.get_loader_status>`_
+    * - `get_loaded_file_names <#pyxedit.Xelib.get_loaded_file_names>`_
 
 .. autoclass:: pyxedit.Xelib
 
@@ -131,6 +198,20 @@ Methods for dealing with game modes and loading files.
 Resources Methods
 =================
 Methods for handling bethesda archives and game data files.
+
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `extract_container <#pyxedit.Xelib.extract_container>`_
+    * - `extract_file <#pyxedit.Xelib.extract_file>`_
+    * - `get_container_files <#pyxedit.Xelib.get_container_files>`_
+    * - `get_file_container <#pyxedit.Xelib.get_file_container>`_
+    * - `get_loaded_containers <#pyxedit.Xelib.get_loaded_containers>`_
+    * - `load_container <#pyxedit.Xelib.load_container>`_
+    * - `build_archive <#pyxedit.Xelib.build_archive>`_
+    * - `get_texture_data <#pyxedit.Xelib.get_texture_data>`_
 
 .. autoclass:: pyxedit.Xelib
 

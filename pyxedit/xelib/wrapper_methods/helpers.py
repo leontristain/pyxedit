@@ -213,7 +213,7 @@ class HelpersMethods(WrapperMethodsBase):
                                ex=ex).splitlines()
 
     def get_image_data(self, callback, error_msg=''):
-        raise NotImplementedError
+        raise NotImplementedError('Implement Me!')
 
     def get_dictionary(self, callback, method=None, error_msg='', ex=True):
         method = method or self.raw_api.GetResultString
