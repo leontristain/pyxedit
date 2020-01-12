@@ -83,6 +83,21 @@ class ElementsMethods(WrapperMethodsBase):
     ValueTypes = ValueTypes
 
     def has_element(self, id_, path='', ex=True):
+        '''
+        Checks if an element exists at the given ``path`` from the ``id_`` of
+        some starting element.
+
+        Args:
+            id\\_ (``int``):
+                the id of the starting element; keep in mind that the root
+                element has an id of `0`
+            path (``str``):
+                the subpath relative to the root element to check for the
+                existence of an element at
+
+        Returns:
+            (``bool``) whether an element exists at the subpath
+        '''
         return self.get_bool(
             lambda res: self.raw_api.HasElement(id_, path, res),
             error_msg=f'Failed to check if element exists at '
@@ -90,6 +105,20 @@ class ElementsMethods(WrapperMethodsBase):
             ex=ex)
 
     def get_element(self, id_, path='', ex=False):
+        '''
+        Resolves the element at ``path`` from the ``id_`` of some starting
+        element, and returns a handle to it.
+
+        Args:
+            id\\_ (``int``):
+                the id of the starting element; keep in mind that the root
+                element has an id of `0`
+            path (``str``):
+                the subpath relative to the root element to get an element at
+
+        Returns:
+            (``int``) a handle to the element; `0` if element is not found there
+        '''
         return self.get_handle(
             lambda res: self.raw_api.GetElement(id_, path, res),
             error_msg=f'Failed to get element at '
@@ -97,6 +126,22 @@ class ElementsMethods(WrapperMethodsBase):
             ex=ex)
 
     def add_element(self, id_, path='', ex=True):
+        '''
+        Traverses ``path`` from some starting element of handle ``id_``,
+        creating any elements that are not found. Returns a handle to the
+        element at the end of the path.
+
+        Args:
+            id\\_ (``int``):
+                the id of the starting element; keep in mind that the root
+                element has an id of `0`
+            path (``str``):
+                the subpath relative to the root element to create elements
+                up to
+
+        Returns:
+            (``int``) handle to the created element at the end of the path
+        '''
         return self.get_handle(
             lambda res: self.raw_api.AddElement(id_, path, res),
             error_msg=f'Failed to create new element at '
@@ -104,6 +149,24 @@ class ElementsMethods(WrapperMethodsBase):
             ex=ex)
 
     def add_element_value(self, id_, path, value, ex=True):
+        '''
+        Traverses ``path`` from some starting element of handle ``id_``,
+        creating any elements that are not found. Sets the value of the element
+        at the end of the path to ``value``, and returns a handle to it.
+
+        Args:
+            id\\_ (``int``):
+                the id of the starting element; keep in mind that the root
+                element has an id of `0`
+            path (``str``):
+                the subpath relative to the root element to create elements
+                up to
+            value (``str``):
+                set the value of the end element to this
+
+        Returns:
+            (``int``) handle to the created element at the end of the path
+        '''
         return self.get_handle(
             lambda res: self.raw_api.AddElementValue(id_, path, value, res),
             error_msg=f'Failed to create new element at '
@@ -111,6 +174,18 @@ class ElementsMethods(WrapperMethodsBase):
             ex=ex)
 
     def remove_element(self, id_, path='', ex=True):
+        '''
+        Removes the element at ``path`` (from some starting element of handle
+        ``id_``) if it exists.
+
+        Args:
+            id\\_ (``int``):
+                the id of the starting element; keep in mind that the root
+                element has an id of `0`
+            path (``str``):
+                the subpath relative to the root element to remove an element
+                at; if empty, this should resolve to the starting element itself
+        '''
         return self.verify_execution(
             self.raw_api.RemoveElement(id_, path),
             error_msg=f'Failed to remove element at '
@@ -118,6 +193,17 @@ class ElementsMethods(WrapperMethodsBase):
             ex=ex)
 
     def remove_element_or_parent(self, id_, ex=True):
+        '''
+        Removes the element of a handle ``id_``. If the element cannot be
+        removed, it gets its parent container and attempts to remove it.
+        This repeats until the container can be removed, or the code reaches
+        a main record.
+
+        Args:
+            id\\_ (``int``):
+                the id of the element to try to remove, together with any
+                parent containers if necessary
+        '''
         return self.verify_execution(
             self.raw_api.RemoveElementOrParent(id_),
             error_msg=f'Failed to remove element '
@@ -125,6 +211,18 @@ class ElementsMethods(WrapperMethodsBase):
             ex=ex)
 
     def set_element(self, id1, id2, ex=True):
+        '''
+        Assigns ``id2`` to ``id1``. This is equivalent to drag and drop.
+
+        TODO: Figure out what xelib meant by "drag and drop" and rewrite
+        this help text.
+
+        Args:
+            id1 (``int``):
+                An id to assign ``id2`` to.
+            id2 (``int``)
+                The id to assign to ``id1``.
+        '''
         return self.verify_execution(
             self.raw_api.SetElement(id1, id2),
             error_msg=f'Failed to set element at '

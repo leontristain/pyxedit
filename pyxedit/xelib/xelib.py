@@ -135,7 +135,7 @@ class Xelib(ElementValuesMethods,
                  plugins=None,
                  xeditlib_path=None):
         '''
-        Xelib Class Initializer
+        ``Xelib`` class initializer.
 
         Args:
             game_mode (``Xelib.GameModes``):
@@ -143,17 +143,24 @@ class Xelib(ElementValuesMethods,
                 with. Accepts anything in the ``Xelib.GameModes`` enum.
                 For Skyrim, use ``Xelib.GameModes.TES5``. For Skyrim Special
                 Edition, use ``Xelib.GameModes.SSE``.
+
             game_path (``str``):
                 The path to the game folder. If not given, the library will
                 attempt to automatically find the game's install path using
                 known registry values.
+
             plugins (``List[str]``):
                 The list of plugins to load. Any required masters will be
                 automatically included as well.
+
             xeditlib_path (``str``):
                 If you want to point ``Xelib`` to use your own copy of
                 ``XEditLib.dll``, you may provide the file path here. Otherwise,
-                the library will use its own copy of ``XEditLib.dll``.
+                the library will use its own copy of ``XEditLib.dll``. Note that
+                ``pyxedit.Xelib`` makes very tight assumptions about what
+                functions exist in ``XEditLib.dll`` and what their signatures
+                are. If your provided ``XEditLib.dll`` does not have a perfectly
+                matching API, there will likely be all kinds of errors.
         '''
         # Initialization attributes
         self._game_mode = game_mode

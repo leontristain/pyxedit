@@ -230,6 +230,52 @@ Elements Methods
 ================
 Methods for handling elements.
 
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `has_element <#pyxedit.Xelib.has_element>`_
+    * - `get_element <#pyxedit.Xelib.get_element>`_
+    * - `add_element <#pyxedit.Xelib.add_element>`_
+    * - `add_element_value <#pyxedit.Xelib.add_element_value>`_
+    * - `remove_element <#pyxedit.Xelib.remove_element>`_
+    * - `remove_element_or_parent <#pyxedit.Xelib.remove_element_or_parent>`_
+    * - `set_element <#pyxedit.Xelib.set_element>`_
+    * - `get_elements <#pyxedit.Xelib.get_elements>`_
+    * - `get_def_names <#pyxedit.Xelib.get_def_names>`_
+    * - `get_links_to <#pyxedit.Xelib.get_links_to>`_
+    * - `set_links_to <#pyxedit.Xelib.set_links_to>`_
+    * - `get_container <#pyxedit.Xelib.get_container>`_
+    * - `get_element_file <#pyxedit.Xelib.get_element_file>`_
+    * - `get_element_group <#pyxedit.Xelib.get_element_group>`_
+    * - `get_element_record <#pyxedit.Xelib.get_element_record>`_
+    * - `element_count <#pyxedit.Xelib.element_count>`_
+    * - `element_equals <#pyxedit.Xelib.element_equals>`_
+    * - `element_matches <#pyxedit.Xelib.element_matches>`_
+    * - `has_array_item <#pyxedit.Xelib.has_array_item>`_
+    * - `get_array_item <#pyxedit.Xelib.get_array_item>`_
+    * - `add_array_item <#pyxedit.Xelib.add_array_item>`_
+    * - `remove_array_item <#pyxedit.Xelib.remove_array_item>`_
+    * - `move_array_item <#pyxedit.Xelib.move_array_item>`_
+    * - `copy_element <#pyxedit.Xelib.copy_element>`_
+    * - `find_next_element <#pyxedit.Xelib.find_next_element>`_
+    * - `find_previous_element <#pyxedit.Xelib.find_previous_element>`_
+    * - `get_signature_allowed <#pyxedit.Xelib.get_signature_allowed>`_
+    * - `get_allowed_signatures <#pyxedit.Xelib.get_allowed_signatures>`_
+    * - `get_is_modified <#pyxedit.Xelib.get_is_modified>`_
+    * - `get_is_editable <#pyxedit.Xelib.get_is_editable>`_
+    * - `set_is_editable <#pyxedit.Xelib.set_is_editable>`_
+    * - `get_is_removable <#pyxedit.Xelib.get_is_removable>`_
+    * - `get_can_add <#pyxedit.Xelib.get_can_add>`_
+    * - `element_type <#pyxedit.Xelib.element_type>`_
+    * - `def_type <#pyxedit.Xelib.def_type>`_
+    * - `smash_type <#pyxedit.Xelib.smash_type>`_
+    * - `value_type <#pyxedit.Xelib.value_type>`_
+    * - `is_sorted <#pyxedit.Xelib.is_sorted>`_
+    * - `is_fixed <#pyxedit.Xelib.is_fixed>`_
+    * - `is_flags <#pyxedit.Xelib.is_flags>`_
+
 .. autoclass:: pyxedit.Xelib
 
     ...continued...
