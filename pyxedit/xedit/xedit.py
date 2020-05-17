@@ -36,11 +36,9 @@ class XEdit(XEditBase):
 
     @property
     def plugins(self):
-        return self._xelib.plugins
-
-    @plugins.setter
-    def plugins(self, value):
-        self._xelib.plugins = value
+        return [
+            self.objectify(self._xelib.file_by_index(i))
+            for i in range(self.plugin_count)]
 
     @property
     def plugin_count(self):
