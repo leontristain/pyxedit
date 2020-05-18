@@ -614,6 +614,7 @@ class XEditBase:
         from pyxedit.xedit.object_classes.ARMA import XEditArmature  # NOQA
         from pyxedit.xedit.object_classes.ARMO import XEditArmor  # NOQA
         from pyxedit.xedit.object_classes.FLST import XEditFormList  # NOQA
+        from pyxedit.xedit.object_classes.GLOB import XEditGlobalVariable  # NOQA
         from pyxedit.xedit.object_classes.HDPT import XEditHeadPart  # NOQA
         from pyxedit.xedit.object_classes.NPC_ import XEditNPC  # NOQA
         from pyxedit.xedit.object_classes.OBND import XEditObjectBounds # NOQA
