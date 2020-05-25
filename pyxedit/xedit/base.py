@@ -299,6 +299,11 @@ class XEditBase:
                                         self.ElementTypes.SubRecordArray):
             return XEditArray.from_xedit_object(handle, self)
 
+        # if object is a subrecord with array value type, use collection class
+        if (generic_obj.element_type == self.ElementTypes.SubRecord and
+                generic_obj.value_type == self.ValueTypes.Array):
+            return XEditArray.from_xedit_object(handle, self)
+
         # otherwise, see if we can find a subclass of XEditBase
         # corresponding to the signature; if so, use the subclass to make
         # the object, otherwise just use the generic object
@@ -616,7 +621,9 @@ class XEditBase:
         from pyxedit.xedit.object_classes.FLST import XEditFormList  # NOQA
         from pyxedit.xedit.object_classes.GLOB import XEditGlobalVariable  # NOQA
         from pyxedit.xedit.object_classes.HDPT import XEditHeadPart  # NOQA
+        from pyxedit.xedit.object_classes.KYWD import XEditKeyword  # NOQA
         from pyxedit.xedit.object_classes.NPC_ import XEditNPC  # NOQA
         from pyxedit.xedit.object_classes.OBND import XEditObjectBounds # NOQA
+        from pyxedit.xedit.object_classes.RACE import XEditRace  # NOQA
         from pyxedit.xedit.object_classes.TXST import XEditTextureSet  # NOQA
         from pyxedit.xedit.object_classes.VMAD import XEditVirtualMachineAdapter  # NOQA

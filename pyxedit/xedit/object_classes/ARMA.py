@@ -43,10 +43,10 @@ class XEditArmature(XEditGenericObject):
     mod2 = male_model = XEditAttribute(
         'MOD2', object_class=create_model_class('MOD2'))
 
-    mod3 = male_firstperson_model = XEditAttribute(
+    mod3 = female_model = XEditAttribute(
         'MOD3', object_class=create_model_class('MOD3'))
 
-    mod4 = female_model = XEditAttribute(
+    mod4 = male_firstperson_model = XEditAttribute(
         'MOD4', object_class=create_model_class('MOD4'))
 
     mod5 = female_firstperson_model = XEditAttribute(
@@ -72,6 +72,16 @@ class XEditArmature(XEditGenericObject):
         for item in [self.nam0, self.nam1]:
             if item:
                 yield item
+
+    @property
+    def races(self):
+        race = []
+        if self.rnam:
+            race.append(self.rnam)
+        if self.modl:
+            for item in self.modl:
+                race.append(item)
+        return race
 
     @property
     def firstperson_texture_swap_lists(self):

@@ -8,7 +8,7 @@ class XEditNPC(XEditGenericObject):
     vmad = script_info = virtual_machine_adapter = XEditAttribute('VMAD')
     obnd = object_bounds = XEditAttribute('OBND')
 
-    acbs = base_stats = XEditAttribute('ACBS')
+    acbs = configuration = base_stats = XEditAttribute('ACBS')
     snam = factions = XEditAttribute('SNAM')
     inam = death_item = XEditAttribute('INAM')
     vtck = voice_type = XEditAttribute('VTCK')
