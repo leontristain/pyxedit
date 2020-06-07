@@ -81,6 +81,18 @@ class XEditGenericObject(XEditBase):
     editor_id = XEditAttribute('EDID')
 
     @property
+    def flags(self):
+        if self.is_record:
+            return self['Record Header\\Record Flags']
+
+    @property
+    def is_record(self):
+        return self.element_type in (
+            self.ElementTypes.MainRecord,
+            self.ElementTypes.GroupRecord,
+            self.ElementTypes.SubRecord)
+
+    @property
     def form_id(self):
         '''
         The form_id property. This is only valid if the current object points

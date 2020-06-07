@@ -93,7 +93,7 @@ class RecordsMethods(WrapperMethodsBase):
 
     def get_overrides(self, id_, ex=True):
         return self.get_array(
-            lambda len_: self.raw_api.GetOverrides(id_, len),
+            lambda len_: self.raw_api.GetOverrides(id_, len_),
             error_msg=f'Failed to get overrides for '
                       f'{self.element_context(id_)}',
             ex=ex)

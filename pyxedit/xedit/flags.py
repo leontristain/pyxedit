@@ -10,7 +10,7 @@ class XEditFlags(XEditGenericObject):
         return self.get_flag(key)
 
     def __setitem__(self, key, value):
-        return self.set_flag(key)
+        return self.set_flag(key, value)
 
     def __iter__(self):
         for key in self.keys():
