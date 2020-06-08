@@ -3,8 +3,10 @@ from setuptools import setup, find_packages
 
 setup(name='pyxedit',
       packages=find_packages(exclude=['test']),
-      version='0.1',
+      version='0.1.1',
       description='python wrapper around xedit-lib',
       author='leontristain',
       install_requires=['cached-property>=1.5.1'],
-      include_package_data=True)
+      include_package_data=True,
+      url='https://github.com/leontristain/pyxedit',
+      python_requires='>=3.7')

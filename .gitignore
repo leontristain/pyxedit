@@ -12,3 +12,6 @@ vim*
 sample*
 npc*
 docs/_build
+/PYPI_TOKEN
+/build
+/dist
