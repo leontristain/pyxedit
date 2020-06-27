@@ -759,7 +759,7 @@ class ElementsMethods(WrapperMethodsBase):
                 id of element in question
 
         Returns:
-            (``ElementTypes``) element type enum value
+            (``pyxedit.Xelib.ElementTypes``) element type enum value
         '''
         result = self.get_byte(
             lambda res: self.raw_api.ElementType(id_, res),
@@ -777,7 +777,7 @@ class ElementsMethods(WrapperMethodsBase):
                 id of element in question
 
         Returns:
-            (``DefTypes``) def type enum value
+            (``pyxedit.Xelib.DefTypes``) def type enum value
         '''
         result = self.get_byte(
             lambda res: self.raw_api.DefType(id_, res),
@@ -795,7 +795,7 @@ class ElementsMethods(WrapperMethodsBase):
                 id of element in question
 
         Returns:
-            (``SmashTypes``) smash type enum value
+            (``pyxedit.Xelib.SmashTypes``) smash type enum value
         '''
         result = self.get_byte(
             lambda res: self.raw_api.SmashType(id_, res),
@@ -813,7 +813,7 @@ class ElementsMethods(WrapperMethodsBase):
                 id of element in question
 
         Returns:
-            (``ValueTypes``) value type enum value
+            (``pyxedit.Xelib.ValueTypes``) value type enum value
         '''
         result = self.get_byte(
             lambda res: self.raw_api.ValueType(id_, res),
