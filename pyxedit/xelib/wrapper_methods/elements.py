@@ -5,6 +5,41 @@ from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
 
 @unique
 class ElementTypes(Enum):
+    '''
+    A list of element types supported by ``XEditLib.dll``.
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``ElementTypes.File``
+          - A file record (i.e. root of a plugin)
+        * - ``ElementTypes.MainRecord``
+          - A main record
+        * - ``ElementTypes.GroupRecord``
+          - A group record
+        * - ``ElementTypes.SubRecord``
+          - A typical subrecord
+        * - ``ElementTypes.SubRecordStruct``
+          - A subrecord in struct format
+        * - ``ElementTypes.SubRecordArray``
+          - A subrecord in array format
+        * - ``ElementTypes.SubRecordUnion``
+          -
+        * - ``ElementTypes.Array``
+          - An array
+        * - ``ElementTypes.Struct``
+          - A struct
+        * - ``ElementTypes.Flags``
+          - A set of flags
+        * - ``ElementTypes.StringListTerminator``
+          -
+        * - ``ElementTypes.Union``
+          -
+        * - ``ElementTypes.StructChapter``
+          -
+    '''
     File = 0
     MainRecord = 1
     GroupRecord = 2
@@ -23,6 +58,53 @@ class ElementTypes(Enum):
 
 @unique
 class DefTypes(Enum):
+    '''
+    A list of def types supported by ``XEditLib.dll``.
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``DefTypes.Record``
+          -
+        * - ``DefTypes.SubRecord``
+          -
+        * - ``DefTypes.SubRecordArray``
+          -
+        * - ``DefTypes.SubRecordStruct``
+          -
+        * - ``DefTypes.SubRecordUnion``
+          -
+        * - ``DefTypes.String``
+          -
+        * - ``DefTypes.LString``
+          -
+        * - ``DefTypes.LenString``
+          -
+        * - ``DefTypes.ByteArray``
+          -
+        * - ``DefTypes.Integer``
+          -
+        * - ``DefTypes.IntegerFormater``
+          -
+        * - ``DefTypes.IntegerFormaterUnion``
+          -
+        * - ``DefTypes.Flag``
+          -
+        * - ``DefTypes.Float``
+          -
+        * - ``DefTypes.Array``
+          -
+        * - ``DefTypes.Struct``
+          -
+        * - ``DefTypes.Union``
+          -
+        * - ``DefTypes.Empty``
+          -
+        * - ``DefTypes.StructChapter``
+          -
+    '''
     Record = 0
     SubRecord = 1
     SubRecordArray = 2
@@ -46,6 +128,39 @@ class DefTypes(Enum):
 
 @unique
 class SmashTypes(Enum):
+    '''
+    A list of smash types supported by ``XEditLib.dll``.
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``DefTypes.Unknown``
+          -
+        * - ``DefTypes.Record``
+          -
+        * - ``DefTypes.String``
+          -
+        * - ``DefTypes.Integer``
+          -
+        * - ``DefTypes.Flag``
+          -
+        * - ``DefTypes.Float``
+          -
+        * - ``DefTypes.UnsortedArray``
+          -
+        * - ``DefTypes.UnsortedStructArray``
+          -
+        * - ``DefTypes.SortedArray``
+          -
+        * - ``DefTypes.SortedStructArray``
+          -
+        * - ``DefTypes.ByteArray``
+          -
+        * - ``DefTypes.Union``
+          -
+    '''
     Unknown = 0
     Record = 1
     String = 2
@@ -63,6 +178,37 @@ class SmashTypes(Enum):
 
 @unique
 class ValueTypes(Enum):
+    '''
+    A list of value types supported by ``XEditLib.dll``.
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``DefTypes.Unknown``
+          -
+        * - ``DefTypes.Bytes``
+          -
+        * - ``DefTypes.Number``
+          -
+        * - ``DefTypes.String``
+          -
+        * - ``DefTypes.Text``
+          -
+        * - ``DefTypes.Reference``
+          -
+        * - ``DefTypes.Flags``
+          -
+        * - ``DefTypes.Enum``
+          -
+        * - ``DefTypes.Color``
+          -
+        * - ``DefTypes.Array``
+          -
+        * - ``DefTypes.Struct``
+          -
+    '''
     Unknown = 0
     Bytes = 1
     Number = 2

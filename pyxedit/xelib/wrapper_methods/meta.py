@@ -5,6 +5,23 @@ from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
 
 @unique
 class SortBy(Enum):
+    '''
+    Sort modes used by ``xelib.set_sort_mode``
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``SortBy.None_``
+          -
+        * - ``SortBy.FormID``
+          -
+        * - ``SortBy.EditorID``
+          -
+        * - ``SortBy.Name``
+          -
+    '''
     None_ = 0
     FormID = 1
     EditorID = 2

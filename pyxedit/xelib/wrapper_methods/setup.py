@@ -5,6 +5,23 @@ from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
 
 @unique
 class LoaderStates(Enum):
+    '''
+    States of the loader when plugins are loaded.
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``LoaderStates.Inactive``
+          -
+        * - ``LoaderStates.Active``
+          -
+        * - ``LoaderStates.Done``
+          -
+        * - ``LoaderStates.Error``
+          -
+    '''
     Inactive = 0
     Active = 1
     Done = 2

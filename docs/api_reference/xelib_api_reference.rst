@@ -325,6 +325,38 @@ Element Value Methods
 =====================
 Methods for getting or setting values on elements.
 
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `name <#pyxedit.Xelib.name>`_
+    * - `long_name <#pyxedit.Xelib.long_name>`_
+    * - `display_name <#pyxedit.Xelib.display_name>`_
+    * - `placement_name <#pyxedit.Xelib.placement_name>`_
+    * - `path <#pyxedit.Xelib.path>`_
+    * - `long_path <#pyxedit.Xelib.long_path>`_
+    * - `local_path <#pyxedit.Xelib.local_path>`_
+    * - `signature <#pyxedit.Xelib.signature>`_
+    * - `sort_key <#pyxedit.Xelib.sort_key>`_
+    * - `get_value <#pyxedit.Xelib.get_value>`_
+    * - `set_value <#pyxedit.Xelib.set_value>`_
+    * - `get_int_value <#pyxedit.Xelib.get_int_value>`_
+    * - `set_int_value <#pyxedit.Xelib.set_int_value>`_
+    * - `get_uint_value <#pyxedit.Xelib.get_uint_value>`_
+    * - `set_uint_value <#pyxedit.Xelib.set_uint_value>`_
+    * - `get_float_value <#pyxedit.Xelib.get_float_value>`_
+    * - `set_float_value <#pyxedit.Xelib.set_float_value>`_
+    * - `get_flag <#pyxedit.Xelib.get_flag>`_
+    * - `set_flag <#pyxedit.Xelib.set_flag>`_
+    * - `get_enabled_flags <#pyxedit.Xelib.get_enabled_flags>`_
+    * - `set_enabled_flags <#pyxedit.Xelib.set_enabled_flags>`_
+    * - `get_all_flags <#pyxedit.Xelib.get_all_flags>`_
+    * - `get_enum_options <#pyxedit.Xelib.get_enum_options>`_
+    * - `signature_from_name <#pyxedit.Xelib.signature_from_name>`_
+    * - `name_from_signature <#pyxedit.Xelib.name_from_signature>`_
+    * - `get_signature_name_map <#pyxedit.Xelib.get_signature_name_map>`_
+
 .. autoclass:: pyxedit.Xelib
 
     ...continued...
@@ -360,6 +392,28 @@ Files Methods
 =============
 Methods for handling files.
 
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `add_file <#pyxedit.Xelib.add_file>`_
+    * - `file_by_index <#pyxedit.Xelib.file_by_index>`_
+    * - `file_by_load_order <#pyxedit.Xelib.file_by_load_order>`_
+    * - `file_by_name <#pyxedit.Xelib.file_by_name>`_
+    * - `file_by_author <#pyxedit.Xelib.file_by_author>`_
+    * - `nuke_file <#pyxedit.Xelib.nuke_file>`_
+    * - `rename_file <#pyxedit.Xelib.rename_file>`_
+    * - `save_file <#pyxedit.Xelib.save_file>`_
+    * - `get_record_count <#pyxedit.Xelib.get_record_count>`_
+    * - `get_override_record_count <#pyxedit.Xelib.get_override_record_count>`_
+    * - `md5_hash <#pyxedit.Xelib.md5_hash>`_
+    * - `crc_hash <#pyxedit.Xelib.crc_hash>`_
+    * - `get_file_load_order <#pyxedit.Xelib.get_file_load_order>`_
+    * - `get_file_header <#pyxedit.Xelib.get_file_header>`_
+    * - `sort_editor_ids <#pyxedit.Xelib.sort_editor_ids>`_
+    * - `sort_names <#pyxedit.Xelib.sort_names>`_
+
 .. autoclass:: pyxedit.Xelib
 
     ...continued...
@@ -385,6 +439,21 @@ File Values Methods
 ===================
 Methods for getting or setting values on files.
 
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `get_next_object_id <#pyxedit.Xelib.get_next_object_id>`_
+    * - `set_next_object_id <#pyxedit.Xelib.set_next_object_id>`_
+    * - `get_file_name <#pyxedit.Xelib.get_file_name>`_
+    * - `get_file_author <#pyxedit.Xelib.get_file_author>`_
+    * - `set_file_author <#pyxedit.Xelib.set_file_author>`_
+    * - `get_file_description <#pyxedit.Xelib.get_file_description>`_
+    * - `set_file_description <#pyxedit.Xelib.set_file_description>`_
+    * - `get_is_esm <#pyxedit.Xelib.get_is_esm>`_
+    * - `set_is_esm <#pyxedit.Xelib.set_is_esm>`_
+
 .. autoclass:: pyxedit.Xelib
 
     ...continued...
@@ -402,6 +471,36 @@ Methods for getting or setting values on files.
 Records Methods
 ===============
 Methods for handling records in files.
+
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `get_form_id <#pyxedit.Xelib.get_form_id>`_
+    * - `get_hex_form_id <#pyxedit.Xelib.get_hex_form_id>`_
+    * - `set_form_id <#pyxedit.Xelib.set_form_id>`_
+    * - `get_record <#pyxedit.Xelib.get_record>`_
+    * - `get_records <#pyxedit.Xelib.get_records>`_
+    * - `get_refrs <#pyxedit.Xelib.get_refrs>`_
+    * - `get_overrides <#pyxedit.Xelib.get_overrides>`_
+    * - `get_master_record <#pyxedit.Xelib.get_master_record>`_
+    * - `get_previous_override <#pyxedit.Xelib.get_previous_override>`_
+    * - `get_winning_override <#pyxedit.Xelib.get_winning_override>`_
+    * - `get_injection_target <#pyxedit.Xelib.get_injection_target>`_
+    * - `find_next_record <#pyxedit.Xelib.find_next_record>`_
+    * - `find_previous_record <#pyxedit.Xelib.find_previous_record>`_
+    * - `find_valid_references <#pyxedit.Xelib.find_valid_references>`_
+    * - `get_referenced_by <#pyxedit.Xelib.get_referenced_by>`_
+    * - `exchange_references <#pyxedit.Xelib.exchange_references>`_
+    * - `is_master <#pyxedit.Xelib.is_master>`_
+    * - `is_injected <#pyxedit.Xelib.is_injected>`_
+    * - `is_override <#pyxedit.Xelib.is_override>`_
+    * - `is_winning_override <#pyxedit.Xelib.is_winning_override>`_
+    * - `get_nodes <#pyxedit.Xelib.get_nodes>`_
+    * - `get_conflict_data <#pyxedit.Xelib.get_conflict_data>`_
+    * - `get_record_conflict_data <#pyxedit.Xelib.get_record_conflict_data>`_
+    * - `get_node_elements <#pyxedit.Xelib.get_node_elements>`_
 
 .. autoclass:: pyxedit.Xelib
 
@@ -436,6 +535,19 @@ Record Values Methods
 =====================
 Methods for getting or setting values from records.
 
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `editor_id <#pyxedit.Xelib.editor_id>`_
+    * - `full_name <#pyxedit.Xelib.full_name>`_
+    * - `get_ref_editor_id <#pyxedit.Xelib.get_ref_editor_id>`_
+    * - `translate <#pyxedit.Xelib.translate>`_
+    * - `rotate <#pyxedit.Xelib.rotate>`_
+    * - `get_record_flag <#pyxedit.Xelib.get_record_flag>`_
+    * - `set_record_flag <#pyxedit.Xelib.set_record_flag>`_
+
 .. autoclass:: pyxedit.Xelib
 
     ...continued...
@@ -451,6 +563,21 @@ Methods for getting or setting values from records.
 Masters Methods
 ===============
 Methods for handling masters in files.
+
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `clean_masters <#pyxedit.Xelib.clean_masters>`_
+    * - `sort_masters <#pyxedit.Xelib.sort_masters>`_
+    * - `add_master <#pyxedit.Xelib.add_master>`_
+    * - `add_required_masters <#pyxedit.Xelib.add_required_masters>`_
+    * - `get_masters <#pyxedit.Xelib.get_masters>`_
+    * - `get_required_by <#pyxedit.Xelib.get_required_by>`_
+    * - `get_master_names <#pyxedit.Xelib.get_master_names>`_
+    * - `add_all_masters <#pyxedit.Xelib.add_all_masters>`_
+    * - `get_available_masters <#pyxedit.Xelib.get_available_masters>`_
 
 .. autoclass:: pyxedit.Xelib
 
@@ -470,6 +597,15 @@ Groups Methods
 ==============
 Methods for handling groups in files.
 
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `has_group <#pyxedit.Xelib.has_group>`_
+    * - `add_group <#pyxedit.Xelib.add_group>`_
+    * - `get_child_group <#pyxedit.Xelib.get_child_group>`_
+
 .. autoclass:: pyxedit.Xelib
 
     ...continued...
@@ -481,6 +617,16 @@ Methods for handling groups in files.
 Serialization Methods
 =====================
 Methods for serializing elements to JSON and deserializing them from JSON.
+
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `element_to_json <#pyxedit.Xelib.element_to_json>`_
+    * - `element_to_dict <#pyxedit.Xelib.element_to_dict>`_
+    * - `element_from_json <#pyxedit.Xelib.element_from_json>`_
+    * - `element_from_dict <#pyxedit.Xelib.element_from_dict>`_
 
 .. autoclass:: pyxedit.Xelib
 
@@ -494,6 +640,16 @@ Methods for serializing elements to JSON and deserializing them from JSON.
 Plugin Error Methods
 ====================
 Methods for getting and resolving errors/dirty edits in plugin files.
+
+.. list-table::
+    :widths: 100
+    :header-rows: 0
+    :align: left
+
+    * - `check_for_errors <#pyxedit.Xelib.check_for_errors>`_
+    * - `get_error_thread_done <#pyxedit.Xelib.get_error_thread_done>`_
+    * - `get_errors <#pyxedit.Xelib.get_errors>`_
+    * - `remove_identical_records <#pyxedit.Xelib.remove_identical_records>`_
 
 .. autoclass:: pyxedit.Xelib
 

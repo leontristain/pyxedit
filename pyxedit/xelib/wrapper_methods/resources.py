@@ -5,6 +5,27 @@ from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
 
 @unique
 class ArchiveTypes(Enum):
+    '''
+    Archive types supported by ``XEditLib.dll``
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``ArchiveTypes.None_``
+          -
+        * - ``ArchiveTypes.TES3``
+          -
+        * - ``ArchiveTypes.FO3``
+          -
+        * - ``ArchiveTypes.SSE``
+          -
+        * - ``ArchiveTypes.FO4``
+          -
+        * - ``ArchiveTypes.FO4dds``
+          -
+    '''
     None_ = 0
     TES3 = 1
     FO3 = 2

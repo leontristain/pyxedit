@@ -5,6 +5,40 @@ from pyxedit.xelib.wrapper_methods.base import WrapperMethodsBase
 
 @unique
 class ConflictThis(Enum):
+    '''
+    Specific conflict information for a record used by
+    ``xelib.get_conflict_data``.
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``ConflictThis.Unknown``
+          -
+        * - ``ConflictThis.Ignored``
+          -
+        * - ``ConflictThis.NotDefined``
+          -
+        * - ``ConflictThis.IdenticalToMaster``
+          -
+        * - ``ConflictThis.OnlyOne``
+          -
+        * - ``ConflictThis.HiddenByModGroup``
+          -
+        * - ``ConflictThis.Master``
+          -
+        * - ``ConflictThis.ConflictBenign``
+          -
+        * - ``ConflictThis.Override``
+          -
+        * - ``ConflictThis.IdenticalToMasterWinsConflict``
+          -
+        * - ``ConflictThis.ConflictWins``
+          -
+        * - ``ConflictThis.ConflictLoses``
+          -
+    '''
     Unknown = 0
     Ignored = 1
     NotDefined = 2
@@ -21,6 +55,30 @@ class ConflictThis(Enum):
 
 @unique
 class ConflictAll(Enum):
+    '''
+    Overall conflict information for a record used by
+    ``xelib.get_conflict_data``.
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``ConflictAll.Unknown``
+          -
+        * - ``ConflictAll.OnlyOne``
+          -
+        * - ``ConflictAll.NoConflict``
+          -
+        * - ``ConflictAll.ConflictBenign``
+          -
+        * - ``ConflictAll.Override``
+          -
+        * - ``ConflictAll.Conflict``
+          -
+        * - ``ConflictAll.ConflictCritical``
+          -
+    '''
     Unknown = 0
     OnlyOne = 1
     NoConflict = 2
@@ -32,6 +90,21 @@ class ConflictAll(Enum):
 
 @unique
 class GetRefrsFlags(Enum):
+    '''
+    Options used by ``xelib.get_refrs``
+
+    .. list-table::
+        :widths: 20 80
+        :header-rows: 0
+        :align: left
+
+        * - ``GetRefrsFlags.excludeDeleted``
+          -
+        * - ``GetRefrsFlags.excludeDisabled``
+          -
+        * - ``GetRefrsFlags.excludeXESP``
+          -
+    '''
     excludeDeleted = 1
     excludeDisabled = 2
     excludeXESP = 4
