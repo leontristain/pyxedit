@@ -6,6 +6,7 @@ class XEditReference(XEditGenericObject):
     SIGNATURE = 'REFR'
 
     data = XEditAttribute('DATA')
+    base = XEditAttribute('NAME')
 
     position_x = XEditAttribute('DATA\\Position\\X')
     position_y = XEditAttribute('DATA\\Position\\X')
@@ -13,6 +14,11 @@ class XEditReference(XEditGenericObject):
     rotation_x = XEditAttribute('DATA\\Rotation\\X')
     rotation_y = XEditAttribute('DATA\\Rotation\\Y')
     rotation_z = XEditAttribute('DATA\\Rotation\\Z')
+
+    xmbo = bound_half_extents = XEditAttribute('XMBO')
+    xprm = primitive = XEditAttribute('XPRM')
+    xpod = portal_data = XEditAttribute('XPOD')
+    xrmr = linked_rooms = XEditAttribute('XRMR')
 
     @property
     def position(self):
